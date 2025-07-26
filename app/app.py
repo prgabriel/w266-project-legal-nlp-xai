@@ -399,13 +399,13 @@ def get_model_performance_metrics(models):
     return metrics
 
 # Optional: Add a test function to verify it works
-def test_metrics_function():
-    """Test function to verify metrics loading works"""
-    models = initialize_models()
-    metrics = get_model_performance_metrics(models)
-    st.write("🧪 **Metrics Test Results:**")
-    st.json(metrics)
-    return metrics
+# def test_metrics_function():
+#     """Test function to verify metrics loading works"""
+#     models = initialize_models()
+#     metrics = get_model_performance_metrics(models)
+#     st.write("🧪 **Metrics Test Results:**")
+#     st.json(metrics)
+#     return metrics
 
 def render_home_page():
     """Render the home/overview page with dynamic model information"""
@@ -567,8 +567,8 @@ def render_home_page():
             """)
 
     # TEMPORARY TEST - we'll remove this after verifying it works
-    if st.button("🧪 Test Metrics Function"):
-        test_metrics_function()
+    # if st.button("🧪 Test Metrics Function"):
+    #     test_metrics_function()
 
 def render_sidebar():
     """Render enhanced sidebar with navigation and settings"""
