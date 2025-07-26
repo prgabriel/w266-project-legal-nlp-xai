@@ -787,8 +787,8 @@ def main():
             val_summaries=val_summaries,
             epochs=15,  # More epochs for larger dataset
             batch_size=4,  # Larger batch size
-            learning_rate=2e-5,  # Slightly lower LR for stability
-            warmup_steps=len(train_texts_split) // 10,  # 10% warmup
+            learning_rate=1e-5,  # Slightly lower LR for stability
+            warmup_steps=min(max(len(train_texts_split) // 10, 100), 1000),  # 10% warmup, bounded between 100 and 1000
             early_stopping_patience=early_stopping_patience
         )
         
