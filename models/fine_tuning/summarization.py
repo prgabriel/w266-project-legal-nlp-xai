@@ -775,6 +775,11 @@ def main():
         logger.info(f"Training samples: {len(train_texts_split)}, Validation samples: {len(val_texts)}")
         
         # Enhanced training parameters for larger dataset
+        # Enable early stopping to prevent overfitting with increased epochs
+        early_stopping_patience = 2
+        if val_texts and len(val_texts) < 20:
+            logger.warning("Validation set is small; early stopping may not be reliable.")
+
         trainer = summarizer.fine_tune(
             train_texts=train_texts_split,
             train_summaries=train_summaries_split,
@@ -783,7 +788,8 @@ def main():
             epochs=15,  # More epochs for larger dataset
             batch_size=4,  # Larger batch size
             learning_rate=2e-5,  # Slightly lower LR for stability
-            warmup_steps=len(train_texts_split) // 10  # 10% warmup
+            warmup_steps=len(train_texts_split) // 10,  # 10% warmup
+            early_stopping_patience=early_stopping_patience
         )
         
         # Evaluate
