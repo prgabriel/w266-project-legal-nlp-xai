@@ -172,7 +172,9 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
                     "num_labels": 3
                 }
             }
-            with open(models_dir / 'training_results.json', 'w') as f:
+            # Add metadata to indicate this is mock data
+            training_results["is_mock_data"] = True
+            with open(models_dir / 'mock_training_results.json', 'w') as f:
                 json.dump(training_results, f, indent=2)
         
         # Create proper ExtractionConfig with valid parameters
