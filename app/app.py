@@ -419,7 +419,7 @@ def test_metrics_function():
     return metrics
 
 def render_home_page():
-    """Render the home/overview page with improved layout"""
+    """Render the home/overview page with dynamic model information"""
     # Main header with better styling
     st.markdown("""
     <div class="main-header">
@@ -442,46 +442,62 @@ def render_home_page():
     </div>
     """, unsafe_allow_html=True)
     
-    # Feature overview with improved cards
-    st.markdown("<h2 style='text-align: center; color: #1f4e79; margin: 2rem 0;'> Core Features</h2>", unsafe_allow_html=True)
+    # Get dynamic metrics
+    models = initialize_models()
+    performance_metrics = get_model_performance_metrics(models)
+    
+    # Feature overview with DYNAMIC cards
+    st.markdown("<h2 style='text-align: center; color: #1f4e79; margin: 2rem 0;'>🚀 Core Features</h2>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown("""
+        # Dynamic clause extraction metrics
+        clause_metrics = performance_metrics['clause_extraction']
+        f1_percentage = clause_metrics['f1_score'] * 100
+        num_clauses = clause_metrics['num_clause_types']
+        
+        st.markdown(f"""
         <div class="metric-card" style="color: #1f4e79;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
             <h4>Clause Extraction</h4>
-            <p><strong>41 Legal Clause Types</strong></p>
+            <p><strong>{num_clauses} Legal Clause Types</strong></p>
             <p>Multi-label BERT classification for comprehensive legal clause detection with clean, human-readable clause names and confidence scoring.</p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: #e7f3ff; border-radius: 5px; color: #0066cc;">
-                <small><strong>Accuracy:</strong> 89.2% F1-Score</small>
+                <small><strong>F1-Score:</strong> {f1_percentage:.1f}%</small>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
+        # Dynamic summarization metrics
+        summ_metrics = performance_metrics['summarization']
+        rouge_l = summ_metrics['rouge_l']
+        
+        st.markdown(f"""
         <div class="metric-card" style="color: #1f4e79;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
             <h4>Document Summarization</h4>
             <p><strong>T5-based Intelligence</strong></p>
             <p>Legal-optimized document summarization with extractive, abstractive, and hybrid summarization modes for different use cases.</p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: #fff3cd; border-radius: 5px; color: #0066cc;">
-                <small><strong>ROUGE-L:</strong> 0.847 Score</small>
+                <small><strong>ROUGE-L:</strong> {rouge_l:.3f} Score</small>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
-        st.markdown("""
+        # Dynamic explainability info
+        xai_methods = 4  # We'll make this dynamic in a later step
+        
+        st.markdown(f"""
         <div class="metric-card" style="color: #1f4e79;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
             <h4>AI Explainability</h4>
             <p><strong>SHAP, LIME & Attention</strong></p>
             <p>Comprehensive interpretability analysis to understand and trust AI decisions in critical legal document analysis.</p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: #d4edda; border-radius: 5px; color: #0066cc;">
-                <small><strong>Methods:</strong> 4 XAI Techniques</small>
+                <small><strong>Methods:</strong> {xai_methods} XAI Techniques</small>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -490,58 +506,74 @@ def render_home_page():
     st.markdown("## 📚 Quick Start Guide")
 
     with st.expander("How to Use This Toolkit", expanded=True):
-        st.markdown("""
+        st.markdown(f"""
         ### 1. Clause Extraction
-        Upload or paste legal text to detect 41 different clause types simultaneously with confidence scoring and clean clause names.
+        Extract {num_clauses} different clause types with {f1_percentage:.1f}% F1-Score accuracy using our fine-tuned Legal-BERT model.
         
         ### 2. Document Summarization
-        Generate concise, accurate summaries of legal contracts using multiple summarization strategies optimized for legal language.
+        Generate summaries using {summ_metrics['model_name']} with {rouge_l:.3f} ROUGE-L score for legal document comprehension.
         
         ### 3. Explainability Analysis
-        Understand why the AI made specific predictions with SHAP, LIME, attention visualizations, and feature importance analysis.
+        Understand AI decisions using {xai_methods} available XAI methods including SHAP, LIME, attention visualizations, and feature importance.
         
         ### 4. Analytics Dashboard
-        Use the sidebar to navigate between analysis modes, configure settings, and view performance analytics.
+        Monitor real-time performance with live metrics from your actual model training results.
         
         ---
         
-        ###  Pro Tips:
-        - Start with clause extraction to identify key contract provisions
-        - Use summarization for quick document overview and key points
-        - Apply explainability to understand AI reasoning for critical decisions
-        - Adjust confidence thresholds in the sidebar for optimal results
-        - Export results in multiple formats for reporting and analysis
+        ### 💡 Pro Tips:
+        - **Current Model**: {clause_metrics['model_name']}
+        - **Optimal threshold**: 0.3 for balanced precision/recall
+        - **Best performance**: on contracts with 150-2000 words
+        - **Export formats**: JSON, CSV, or PDF reports
         """)
 
-    # Add a call-to-action section
-    st.markdown("""
-    <div style="text-align: center; margin: 2rem 0; padding: 2rem; background: linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%); color: white; border-radius: 15px;">
-        <h3 style="color: white; margin-bottom: 1rem;">Ready to Get Started? </h3>
-        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Choose an analysis mode from the sidebar to begin processing your legal documents with advanced AI.</p>
+    # Dynamic call-to-action based on model status
+    system_ready = (clause_metrics['status'] == 'loaded' and summ_metrics['status'] == 'loaded')
+    
+    if system_ready:
+        cta_color = "linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%)"
+        cta_text = "🚀 Ready to Get Started?"
+        cta_message = f"All systems operational with {f1_percentage:.1f}% F1-Score performance! Choose an analysis mode from the sidebar."
+    else:
+        cta_color = "linear-gradient(135deg, #856404 0%, #ffc107 100%)"
+        cta_text = "⚠️ Limited Functionality"
+        cta_message = "Some components are not fully loaded. You can still use available features."
+    
+    st.markdown(f"""
+    <div style="text-align: center; margin: 2rem 0; padding: 2rem; background: {cta_color}; color: white; border-radius: 15px;">
+        <h3 style="color: white; margin-bottom: 1rem;">{cta_text}</h3>
+        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">{cta_message}</p>
         <p style="font-size: 0.9rem; opacity: 0.9;">Built for legal professionals, researchers, and AI practitioners</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Model information section (optional)
+    # Dynamic model information section
     if st.checkbox("Show Model Information"):
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### BERT Clause Extractor")
-            st.info("""
-            - **Architecture**: Multi-label BERT
-            - **Clause Types**: 41 CUAD categories
-            - **Performance**: F1-macro optimized
-            - **Explainability**: SHAP + LIME ready
+            st.markdown("### 🤖 BERT Clause Extractor")
+            status_icon = "✅" if clause_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {clause_metrics['model_name']}
+            - **Status**: {status_icon} {clause_metrics['status'].title()}
+            - **Clause Types**: {clause_metrics['num_clause_types']} CUAD categories
+            - **F1-Score**: {clause_metrics['f1_score']:.3f}
+            - **Precision**: {clause_metrics['precision']:.3f}
+            - **Recall**: {clause_metrics['recall']:.3f}
             """)
         
         with col2:
-            st.markdown("### T5 Summarizer")
-            st.info("""
-            - **Architecture**: T5-base fine-tuned
+            st.markdown("### 📝 T5 Summarizer")
+            status_icon = "✅" if summ_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {summ_metrics['model_name']}
+            - **Status**: {status_icon} {summ_metrics['status'].title()}
+            - **ROUGE-1**: {summ_metrics['rouge_1']:.3f}
+            - **ROUGE-2**: {summ_metrics['rouge_2']:.3f}
+            - **ROUGE-L**: {summ_metrics['rouge_l']:.3f}
             - **Modes**: Abstractive, Extractive, Hybrid
-            - **Optimization**: Legal domain specific
-            - **Metrics**: ROUGE + Legal-specific
             """)
 
     # TEMPORARY TEST - we'll remove this after verifying it works
