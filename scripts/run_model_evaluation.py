@@ -291,9 +291,8 @@ def evaluate_summarization_model() -> Dict[str, Any]:
             )
             logger.info("✅ SummarizationConfig created successfully")
         except Exception as e:
-            logger.error(f"❌ Error creating SummarizationConfig: {e}")
-            # Fallback without config
             logger.error(f"❌ Error creating SummarizationConfig: {e}. Using fallback default configuration.")
+            # Fallback without config
             # Fallback: provide a working default configuration
             class FallbackSummarizationConfig:
                 def __init__(self):
