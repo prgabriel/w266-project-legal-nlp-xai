@@ -175,7 +175,10 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             with open(models_dir / 'training_results.json', 'w') as f:
                 json.dump(training_results, f, indent=2)
         
+<<<<<<< HEAD
         # Create proper ExtractionConfig with valid parameters
+=======
+>>>>>>> 981aaf7e1b96a6472e39b5c77205a3f493ec7c76
         extraction_config_params = {
             'confidence_threshold': 0.3,
             'max_length': 512,
@@ -200,10 +203,15 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
         # Initialize extractor with model_path as a separate parameter
         try:
             extractor = LegalClauseExtractor(
-                model_path=str(models_dir), 
+                model_path=str(models_dir),
                 cache_dir=str(models_dir),
+<<<<<<< HEAD
                 config=extraction_config
+=======
+                config=config  # Ensure config does not include model_path
+>>>>>>> 981aaf7e1b96a6472e39b5c77205a3f493ec7c76
             )
+            # Initialize LegalClauseExtractor
             logger.info("✅ LegalClauseExtractor initialized successfully")
         except Exception as e:
             logger.error(f"❌ Error initializing LegalClauseExtractor: {e}")
@@ -295,6 +303,7 @@ def evaluate_summarization_model() -> Dict[str, Any]:
             logger.info("✅ SummarizationConfig created successfully")
         except Exception as e:
             logger.error(f"❌ Error creating SummarizationConfig: {e}. Using fallback default configuration.")
+            # Fallback without config
             # Fallback: provide a working default configuration
             class FallbackSummarizationConfig:
                 def __init__(self):
