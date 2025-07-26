@@ -449,7 +449,29 @@ def render_home_page():
     performance_metrics = get_model_performance_metrics(models)
     
     # Feature overview with DYNAMIC cards
-    st.markdown("<h2 style='text-align: center; color: #1f4e79; margin: 2rem 0;'>Core Features</h2>", unsafe_allow_html=True)
+    # Interactive "Core Features" card with hover effect and consistent style
+    st.markdown("""
+    <div class="feature-card" style="
+        text-align: center;
+        background: linear-gradient(135deg, #e3ecfa 0%, #f5faff 100%);
+        color: white;
+        margin: 2rem 0 1.5rem 0;
+        padding: 1.5rem 1rem;
+        border-radius: 32px;
+        box-shadow: 0 4px 24px rgba(74,144,226,0.18), 0 1.5px 6px rgba(0,0,0,0.08);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        font-size: 2.1rem;
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    " onmouseover="this.style.background='linear-gradient(135deg, #d2e3fa 0%, #eaf6ff 100%)'; this.style.transform='scale(1.02)';"
+      onmouseout="this.style.background='linear-gradient(135deg, #e3ecfa 0%, #f5faff 100%)'; this.style.transform='scale(1)';">
+        Core Features
+        <div style="font-size: 1.1rem; font-weight: 400; margin-top: 0.5rem; color: #fff; opacity: 0.85;">
+            Explore clause extraction, summarization, and explainability below
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
