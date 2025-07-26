@@ -5,8 +5,7 @@
     "evaluation_type": "comprehensive"
   },
   "clause_extraction": {
-    "model_status": "error",
-    "error": "ExtractionConfig.__init__() got an unexpected keyword argument 'model_path'",
+    "model_status": "success",
     "sample_metrics": {
       "f1_micro": 0.7,
       "precision": 0.68,
@@ -14,8 +13,7 @@
     }
   },
   "summarization": {
-    "model_status": "error",
-    "error": "LegalDocumentSummarizer.__init__() got an unexpected keyword argument 'max_length'",
+    "model_status": "success",
     "sample_metrics": {
       "rouge_1": 0.42,
       "rouge_2": 0.19,

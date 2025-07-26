@@ -168,29 +168,27 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             with open(models_dir / 'training_results.json', 'w') as f:
                 json.dump(training_results, f, indent=2)
         
+        # Define extraction configuration parameters in a single dictionary to avoid duplication
+        extraction_config_params = {
+            'confidence_threshold': 0.3,
+            'max_length': 512,
+            'batch_size': 8,
+            'return_positions': True,
+            'return_matched_text': True,
+            'enable_preprocessing': True
+        }
         # Create proper ExtractionConfig with valid parameters only - EXPLICIT FIELD NAMES
         try:
-            config = ExtractionConfig(
-                confidence_threshold=0.3,
-                max_length=512,
-                batch_size=8,
-                return_positions=True,
-                return_matched_text=True,
-                enable_preprocessing=True
-            )
+            config = ExtractionConfig(**extraction_config_params)
             logger.info("✅ ExtractionConfig created successfully")
         except Exception as e:
             logger.error(f"❌ Error creating ExtractionConfig: {e}")
             # Fallback: create config without dataclass if needed
             class FallbackConfig:
-                def __init__(self):
-                    self.confidence_threshold = 0.3
-                    self.max_length = 512
-                    self.batch_size = 8
-                    self.return_positions = True
-                    self.return_matched_text = True
-                    self.enable_preprocessing = True
-            config = FallbackConfig()
+                def __init__(self, params):
+                    for k, v in params.items():
+                        setattr(self, k, v)
+            config = FallbackConfig(extraction_config_params)
         
         # Initialize extractor with model_path as a separate parameter
         try:
@@ -291,9 +289,17 @@ def evaluate_summarization_model() -> Dict[str, Any]:
         except Exception as e:
             logger.error(f"❌ Error creating SummarizationConfig: {e}")
             # Fallback without config
-            summarization_config = None
-        
-        # Initialize summarizer with proper parameters
+            logger.error(f"❌ Error creating SummarizationConfig: {e}. Using fallback default configuration.")
+            # Fallback: provide a working default configuration
+            class FallbackSummarizationConfig:
+                def __init__(self):
+                    self.model_name = 't5-base'
+                    self.max_output_length = 256
+                    self.min_output_length = 50
+                    self.summary_type = 'extractive_abstractive'
+                    self.num_beams = 4
+                    self.early_stopping = True
+            summarization_config = FallbackSummarizationConfig()
         try:
             summarizer = LegalDocumentSummarizer(
                 model_path=str(models_dir),
@@ -456,9 +462,8 @@ def main():
         results = run_comprehensive_evaluation()
         
         # Return success
-        return 0
-        
-    except Exception as e:
+if __name__ == "__main__":
+    sys.exit(main()) e:
         logger.error(f"Evaluation failed: {e}")
         import traceback
         traceback.print_exc()
