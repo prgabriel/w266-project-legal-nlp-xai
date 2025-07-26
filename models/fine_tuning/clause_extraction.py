@@ -266,7 +266,7 @@ class LegalClauseExtractor:
         # Create output directory
         os.makedirs(self.output_dir, exist_ok=True)
         
-        # Training arguments optimized for legal text
+        # Training arguments optimized for legal text - FIXED VERSION
         training_args = TrainingArguments(
             output_dir=self.output_dir,
             num_train_epochs=num_epochs,
@@ -277,7 +277,7 @@ class LegalClauseExtractor:
             learning_rate=learning_rate,
             logging_dir=os.path.join(self.output_dir, 'logs'),
             logging_steps=100,
-            evaluation_strategy="epoch",
+            eval_strategy="epoch",  # FIXED: Changed from evaluation_strategy to eval_strategy
             save_strategy="epoch",
             save_total_limit=3,
             load_best_model_at_end=True,
@@ -371,153 +371,3 @@ class LegalClauseExtractor:
             'num_test_samples': len(test_labels),
             'num_clause_types': self.num_labels
         }
-        
-        # Save evaluation results
-        with open(os.path.join(self.output_dir, 'evaluation_results.json'), 'w') as f:
-            json.dump(evaluation_results, f, indent=2)
-        
-        # Print summary
-        logger.info(f"Test Results:")
-        logger.info(f"  F1 Micro: {f1_micro:.4f}")
-        logger.info(f"  F1 Macro: {f1_macro:.4f}")
-        logger.info(f"  F1 Weighted: {f1_weighted:.4f}")
-        logger.info(f"  Hamming Loss: {hamming_loss:.4f}")
-        
-        # Top and bottom performing clauses
-        logger.info("\nTop 5 performing clauses:")
-        for result in per_clause_results[:5]:
-            logger.info(f"  {result['clean_name']}: F1={result['f1_score']:.3f} (support={result['support']})")
-        
-        logger.info("\nBottom 5 performing clauses:")
-        for result in per_clause_results[-5:]:
-            logger.info(f"  {result['clean_name']}: F1={result['f1_score']:.3f} (support={result['support']})")
-        
-        return evaluation_results
-    
-    def save_model(self, save_tokenizer: bool = True):
-        """Save the fine-tuned model and tokenizer"""
-        os.makedirs(self.output_dir, exist_ok=True)
-        
-        # Save model
-        self.model.save_pretrained(self.output_dir)
-        logger.info(f"Model saved to {self.output_dir}")
-        
-        if save_tokenizer:
-            self.tokenizer.save_pretrained(self.output_dir)
-            logger.info(f"Tokenizer saved to {self.output_dir}")
-        
-        # Save additional metadata
-        model_info = {
-            'model_name': self.model_name,
-            'num_labels': self.num_labels,
-            'clause_types': self.clause_types,
-            'clean_clause_names': self.clean_clause_names,
-            'model_architecture': 'BERT for multi-label legal clause classification'
-        }
-        
-        with open(os.path.join(self.output_dir, 'model_info.json'), 'w') as f:
-            json.dump(model_info, f, indent=2)
-    
-    def predict(self, texts: List[str], threshold: float = 0.5) -> List[Dict]:
-        """
-        Make predictions on new legal texts
-        Returns list of predictions with clean clause names
-        """
-        self.model.eval()
-        
-        predictions = []
-        
-        for text in texts:
-            # Tokenize input
-            encoding = self.tokenizer(
-                text,
-                add_special_tokens=True,
-                max_length=512,
-                padding='max_length',
-                truncation=True,
-                return_attention_mask=True,
-                return_tensors='pt'
-            )
-            
-            # Get model predictions
-            with torch.no_grad():
-                outputs = self.model(**encoding)
-                probabilities = torch.sigmoid(outputs.logits).squeeze().numpy()
-            
-            # Apply threshold and get predicted clauses
-            predicted_clauses = []
-            for i, (clause_type, prob) in enumerate(zip(self.clause_types, probabilities)):
-                if prob > threshold:
-                    clean_name = self.clean_clause_names.get(clause_type, clause_type[:50])
-                    predicted_clauses.append({
-                        'clause_type': clause_type,
-                        'clean_name': clean_name,
-                        'probability': float(prob)
-                    })
-            
-            # Sort by probability
-            predicted_clauses.sort(key=lambda x: x['probability'], reverse=True)
-            
-            predictions.append({
-                'text': text[:100] + '...' if len(text) > 100 else text,
-                'predicted_clauses': predicted_clauses,
-                'num_predicted_clauses': len(predicted_clauses)
-            })
-        
-        return predictions
-
-
-def main():
-    """
-    Main training pipeline for legal clause extraction
-    """
-    logger.info("Starting Legal Clause Extraction Fine-Tuning")
-    
-    # Initialize extractor
-    extractor = LegalClauseExtractor()
-    
-    try:
-        # Load processed data
-        train_df, val_df, test_df = extractor.load_processed_data()
-        
-        # Create datasets
-        train_dataset, val_dataset, test_dataset = extractor.create_datasets(train_df, val_df, test_df)
-        
-        # Train model
-        trainer = extractor.train(
-            train_dataset=train_dataset,
-            val_dataset=val_dataset,
-            num_epochs=3,
-            batch_size=8,
-            learning_rate=2e-5
-        )
-        
-        # Evaluate on test set
-        evaluation_results = extractor.evaluate(trainer, test_dataset)
-        
-        # Save model
-        extractor.save_model()
-        
-        logger.info("Training pipeline completed successfully!")
-        
-        # Demo prediction
-        demo_text = """
-        This Agreement shall commence on January 1, 2024 and shall continue for a period of three years.
-        The Licensee shall not assign this Agreement without prior written consent of the Licensor.
-        """
-        
-        predictions = extractor.predict([demo_text])
-        logger.info(f"\nDemo prediction results:")
-        for pred in predictions:
-            logger.info(f"Text: {pred['text']}")
-            logger.info(f"Predicted clauses ({pred['num_predicted_clauses']}):")
-            for clause in pred['predicted_clauses']:
-                logger.info(f"  - {clause['clean_name']}: {clause['probability']:.3f}")
-        
-    except Exception as e:
-        logger.error(f"Training failed: {str(e)}")
-        raise
-
-
-if __name__ == "__main__":
-    main()
