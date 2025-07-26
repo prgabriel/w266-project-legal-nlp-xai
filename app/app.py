@@ -167,7 +167,7 @@ def load_custom_css():
     }
     
     .metric-card strong {
-        color: #1A365D !important;              /* Changed from #FFD700 to dark blue - much more visible */
+        color: #FFD700 !important;              /* Restored to yellow (#FFD700) for better contrast and readability */
         font-weight: 700 !important;
         text-shadow: none !important;
     }
