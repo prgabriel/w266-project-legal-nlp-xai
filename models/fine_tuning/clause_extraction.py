@@ -60,15 +60,6 @@ class LegalClauseDataset(Dataset):
             'labels': labels
                 }
         
-        if __name__ == "__main__":
-            # Example usage
-            extractor = LegalClauseExtractor()
-            train_df, val_df, test_df = extractor.load_processed_data()
-            train_dataset, val_dataset, test_dataset = extractor.create_datasets(train_df, val_df, test_df)
-            trainer = extractor.train(train_dataset, val_dataset)
-            results = extractor.evaluate(trainer, test_dataset)
-            print(json.dumps(results, indent=2))
-
 class LegalClauseExtractor:
     """
     Multi-label BERT fine-tuning for legal clause detection
