@@ -521,11 +521,12 @@ def render_home_page():
         
         ---
         
-        ### 💡 Pro Tips:
-        - **Current Model**: {clause_metrics['model_name']}
-        - **Optimal threshold**: 0.3 for balanced precision/recall
-        - **Best performance**: on contracts with 150-2000 words
-        - **Export formats**: JSON, CSV, or PDF reports
+        ###  Pro Tips:
+        - Start with clause extraction to identify key contract provisions
+        - Use summarization for quick document overview and key points
+        - Apply explainability to understand AI reasoning for critical decisions
+        - Adjust confidence thresholds in the sidebar for optimal results
+        - Export results in multiple formats for reporting and analysis
         """)
 
     # Dynamic call-to-action based on model status
