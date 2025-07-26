@@ -5,23 +5,39 @@ data:
 
 model:
   batch_size: 8
-  bert_model_name: nlpaueb/legal-bert-base-uncased  # Changed this
+  bert_model_name: nlpaueb/legal-bert-base-uncased
   max_length: 512
   t5_model_name: t5-base
 
+# Use environment variable-based paths or relative to project root
 paths:
-  app: ../app
-  data: ../data
-  data_processed: ../data/processed
-  data_raw: ../data/raw
-  logs: ../logs
-  models: ../models
-  models_bert: ../models/bert
-  models_fine_tuning: ../models/fine_tuning
-  models_t5: ../models/t5
-  notebooks: ../notebooks
-  scripts: ../scripts
-  tests: ../tests
+  # Option 1: Environment variable approach (recommended)
+  app: "${PROJECT_ROOT}/app"
+  data: "${PROJECT_ROOT}/data"
+  data_processed: "${PROJECT_ROOT}/data/processed"
+  data_raw: "${PROJECT_ROOT}/data/raw"
+  logs: "${PROJECT_ROOT}/logs"
+  models: "${PROJECT_ROOT}/models"
+  models_bert: "${PROJECT_ROOT}/models/bert"
+  models_fine_tuning: "${PROJECT_ROOT}/models/fine_tuning"
+  models_t5: "${PROJECT_ROOT}/models/t5"
+  notebooks: "${PROJECT_ROOT}/notebooks"
+  scripts: "${PROJECT_ROOT}/scripts"
+  tests: "${PROJECT_ROOT}/tests"
+  
+  # Option 2: Relative to project root (safer than ../)
+  # app: "app"
+  # data: "data"
+  # data_processed: "data/processed"
+  # data_raw: "data/raw"
+  # logs: "logs"
+  # models: "models"
+  # models_bert: "models/bert"
+  # models_fine_tuning: "models/fine_tuning"
+  # models_t5: "models/t5"
+  # notebooks: "notebooks"
+  # scripts: "scripts"
+  # tests: "tests"
 
 training:
   learning_rate: 2.0e-05
