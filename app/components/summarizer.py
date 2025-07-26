@@ -36,18 +36,18 @@ from plotly.subplots import make_subplots
 # Add project root to path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-try:
-    from scripts.utils import load_data, clean_clause_name, PROJECT, preprocess_text
-    from scripts.evaluation_metrics import LegalNLPEvaluator
-except ImportError as e:
-    logger.warning(f"Could not import some utilities: {e}")
-
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+try:
+    from scripts.utils import load_data, clean_clause_name, PROJECT, preprocess_text
+    from scripts.evaluation_metrics import LegalNLPEvaluator
+except ImportError as e:
+    logger.warning(f"Could not import some utilities: {e}")
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings('ignore')
