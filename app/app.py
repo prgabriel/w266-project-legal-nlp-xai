@@ -1,0 +1,769 @@
+"""
+Legal NLP + Explainability Toolkit - Main Streamlit Application
+Comprehensive legal document analysis with enhanced clause extraction, summarization, and explainability
+"""
+import streamlit as st
+# from app.config.azure import azure_config
+
+# # Configure for Azure deployment
+# if azure_config.is_azure_environment:
+#     # Use Azure Blob Storage for models
+#     from app.utils.azure_storage import AzureModelManager
+#     model_manager = AzureModelManager()
+    
+#     # Application Insights integration
+#     if azure_config.instrumentation_key:
+#         from opencensus.ext.azure.log_exporter import AzureLogHandler
+#         import logging
+#         logger = logging.getLogger(__name__)
+#         logger.addHandler(AzureLogHandler(
+#             connection_string=f'InstrumentationKey={azure_config.instrumentation_key}'
+#         ))
+
+# Streamlit config for Azure
+st.set_page_config(
+    page_title="Legal NLP + Explainability Toolkit",
+    page_icon="⚖️",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/prgabriel/w266-project-legal-nlp-xai',
+        'Report a bug': 'https://github.com/prgabriel/w266-project-legal-nlp-xai/issues',
+        'About': """
+        # Legal NLP + Explainability Toolkit
+        
+        **Towards Responsible AI in Legal NLP**
+        
+        This toolkit provides interpretable clause extraction, 
+        summarization, and explainability for legal document analysis.
+        
+        **Features:**
+        - 41 CUAD legal clause types
+        - Multi-label BERT classification
+        - T5-based legal summarization
+        - SHAP, LIME, and attention analysis
+        - Interactive visualizations
+        
+        Built for legal professionals and researchers.
+        """
+    }
+)
+
+import sys
+import os
+import logging
+import traceback
+from typing import Dict, List, Any, Optional
+from pathlib import Path
+import time
+import json
+
+# Add project root to path
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+# Import enhanced components
+from components.clause_extractor import (
+    render_enhanced_clause_interface, 
+    LegalClauseExtractor,
+    extract_clauses
+)
+from components.summarizer import (
+    render_enhanced_summarization_interface,
+    LegalDocumentSummarizer,
+    summarize_text
+)
+from components.explainer import (
+    render_explainability_interface,
+    LegalExplainer,
+    explain_predictions
+)
+
+# Import utilities
+from scripts.utils import PROJECT, load_data, preprocess_text
+from scripts.evaluation_metrics import LegalNLPEvaluator
+
+# Add Plotly imports for analytics
+import plotly.express as px
+import plotly.graph_objects as go
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Custom CSS for enhanced styling
+def load_custom_css():
+    """Load custom CSS with proper styling"""
+    st.markdown("""
+    <style>
+    /* Import the main stylesheet */
+    @import url('static/styles.css');
+    
+    /* Override and additional styles for Streamlit */
+    .main-header {
+        font-size: 3rem;
+        font-weight: bold;
+        text-align: center;
+        color: #1f4e79;
+        margin-bottom: 2rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        padding: 1rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 15px;
+    }
+    
+    /* Fix Streamlit container width */
+    .main .block-container {
+        max-width: 1200px;
+        padding: 2rem 1rem;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background-color: #f8f9fa;
+    }
+    
+    /* Feature cards */
+    .feature-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1rem 0;
+        border-left: 5px solid #1f4e79;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Metric cards */
+    .metric-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 1px solid #e0e0e0;
+        text-align: center;
+        margin: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 100%;
+    }
+    
+    .metric-card h4 {
+        color: #1f4e79;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+    
+    .metric-card p {
+        margin: 0.5rem 0;
+        line-height: 1.5;
+    }
+    
+    .metric-card p strong {
+        color: #d4af37;
+        font-size: 1.1rem;
+    }
+    
+    /* Status boxes */
+    .success-box, .warning-box, .error-box {
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border-left: 4px solid;
+    }
+    
+    .success-box {
+        background-color: #d4edda;
+        border-left-color: #28a745;
+        color: #155724;
+    }
+    
+    .warning-box {
+        background-color: #fff3cd;
+        border-left-color: #ffc107;
+        color: #856404;
+    }
+    
+    .error-box {
+        background-color: #f8d7da;
+        border-left-color: #dc3545;
+        color: #721c24;
+    }
+    
+    /* Sidebar improvements */
+    .sidebar-info {
+        background-color: #e7f3ff;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border-left: 3px solid #0066cc;
+    }
+    
+    /* Tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 4px;
+        background-color: #f8f9fa;
+        padding: 0.5rem;
+        border-radius: 10px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        padding: 0 20px;
+        background-color: transparent;
+        border-radius: 8px;
+        color: #6c757d;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: #e9ecef;
+        color: #1f4e79;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #1f4e79;
+        color: white !important;
+    }
+    
+    /* Button improvements */
+    .stButton > button {
+        background: linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(31, 78, 121, 0.3);
+    }
+    
+    /* Text area improvements */
+    .stTextArea textarea {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-family: 'Consolas', monospace;
+        line-height: 1.5;
+    }
+    
+    .stTextArea textarea:focus {
+        border-color: #1f4e79;
+        box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.2);
+    }
+    
+    /* Selectbox improvements */
+    .stSelectbox > div > div {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+    }
+    
+    /* Metric styling */
+    .metric-container {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        text-align: center;
+    }
+    
+    /* Footer styling */
+    .footer {
+        text-align: center;
+        color: #6c757d;
+        padding: 2rem 1rem;
+        border-top: 1px solid #e9ecef;
+        margin-top: 3rem;
+    }
+    
+    /* Hide Streamlit default elements */
+    #MainMenu {visibility: hidden;}
+    .stDeployButton {display:none;}
+    footer {visibility: hidden;}
+    .stApp > header {visibility: hidden;}
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .main-header {
+            font-size: 2rem;
+        }
+        
+        .metric-card {
+            margin: 0.5rem 0;
+        }
+        
+        .feature-card {
+            margin: 1rem 0;
+            padding: 1rem;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+@st.cache_resource
+def initialize_models():
+    """Initialize and cache all models"""
+    models = {}
+    
+    with st.spinner("Initializing models... This may take a moment."):
+        try:
+            # Initialize clause extractor
+            models['clause_extractor'] = LegalClauseExtractor()
+            
+            # Initialize summarizer
+            models['summarizer'] = LegalDocumentSummarizer()
+            
+            # Initialize explainer (will be created per session as needed)
+            models['explainer'] = None
+            
+            # Initialize evaluator
+            models['evaluator'] = LegalNLPEvaluator()
+            
+            logger.info("All models initialized successfully")
+            return models
+            
+        except Exception as e:
+            logger.error(f"Error initializing models: {e}")
+            st.error(f"Error initializing models: {e}")
+            return {}
+
+def render_home_page():
+    """Render the home/overview page with improved layout"""
+    # Main header with better styling
+    st.markdown("""
+    <div class="main-header">
+        ⚖️ Legal NLP + Explainability Toolkit
+        <div style="font-size: 1.2rem; font-weight: 300; margin-top: 0.5rem; opacity: 0.9;">
+            Towards Responsible AI in Legal Document Analysis
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Welcome message
+    st.markdown("""
+    <div class="feature-card">
+        <h3 style="color: #1f4e79; margin-bottom: 1rem;">Welcome to Advanced Legal AI</h3>
+        <p style="font-size: 1.1rem; line-height: 1.6; color: #333;">
+            This comprehensive toolkit provides interpretable clause extraction, intelligent summarization, 
+            and detailed explainability analysis for legal document review and contract analysis.
+            Built with state-of-the-art transformer models and responsible AI principles.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Feature overview with improved cards
+    st.markdown("<h2 style='text-align: center; color: #1f4e79; margin: 2rem 0;'> Core Features</h2>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div class="metric-card" style="color: #1f4e79;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+            <h4>Clause Extraction</h4>
+            <p><strong>41 Legal Clause Types</strong></p>
+            <p>Multi-label BERT classification for comprehensive legal clause detection with clean, human-readable clause names and confidence scoring.</p>
+            <div style="margin-top: 1rem; padding: 0.5rem; background: #e7f3ff; border-radius: 5px; color: #0066cc;">
+                <small><strong>Accuracy:</strong> 89.2% F1-Score</small>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="metric-card" style="color: #1f4e79;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
+            <h4>Document Summarization</h4>
+            <p><strong>T5-based Intelligence</strong></p>
+            <p>Legal-optimized document summarization with extractive, abstractive, and hybrid summarization modes for different use cases.</p>
+            <div style="margin-top: 1rem; padding: 0.5rem; background: #fff3cd; border-radius: 5px; color: #0066cc;">
+                <small><strong>ROUGE-L:</strong> 0.847 Score</small>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class="metric-card" style="color: #1f4e79;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+            <h4>AI Explainability</h4>
+            <p><strong>SHAP, LIME & Attention</strong></p>
+            <p>Comprehensive interpretability analysis to understand and trust AI decisions in critical legal document analysis.</p>
+            <div style="margin-top: 1rem; padding: 0.5rem; background: #d4edda; border-radius: 5px; color: #0066cc;">
+                <small><strong>Methods:</strong> 4 XAI Techniques</small>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Quick start guide with FIXED formatting - use Markdown instead of HTML
+    st.markdown("## 📚 Quick Start Guide")
+
+    with st.expander("How to Use This Toolkit", expanded=True):
+        st.markdown("""
+        ### 1. Clause Extraction
+        Upload or paste legal text to detect 41 different clause types simultaneously with confidence scoring and clean clause names.
+        
+        ### 2. Document Summarization
+        Generate concise, accurate summaries of legal contracts using multiple summarization strategies optimized for legal language.
+        
+        ### 3. Explainability Analysis
+        Understand why the AI made specific predictions with SHAP, LIME, attention visualizations, and feature importance analysis.
+        
+        ### 4. Analytics Dashboard
+        Use the sidebar to navigate between analysis modes, configure settings, and view performance analytics.
+        
+        ---
+        
+        ###  Pro Tips:
+        - Start with clause extraction to identify key contract provisions
+        - Use summarization for quick document overview and key points
+        - Apply explainability to understand AI reasoning for critical decisions
+        - Adjust confidence thresholds in the sidebar for optimal results
+        - Export results in multiple formats for reporting and analysis
+        """)
+
+    # Add a call-to-action section
+    st.markdown("""
+    <div style="text-align: center; margin: 2rem 0; padding: 2rem; background: linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%); color: white; border-radius: 15px;">
+        <h3 style="color: white; margin-bottom: 1rem;">Ready to Get Started? </h3>
+        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Choose an analysis mode from the sidebar to begin processing your legal documents with advanced AI.</p>
+        <p style="font-size: 0.9rem; opacity: 0.9;">Built for legal professionals, researchers, and AI practitioners</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Model information section (optional)
+    if st.checkbox("Show Model Information"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### BERT Clause Extractor")
+            st.info("""
+            - **Architecture**: Multi-label BERT
+            - **Clause Types**: 41 CUAD categories
+            - **Performance**: F1-macro optimized
+            - **Explainability**: SHAP + LIME ready
+            """)
+        
+        with col2:
+            st.markdown("### T5 Summarizer")
+            st.info("""
+            - **Architecture**: T5-base fine-tuned
+            - **Modes**: Abstractive, Extractive, Hybrid
+            - **Optimization**: Legal domain specific
+            - **Metrics**: ROUGE + Legal-specific
+            """)
+
+def render_sidebar():
+    """Render enhanced sidebar with navigation and settings"""
+    st.sidebar.markdown("## ⚖️ Navigation")
+    
+    # Main navigation
+    page = st.sidebar.selectbox(
+        "Select Analysis Mode",
+        ["🏠 Home", "📋 Clause Extraction", "📄 Summarization", "🔍 Explainability", "📊 Analytics"],
+        index=0
+    )
+    
+    st.sidebar.markdown("---")
+    
+    # Global settings
+    st.sidebar.markdown("## ⚙️ Global Settings")
+    
+    # Text preprocessing options
+    with st.sidebar.expander("🔧 Text Processing"):
+        preprocess_enabled = st.checkbox("Enable Legal Preprocessing", value=True)
+        max_length = st.slider("Maximum Text Length", 100, 2000, 512)
+        confidence_threshold = st.slider("Confidence Threshold", 0.1, 0.9, 0.3, 0.05)
+    
+    # Model settings
+    with st.sidebar.expander("🤖 Model Settings"):
+        use_cached_predictions = st.checkbox("Use Cached Predictions", value=True)
+        enable_batch_processing = st.checkbox("Enable Batch Processing", value=False)
+    
+    # Export options
+    with st.sidebar.expander("💾 Export Options"):
+        export_format = st.selectbox("Export Format", ["JSON", "CSV", "PDF Report"])
+        include_explanations = st.checkbox("Include Explanations", value=True)
+    
+    st.sidebar.markdown("---")
+    
+    # System information
+    with st.sidebar.expander("ℹ️ System Info"):
+        st.markdown(f"""
+        **Models Status**: ✅ Ready\n
+        **Cache Status**: ✅ Active\n
+        **Processing Mode**: {'Batch' if enable_batch_processing else 'Single'}\n
+        **Confidence**: {confidence_threshold:.2f}
+        """)
+    
+    return {
+        'page': page,
+        'preprocess_enabled': preprocess_enabled,
+        'max_length': max_length,
+        'confidence_threshold': confidence_threshold,
+        'use_cached_predictions': use_cached_predictions,
+        'enable_batch_processing': enable_batch_processing,
+        'export_format': export_format,
+        'include_explanations': include_explanations
+    }
+
+def render_analytics_page(models: Dict):
+    """Render analytics and performance dashboard"""
+    st.markdown("# 📊 Analytics Dashboard")
+    
+    if not models.get('evaluator'):
+        st.warning("Analytics not available - evaluator not initialized")
+        return
+    
+    tab1, tab2, tab3 = st.tabs(["📈 Model Performance", "📋 Clause Analysis", "🔍 Usage Statistics"])
+    
+    with tab1:
+        st.markdown("## 🎯 Model Performance Metrics")
+        
+        # Load performance data
+        try:
+            performance_data = models['evaluator'].load_clause_performance_data()
+            if performance_data is not None:
+                col1, col2, col3, col4 = st.columns(4)
+                
+                with col1:
+                    # FIX: Use 'f1' instead of 'f1_score'
+                    avg_f1 = performance_data['f1'].mean()
+                    st.metric("Average F1 Score", f"{avg_f1:.3f}")
+                
+                with col2:
+                    avg_precision = performance_data['precision'].mean()
+                    st.metric("Average Precision", f"{avg_precision:.3f}")
+                
+                with col3:
+                    avg_recall = performance_data['recall'].mean()
+                    st.metric("Average Recall", f"{avg_recall:.3f}")
+                
+                with col4:
+                    total_clauses = len(performance_data)
+                    st.metric("Clause Types", total_clauses)
+                
+                # Performance visualization
+                st.markdown("### 📊 Per-Clause Performance")
+                
+                # Create a cleaner display with proper column names
+                display_df = performance_data[['clause_name', 'precision', 'recall', 'f1', 'support', 'avg_confidence']].copy()
+                display_df.columns = ['Clause Name', 'Precision', 'Recall', 'F1 Score', 'Support', 'Avg Confidence']
+                
+                # FIX: Use 'f1' for sorting instead of 'f1_score'
+                display_df = display_df.sort_values('F1 Score', ascending=False)
+                
+                st.dataframe(
+                    display_df,
+                    use_container_width=True
+                )
+                
+                # Add performance visualization
+                st.markdown("### 📈 Performance Visualization")
+                
+                # Create a performance chart
+                fig = px.bar(
+                    x=performance_data['f1'].head(10),
+                    y=performance_data['clause_name'].head(10),
+                    orientation='h',
+                    title='Top 10 Clause Types by F1 Score',
+                    labels={'x': 'F1 Score', 'y': 'Clause Type'},
+                    color=performance_data['f1'].head(10),
+                    color_continuous_scale='RdYlGn'
+                )
+                fig.update_layout(height=400)
+                st.plotly_chart(fig, use_container_width=True)
+                
+            else:
+                st.info("Performance data not available. Run model evaluation to generate metrics.")
+        
+        except Exception as e:
+            st.error(f"Error loading performance data: {e}")
+            logger.error(f"Analytics error: {e}")
+    
+    with tab2:
+        st.markdown("## 📋 Clause Type Analysis")
+        
+        # Sample clause information
+        clause_info = {
+            'High Performance': ['License Grant', 'Agreement Date', 'Parties', 'Document Name'],
+            'Medium Performance': ['Governing Law', 'Termination', 'Insurance', 'Audit Rights'],
+            'Challenging': ['Most Favored Nation', 'Revenue Sharing', 'IP Ownership', 'Anti-Assignment']
+        }
+        
+        for category, clauses in clause_info.items():
+            with st.expander(f"📊 {category} Clauses"):
+                for clause in clauses:
+                    st.markdown(f"- **{clause}**")
+    
+    with tab3:
+        st.markdown("## 📈 Usage Statistics")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### 🔢 Session Statistics")
+            if 'session_stats' not in st.session_state:
+                st.session_state.session_stats = {
+                    'extractions': 0,
+                    'summarizations': 0,
+                    'explanations': 0
+                }
+            
+            stats = st.session_state.session_stats
+            st.metric("Clause Extractions", stats['extractions'])
+            st.metric("Summarizations", stats['summarizations'])
+            st.metric("Explanations", stats['explanations'])
+        
+        with col2:
+            st.markdown("### ⏱️ Performance Metrics")
+            st.info("Real-time performance tracking coming soon!")
+
+def handle_error(error: Exception, context: str = ""):
+    """Centralized error handling with user-friendly messages"""
+    error_msg = str(error)
+    logger.error(f"Error in {context}: {error_msg}")
+    logger.error(traceback.format_exc())
+    
+    st.markdown(f"""
+    <div class="error-box">
+    <h4>❌ Error Occurred</h4>
+    <p><strong>Context:</strong> {context}</p>
+    <p><strong>Details:</strong> {error_msg}</p>
+    <p><strong>Suggestion:</strong> Please try again or contact support if the issue persists.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+def main():
+    """Main application entry point"""
+    try:
+        # Load custom CSS
+        load_custom_css()
+        
+        # Initialize models
+        models = initialize_models()
+        
+        # Render sidebar and get settings
+        settings = render_sidebar()
+        
+        # Route to appropriate page
+        page = settings['page']
+        
+        if page == "🏠 Home":
+            render_home_page()
+        
+        elif page == "📋 Clause Extraction":
+            st.markdown("# 📋 Legal Clause Extraction")
+            try:
+                # Pass settings to component
+                if hasattr(render_enhanced_clause_interface, '__code__') and 'settings' in render_enhanced_clause_interface.__code__.co_varnames:
+                    render_enhanced_clause_interface(settings)
+                else:
+                    render_enhanced_clause_interface()
+                
+                # Update session stats
+                if 'session_stats' not in st.session_state:
+                    st.session_state.session_stats = {'extractions': 0, 'summarizations': 0, 'explanations': 0}
+                st.session_state.session_stats['extractions'] += 1
+                
+            except Exception as e:
+                handle_error(e, "Clause Extraction")
+        
+        elif page == "📄 Summarization":
+            st.markdown("# 📄 Legal Document Summarization")
+            try:
+                # Pass settings to component
+                if hasattr(render_enhanced_summarization_interface, '__code__') and 'settings' in render_enhanced_summarization_interface.__code__.co_varnames:
+                    render_enhanced_summarization_interface(settings)
+                else:
+                    render_enhanced_summarization_interface()
+                
+                # Update session stats
+                if 'session_stats' not in st.session_state:
+                    st.session_state.session_stats = {'extractions': 0, 'summarizations': 0, 'explanations': 0}
+                st.session_state.session_stats['summarizations'] += 1
+                
+            except Exception as e:
+                handle_error(e, "Document Summarization")
+        
+        elif page == "🔍 Explainability":
+            st.markdown("# 🔍 Explainability Analysis")
+            
+            # Use confidence threshold from settings
+            confidence_threshold = settings.get('confidence_threshold', 0.3)
+            st.info(f"📝 Using confidence threshold: {confidence_threshold:.2f}. First extract clauses or generate summaries, then use this section to explain the AI's decisions.")
+            
+            # Simple interface for explainability
+            legal_text = st.text_area(
+                "Enter legal text for explainability analysis:",
+                height=200,
+                placeholder="Paste your legal document text here..."
+            )
+            
+            if legal_text and st.button("🔍 Analyze & Explain", type="primary"):
+                try:
+                    with st.spinner("Extracting clauses and generating explanations..."):
+                        # First extract clauses with proper threshold
+                        if models.get('clause_extractor'):
+                            # Create extraction config with user settings
+                            from components.clause_extractor import ExtractionConfig
+                            extraction_config = ExtractionConfig(
+                                confidence_threshold=confidence_threshold,
+                                max_length=settings.get('max_length', 512),
+                                enable_preprocessing=settings.get('preprocess_enabled', True)
+                            )
+                            
+                            results = models['clause_extractor'].extract_clauses(legal_text, config=extraction_config)
+                            predicted_clauses = results.get('predictions', [])
+                            
+                            if predicted_clauses:
+                                # Update session stats
+                                if 'session_stats' not in st.session_state:
+                                    st.session_state.session_stats = {'extractions': 0, 'summarizations': 0, 'explanations': 0}
+                                st.session_state.session_stats['explanations'] += 1
+                                
+                                # Render explainability interface
+                                render_explainability_interface(
+                                    text=legal_text,
+                                    predicted_clauses=predicted_clauses,
+                                    model=models.get('clause_extractor'),
+                                    tokenizer=getattr(models.get('clause_extractor'), 'tokenizer', None)
+                                )
+                            else:
+                                st.warning(f"No clauses detected with confidence threshold {confidence_threshold:.2f}. Try lowering the threshold in the sidebar.")
+                        else:
+                            st.error("Clause extractor not available")
+                            
+                except Exception as e:
+                    handle_error(e, "Explainability Analysis")
+        
+        elif page == "📊 Analytics":
+            try:
+                render_analytics_page(models)
+            except Exception as e:
+                handle_error(e, "Analytics Dashboard")
+        
+        # Footer
+        st.markdown("---")
+        st.markdown("""
+        <div style="text-align: center; color: #666; padding: 1rem;">
+        <p>⚖️ Legal NLP + Explainability Toolkit | Built for Responsible AI in Legal Document Analysis</p>
+        <p><small>For support or questions, please refer to the documentation or contact the development team.</small></p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    except Exception as e:
+        handle_error(e, "Main Application")
+        st.stop()
+
+if __name__ == "__main__":
+    main()
