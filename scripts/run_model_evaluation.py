@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import logging
 from typing import Dict, Any, Optional
+from config_loader import load_config, get_path
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -126,9 +127,15 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
         return create_sample_evaluation(evaluator)['clause_extraction']
     
     try:
-        # Initialize components with proper paths
-        data_dir = project_root / 'data' / 'processed'
-        models_dir = project_root / 'models' / 'bert'
+        # Load configuration with proper path resolution
+        config = load_config()
+        
+        # Get resolved paths
+        data_dir = get_path(config, 'data_processed')
+        models_dir = get_path(config, 'models_bert')
+        
+        logger.info(f"Using data directory: {data_dir}")
+        logger.info(f"Using models directory: {models_dir}")
         
         # Check if required directories exist
         if not data_dir.exists():
@@ -168,7 +175,7 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             with open(models_dir / 'training_results.json', 'w') as f:
                 json.dump(training_results, f, indent=2)
         
-        # Define extraction configuration parameters in a single dictionary to avoid duplication
+        # Create proper ExtractionConfig with valid parameters
         extraction_config_params = {
             'confidence_threshold': 0.3,
             'max_length': 512,
@@ -177,9 +184,9 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             'return_matched_text': True,
             'enable_preprocessing': True
         }
-        # Create proper ExtractionConfig with valid parameters only - EXPLICIT FIELD NAMES
+        
         try:
-            config = ExtractionConfig(**extraction_config_params)
+            extraction_config = ExtractionConfig(**extraction_config_params)
             logger.info("✅ ExtractionConfig created successfully")
         except Exception as e:
             logger.error(f"❌ Error creating ExtractionConfig: {e}")
@@ -188,14 +195,14 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
                 def __init__(self, params):
                     for k, v in params.items():
                         setattr(self, k, v)
-            config = FallbackConfig(extraction_config_params)
+            extraction_config = FallbackConfig(extraction_config_params)
         
         # Initialize extractor with model_path as a separate parameter
         try:
             extractor = LegalClauseExtractor(
                 model_path=str(models_dir), 
                 cache_dir=str(models_dir),
-                config=config
+                config=extraction_config
             )
             logger.info("✅ LegalClauseExtractor initialized successfully")
         except Exception as e:
@@ -287,8 +294,6 @@ def evaluate_summarization_model() -> Dict[str, Any]:
             )
             logger.info("✅ SummarizationConfig created successfully")
         except Exception as e:
-            logger.error(f"❌ Error creating SummarizationConfig: {e}")
-            # Fallback without config
             logger.error(f"❌ Error creating SummarizationConfig: {e}. Using fallback default configuration.")
             # Fallback: provide a working default configuration
             class FallbackSummarizationConfig:
@@ -300,6 +305,7 @@ def evaluate_summarization_model() -> Dict[str, Any]:
                     self.num_beams = 4
                     self.early_stopping = True
             summarization_config = FallbackSummarizationConfig()
+        
         try:
             summarizer = LegalDocumentSummarizer(
                 model_path=str(models_dir),
@@ -462,8 +468,8 @@ def main():
         results = run_comprehensive_evaluation()
         
         # Return success
-if __name__ == "__main__":
-    sys.exit(main()) e:
+        return 0
+    except Exception as e:
         logger.error(f"Evaluation failed: {e}")
         import traceback
         traceback.print_exc()
