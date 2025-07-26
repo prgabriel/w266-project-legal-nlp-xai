@@ -1,0 +1,54 @@
+================================================================================
+COMPREHENSIVE MODEL EVALUATION REPORT
+LEGAL CLAUSE DETECTION - BERT MULTI-LABEL CLASSIFICATION
+================================================================================
+
+MODEL OVERVIEW
+----------------------------------------
+  • Architecture: Multi-label BERT
+  • Number of clause types: 41
+  • Test samples evaluated: 1741
+  • Device used: cpu
+
+BEST PERFORMANCE (Threshold: 0.1)
+----------------------------------------
+  • F1 Score (Micro): 0.0000
+  • F1 Score (Macro): 0.0000
+  • Precision (Micro): 0.0000
+  • Recall (Micro): 0.0000
+  • Hamming Loss: 0.0162
+  • Jaccard Score: 0.0000
+
+CLAUSE TYPE ANALYSIS
+----------------------------------------
+  Top 5 Performing Clauses:
+    • Affiliate License-Licensee: F1=0.000, Support=0.0
+    • Affiliate License-Licensor: F1=0.000, Support=0.0
+    • Agreement Date: F1=0.000, Support=0.0
+    • Anti-Assignment: F1=0.000, Support=0.0
+    • Audit Rights: F1=0.000, Support=0.0
+
+  Most Challenging Clauses:
+    • Affiliate License-Licensee: F1=0.000, Support=0.0
+    • Affiliate License-Licensor: F1=0.000, Support=0.0
+    • Agreement Date: F1=0.000, Support=0.0
+    • Anti-Assignment: F1=0.000, Support=0.0
+    • Audit Rights: F1=0.000, Support=0.0
+
+PERFORMANCE DISTRIBUTION
+----------------------------------------
+  • Mean F1 Score: 0.0000
+  • Median F1 Score: 0.0000
+  • Std F1 Score: 0.0000
+  • Clauses with F1 > 0.5: 0
+  • Clauses with F1 > 0.7: 0
+
+RECOMMENDATIONS
+----------------------------------------
+  • Optimal threshold for deployment: 0.1
+  • Model needs significant improvement before deployment
+  • 41 clauses have low support (<10 examples)
+  • Consider collecting more data for underrepresented clauses
+
+EVALUATION COMPLETE
+================================================================================

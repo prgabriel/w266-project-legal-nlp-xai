@@ -1,0 +1,47 @@
+================================================================================
+SHAP ANALYSIS REPORT - LEGAL CLAUSE DETECTION
+================================================================================
+
+ANALYSIS OVERVIEW
+----------------------------------------
+  • Total texts analyzed: 5
+  • Total clause predictions explained: 0
+
+CLAUSE TYPE ANALYSIS
+----------------------------------------
+
+INDIVIDUAL TEXT ANALYSIS
+----------------------------------------
+
+TEXT_1:
+  Text: rs: Can appear only in White or 4 Color Process comprised of Morado, Tungsten and Black. If reversed out White, use only on dark background color for ...
+  Detected clauses: 0
+
+TEXT_2:
+  Text:  to
+
+Source: PHASEBIO PHARMACEUTICALS INC, 10-K, 3/30/2020
+
+the operation of such Third Party contractor's business or improvements, or improvements t...
+  Detected clauses: 0
+
+TEXT_3:
+  Text:  Xencor Patents and Xencor's interest in Joint Collaboration Patents, and a non-exclusive, payment bearing license under and with respect to Xencor Kn...
+  Detected clauses: 0
+
+TEXT_4:
+  Text: bove. Subject to Section 2.3.2, all decisions relating to the specific promotional activities of the Company and the Online Group hereunder, including...
+  Detected clauses: 0
+
+TEXT_5:
+  Text: ecutive Officer 5
+
+Source: HF ENTERPRISES INC., S-1, 12/23/2019
+
+ SCHEDULE 1 TECHNOLOGY DEVELOPMENT SERVICES (Attached) 6
+
+Source: HF ENTERPRISES INC....
+  Detected clauses: 0
+
+SHAP ANALYSIS COMPLETE
+================================================================================

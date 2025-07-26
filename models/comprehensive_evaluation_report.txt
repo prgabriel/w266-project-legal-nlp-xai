@@ -1,0 +1,62 @@
+================================================================================
+LEGAL NLP + EXPLAINABILITY TOOLKIT - EVALUATION REPORT
+================================================================================
+
+TRAINING CONFIGURATION
+--------------------------------------------------
+Model: bert-base-uncased
+Number of Labels: 41
+
+Test Loss: 0.1571
+
+MULTI-LABEL LEGAL CLAUSE CLASSIFICATION RESULTS
+--------------------------------------------------
+F1 Micro Score:      0.8800
+F1 Macro Score:      0.8600
+F1 Weighted Score:   0.8769
+Hamming Loss:        0.1200
+Jaccard Score:       0.8000
+Subset Accuracy:     0.4000
+
+TOP 10 PERFORMING LEGAL CLAUSES (FROM SAVED RESULTS)
+--------------------------------------------------
+Affiliate License-Licensee     F1: 0.000 (support:   0)
+Affiliate License-Licensor     F1: 0.000 (support:   0)
+Agreement Date                 F1: 0.000 (support:   0)
+Anti-Assignment                F1: 0.000 (support:   0)
+Audit Rights                   F1: 0.000 (support:   0)
+Cap On Liability               F1: 0.000 (support:   0)
+Change Of Control              F1: 0.000 (support:   0)
+Competitive Restriction Except F1: 0.000 (support:   0)
+Covenant Not To Sue            F1: 0.000 (support:   0)
+Document Name                  F1: 0.000 (support:   0)
+
+LEGAL DOMAIN PERFORMANCE ANALYSIS
+--------------------------------------------------
+High Performers (F1 >= 0.8):   4
+Medium Performers (0.5-0.8):   1
+Low Performers (F1 < 0.5):     0
+
+LEGAL DOCUMENT SUMMARIZATION RESULTS
+--------------------------------------------------
+ROUGE-1 Score:       0.6957 (±0.0000)
+ROUGE-2 Score:       0.2857 (±0.0952)
+ROUGE-L Score:       0.5652 (±0.1304)
+BLEU Score:          0.2008 (±0.1673)
+
+SUMMARY LENGTH ANALYSIS
+--------------------------------------------------
+Candidate/Reference Length Ratio: 0.625
+
+FILE LOCATIONS
+--------------------------------------------------
+Project Root: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai
+Data Directory: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\data\processed
+Models Directory: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\models
+Metadata File: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\data\processed\metadata.json
+BERT Results: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\models\bert\training_results.json
+T5 Results: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\models\t5\training_results.json
+
+================================================================================
+END OF EVALUATION REPORT
+================================================================================
