@@ -97,216 +97,114 @@ logger = logging.getLogger(__name__)
 
 # Custom CSS for enhanced styling
 def load_custom_css():
-    """Load custom CSS with proper styling"""
+    """Load custom CSS with blue background and white text theme"""
     st.markdown("""
     <style>
-    /* Import the main stylesheet */
+    /* Import the enhanced blue background stylesheet */
     @import url('static/styles.css');
     
-    /* Override and additional styles for Streamlit */
-    .main-header {
-        font-size: 3rem;
-        font-weight: bold;
-        text-align: center;
-        color: #1f4e79;
-        margin-bottom: 2rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        padding: 1rem;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        border-radius: 15px;
+    /* Streamlit-specific overrides for blue background theme */
+    .stApp {
+        background: linear-gradient(135deg, #1A4480 0%, #2E5BBA 50%, #4A90E2 100%);
+        color: white;
     }
     
-    /* Fix Streamlit container width */
-    .main .block-container {
-        max-width: 1200px;
-        padding: 2rem 1rem;
+    /* Enhanced main header */
+    .main-header {
+        font-size: 3.2rem;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        padding: 3rem 2rem;
+        background: linear-gradient(135deg, #4A90E2 0%, #2E5BBA 50%, #6BA4E8 100%);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 200px;
+        height: 200px;
+        background: #FFD700;
+        border-radius: 50%;
+        opacity: 0.2;
+    }
+    
+    .main-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 150px;
+        height: 150px;
+        background: #FF6B6B;
+        border-radius: 50%;
+        opacity: 0.2;
     }
     
     /* Sidebar styling */
     .css-1d391kg {
-        background-color: #f8f9fa;
+        background: linear-gradient(180deg, #2E5BBA 0%, #1A4480 100%);
+        color: white;
     }
     
-    /* Feature cards */
-    .feature-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        padding: 1.5rem;
-        border-radius: 12px;
-        margin: 1rem 0;
-        border-left: 5px solid #1f4e79;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
-    
-    .feature-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-    
-    /* Metric cards */
+    /* Fix metric cards to be more visible */
     .metric-card {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 10px;
-        border: 1px solid #e0e0e0;
-        text-align: center;
-        margin: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        height: 100%;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        backdrop-filter: blur(10px);
     }
     
     .metric-card h4 {
-        color: #1f4e79;
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
-    }
-    
-    .metric-card p {
-        margin: 0.5rem 0;
-        line-height: 1.5;
-    }
-    
-    .metric-card p strong {
-        color: #d4af37;
-        font-size: 1.1rem;
-    }
-    
-    /* Status boxes */
-    .success-box, .warning-box, .error-box {
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 1rem 0;
-        border-left: 4px solid;
-    }
-    
-    .success-box {
-        background-color: #d4edda;
-        border-left-color: #28a745;
-        color: #155724;
-    }
-    
-    .warning-box {
-        background-color: #fff3cd;
-        border-left-color: #ffc107;
-        color: #856404;
-    }
-    
-    .error-box {
-        background-color: #f8d7da;
-        border-left-color: #dc3545;
-        color: #721c24;
-    }
-    
-    /* Sidebar improvements */
-    .sidebar-info {
-        background-color: #e7f3ff;
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 1rem 0;
-        border-left: 3px solid #0066cc;
-    }
-    
-    /* Tab styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 4px;
-        background-color: #f8f9fa;
-        padding: 0.5rem;
-        border-radius: 10px;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        padding: 0 20px;
-        background-color: transparent;
-        border-radius: 8px;
-        color: #6c757d;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-    
-    .stTabs [data-baseweb="tab"]:hover {
-        background-color: #e9ecef;
-        color: #1f4e79;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background-color: #1f4e79;
         color: white !important;
     }
     
-    /* Button improvements */
-    .stButton > button {
-        background: linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.5rem 1.5rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
+    .metric-card p {
+        color: #E0E0E0 !important;
     }
     
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(31, 78, 121, 0.3);
+    .metric-card strong {
+        color: #FFD700 !important;
     }
     
-    /* Text area improvements */
-    .stTextArea textarea {
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
-        font-family: 'Consolas', monospace;
-        line-height: 1.5;
+    /* Feature cards visibility */
+    .feature-card {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        backdrop-filter: blur(10px);
     }
     
-    .stTextArea textarea:focus {
-        border-color: #1f4e79;
-        box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.2);
+    .feature-card h3 {
+        color: white !important;
     }
     
-    /* Selectbox improvements */
-    .stSelectbox > div > div {
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
+    .feature-card p {
+        color: #E0E0E0 !important;
     }
     
-    /* Metric styling */
-    .metric-container {
-        background: white;
-        padding: 1rem;
-        border-radius: 8px;
-        border: 1px solid #e9ecef;
-        text-align: center;
+    /* Fix text visibility in all components */
+    h1, h2, h3, h4, h5, h6 {
+        color: white !important;
     }
     
-    /* Footer styling */
-    .footer {
-        text-align: center;
-        color: #6c757d;
-        padding: 2rem 1rem;
-        border-top: 1px solid #e9ecef;
-        margin-top: 3rem;
+    p {
+        color: #E0E0E0 !important;
     }
     
-    /* Hide Streamlit default elements */
-    #MainMenu {visibility: hidden;}
-    .stDeployButton {display:none;}
-    footer {visibility: hidden;}
-    .stApp > header {visibility: hidden;}
-    
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .main-header {
-            font-size: 2rem;
-        }
-        
-        .metric-card {
-            margin: 0.5rem 0;
-        }
-        
-        .feature-card {
-            margin: 1rem 0;
-            padding: 1rem;
-        }
+    /* Call-to-action section */
+    .cta-section {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+        color: #1A4480 !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -556,6 +454,168 @@ def render_home_page():
             <p>Comprehensive interpretability analysis to understand and trust AI decisions in critical legal document analysis.</p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: #d4edda; border-radius: 5px; color: #0066cc;">
                 <small><strong>Methods:</strong> {xai_methods} XAI Techniques</small>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Quick start guide with FIXED formatting - use Markdown instead of HTML
+    st.markdown("## Quick Start Guide")
+
+    with st.expander("How to Use This Toolkit", expanded=True):
+        st.markdown(f"""
+        ### 1. Clause Extraction
+        Extract {num_clauses} different clause types with {f1_percentage:.1f}% F1-Score accuracy using our fine-tuned Legal-BERT model.
+        
+        ### 2. Document Summarization
+        Generate summaries using {summ_metrics['model_name']} with {rouge_l:.3f} ROUGE-L score for legal document comprehension.
+        
+        ### 3. Explainability Analysis
+        Understand AI decisions using {xai_methods} available XAI methods including SHAP, LIME, attention visualizations, and feature importance.
+        
+        ### 4. Analytics Dashboard
+        Monitor real-time performance with live metrics from your actual model training results.
+        
+        ---
+        
+        ###  Pro Tips:
+        - Start with clause extraction to identify key contract provisions
+        - Use summarization for quick document overview and key points
+        - Apply explainability to understand AI reasoning for critical decisions
+        - Adjust confidence thresholds in the sidebar for optimal results
+        - Export results in multiple formats for reporting and analysis
+        """)
+
+    # Dynamic call-to-action based on model status
+    system_ready = (clause_metrics['status'] == 'loaded' and summ_metrics['status'] == 'loaded')
+    
+    if system_ready:
+        cta_color = "linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%)"
+        cta_text = "🚀 Ready to Get Started?"
+        cta_message = f"All systems operational with {f1_percentage:.1f}% F1-Score performance! Choose an analysis mode from the sidebar."
+    else:
+        cta_color = "linear-gradient(135deg, #856404 0%, #ffc107 100%)"
+        cta_text = "⚠️ Limited Functionality"
+        cta_message = "Some components are not fully loaded. You can still use available features."
+    
+    st.markdown(f"""
+    <div style="text-align: center; margin: 2rem 0; padding: 2rem; background: {cta_color}; color: white; border-radius: 15px;">
+        <h3 style="color: white; margin-bottom: 1rem;">{cta_text}</h3>
+        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">{cta_message}</p>
+        <p style="font-size: 0.9rem; opacity: 0.9;">Built for legal professionals, researchers, and AI practitioners</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Dynamic model information section
+    if st.checkbox("Show Model Information"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### 🤖 BERT Clause Extractor")
+            status_icon = "✅" if clause_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {clause_metrics['model_name']}
+            - **Status**: {status_icon} {clause_metrics['status'].title()}
+            - **Clause Types**: {clause_metrics['num_clause_types']} CUAD categories
+            - **F1-Score**: {clause_metrics['f1_score']:.3f}
+            - **Precision**: {clause_metrics['precision']:.3f}
+            - **Recall**: {clause_metrics['recall']:.3f}
+            """)
+        
+        with col2:
+            st.markdown("### 📝 T5 Summarizer")
+            status_icon = "✅" if summ_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {summ_metrics['model_name']}
+            - **Status**: {status_icon} {summ_metrics['status'].title()}
+            - **ROUGE-1**: {summ_metrics['rouge_1']:.3f}
+            - **ROUGE-2**: {summ_metrics['rouge_2']:.3f}
+            - **ROUGE-L**: {summ_metrics['rouge_l']:.3f}
+            - **Modes**: Abstractive, Extractive, Hybrid
+            """)
+
+    # TEMPORARY TEST - we'll remove this after verifying it works
+    # if st.button("🧪 Test Metrics Function"):
+    #     test_metrics_function()
+
+def render_home_page_old():
+    """Render the home/overview page - OLD VERSION"""
+    # Main header
+    st.markdown("# ⚖️ Legal NLP + Explainability Toolkit\nTowards Responsible AI in Legal Document Analysis")
+    
+    # Welcome message
+    st.markdown("""
+    <div class="feature-card">
+        <h3>Welcome to Advanced Legal AI</h3>
+        <p>
+            This comprehensive toolkit provides interpretable clause extraction, intelligent summarization, 
+            and detailed explainability analysis for legal document review and contract analysis.
+            Built with state-of-the-art transformer models and responsible AI principles.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Get dynamic metrics
+    models = initialize_models()
+    performance_metrics = get_model_performance_metrics(models)
+    
+    # Feature overview with DYNAMIC cards
+    st.markdown("## Core Features")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        # Dynamic clause extraction metrics
+        clause_metrics = performance_metrics['clause_extraction']
+        f1_percentage = clause_metrics['f1_score'] * 100
+        num_clauses = clause_metrics['num_clause_types']
+        
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">📋</div>
+            <div class="metric-info">
+                <h4>Clause Extraction</h4>
+                <p><strong>{num_clauses} Legal Clause Types</strong></p>
+                <p>Multi-label BERT classification for comprehensive legal clause detection.</p>
+                <div class="metric-value">
+                    <strong>F1-Score:</strong> {f1_percentage:.1f}%
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Dynamic summarization metrics
+        summ_metrics = performance_metrics['summarization']
+        rouge_l = summ_metrics['rouge_l']
+        
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">📄</div>
+            <div class="metric-info">
+                <h4>Document Summarization</h4>
+                <p><strong>T5-based Intelligence</strong></p>
+                <p>Legal-optimized document summarization with extractive and abstractive modes.</p>
+                <div class="metric-value">
+                    <strong>ROUGE-L:</strong> {rouge_l:.3f}
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        # Dynamic explainability info
+        xai_methods = 4  # We'll make this dynamic in a later step
+        
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">🔍</div>
+            <div class="metric-info">
+                <h4>AI Explainability</h4>
+                <p><strong>SHAP, LIME & Attention</strong></p>
+                <p>Comprehensive interpretability analysis to understand AI decisions.</p>
+                <div class="metric-value">
+                    <strong>Methods:</strong> {xai_methods} XAI Techniques
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
