@@ -780,9 +780,9 @@ def main():
             train_summaries=train_summaries_split,
             val_texts=val_texts,
             val_summaries=val_summaries,
-            epochs=3,  # More epochs for larger dataset
+            epochs=15,  # More epochs for larger dataset
             batch_size=4,  # Larger batch size
-            learning_rate=3e-5,  # Slightly lower LR for stability
+            learning_rate=2e-5,  # Slightly lower LR for stability
             warmup_steps=len(train_texts_split) // 10  # 10% warmup
         )
         
