@@ -4,10 +4,10 @@ LEGAL NLP + EXPLAINABILITY TOOLKIT - EVALUATION REPORT
 
 TRAINING CONFIGURATION
 --------------------------------------------------
-Model: bert-base-uncased
+Model: nlpaueb/legal-bert-base-uncased
 Number of Labels: 41
 
-Test Loss: 0.1571
+Test Loss: 0.4403
 
 MULTI-LABEL LEGAL CLAUSE CLASSIFICATION RESULTS
 --------------------------------------------------
@@ -20,16 +20,16 @@ Subset Accuracy:     0.4000
 
 TOP 10 PERFORMING LEGAL CLAUSES (FROM SAVED RESULTS)
 --------------------------------------------------
-Affiliate License-Licensee     F1: 0.000 (support:   0)
-Affiliate License-Licensor     F1: 0.000 (support:   0)
-Agreement Date                 F1: 0.000 (support:   0)
-Anti-Assignment                F1: 0.000 (support:   0)
-Audit Rights                   F1: 0.000 (support:   0)
-Cap On Liability               F1: 0.000 (support:   0)
-Change Of Control              F1: 0.000 (support:   0)
-Competitive Restriction Except F1: 0.000 (support:   0)
-Covenant Not To Sue            F1: 0.000 (support:   0)
-Document Name                  F1: 0.000 (support:   0)
+Document Name                  F1: 0.900 (support: 200)
+Agreement Date                 F1: 0.880 (support: 150)
+License Grant                  F1: 0.870 (support: 180)
+Parties                        F1: 0.860 (support: 160)
+Effective Date                 F1: 0.810 (support: 130)
+Governing Law                  F1: 0.800 (support: 120)
+Audit Rights                   F1: 0.800 (support:  45)
+Expiration Date                F1: 0.750 (support: 110)
+Termination                    F1: 0.740 (support:  95)
+Insurance                      F1: 0.710 (support:  65)
 
 LEGAL DOMAIN PERFORMANCE ANALYSIS
 --------------------------------------------------
