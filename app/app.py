@@ -167,7 +167,9 @@ def load_custom_css():
     }
     
     .metric-card strong {
-        color: #FFD700 !important;
+        color: #1A365D !important;              /* Changed from #FFD700 to dark blue - much more visible */
+        font-weight: 700 !important;
+        text-shadow: none !important;
     }
     
     /* Optimized feature cards */
@@ -202,7 +204,7 @@ def load_custom_css():
         margin-bottom: 0 !important;            /* Remove bottom margin from last p */
     }
     
-    /* Performance indicator boxes - optimized padding */
+    /* Performance indicator boxes - optimized padding and MORE VISIBLE TEXT */
     .metric-card div[style*="background"] {
         border-radius: 20px !important;
         padding: 0.75rem 1rem !important;       /* Optimized: 12px vertical, 16px horizontal */
@@ -210,10 +212,107 @@ def load_custom_css():
         margin-bottom: 0 !important;            /* Remove bottom margin */
     }
     
+    /* More visible text in performance indicators */
+    .metric-card small {
+        color: #1A365D !important;              /* Dark blue instead of yellow - much more readable */
+        font-weight: 700 !important;            /* Bolder for better visibility */
+        font-size: 0.9rem !important;           /* Slightly larger */
+    }
+    
+    .metric-card small strong {
+        color: #1A365D !important;              /* Consistent dark blue */
+        font-weight: 800 !important;            /* Extra bold */
+    }
+    
+    /* MISSING EXPANDER STYLING - ADD THIS SECTION */
+    /* Enhanced Streamlit expander styling - LARGER TEXT */
+    .streamlit-expanderHeader {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 2px solid rgba(255, 255, 255, 0.2) !important;
+        transition: all 200ms ease !important;
+        font-size: 1.3rem !important;           /* Increased from default ~0.9rem */
+        font-weight: 600 !important;            /* Bolder text */
+        padding: 1rem 1.5rem !important;        /* More padding for better touch target */
+    }
+    
+    .streamlit-expanderHeader:hover {
+        border-radius: 28px !important;
+        border-color: #4A90E2 !important;       /* Changed from yellow to blue */
+        background: rgba(255, 255, 255, 0.15) !important;
+        transform: scale(1.01) !important;
+    }
+    
+    /* Expander header text specifically */
+    .streamlit-expanderHeader p {
+        font-size: 1.3rem !important;           /* Match header size */
+        font-weight: 600 !important;            /* Bolder text */
+        color: white !important;                /* Ensure white text */
+        margin: 0 !important;                   /* Remove default margins */
+        letter-spacing: 0.025em !important;     /* Slight letter spacing for readability */
+    }
+    
+    /* Expander content area */
+    .streamlit-expanderContent {
+        border-radius: 0 0 20px 20px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(5px) !important;
+        border: 2px solid rgba(255, 255, 255, 0.1) !important;
+        border-top: none !important;
+    }
+    
+    /* Expander arrow/icon */
+    .streamlit-expanderHeader svg {
+        width: 1.5rem !important;               /* Larger arrow */
+        height: 1.5rem !important;
+        color: white !important;
+    }
+    
+    /* Alternative targeting for expander header - Multiple selectors */
+    [data-testid="stExpanderHeader"] {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        padding: 1rem 1.5rem !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 20px !important;
+        border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    [data-testid="stExpanderHeader"] p {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        color: white !important;
+        margin: 0 !important;
+    }
+    
+    /* Additional fallback selectors for expander styling */
+    .css-1vbkxwb p {                             /* Common Streamlit expander class */
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        color: white !important;
+    }
+    
+    .css-1vbkxwb {
+        font-size: 1.3rem !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 20px !important;
+    }
+    
+    /* Universal expander targeting - catch-all approach */
+    div[data-baseweb="accordion"] > div > div:first-child {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        padding: 1rem 1.5rem !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 20px !important;
+        color: white !important;
+    }
+    
     /* Call-to-action section - optimized padding */
     .cta-section {
-        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
-        color: #1A4480 !important;
+        background: linear-gradient(135deg, #4A90E2 0%, #2E5BBA 100%) !important;  /* Changed from yellow to blue gradient */
+        color: white !important;                                                   /* Changed text to white for better contrast */
         border-radius: 36px !important;
         padding: 2rem !important;               /* Optimized: 32px */
         transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -223,6 +322,7 @@ def load_custom_css():
         border-radius: 50px !important;
         transform: scale(1.02);
         padding: 2.25rem !important;            /* More padding on hover: 36px */
+        background: linear-gradient(135deg, #6BA4E8 0%, #4A90E2 100%) !important;  /* Lighter blue on hover */
     }
     
     /* Responsive optimizations */
@@ -238,6 +338,20 @@ def load_custom_css():
         .main-header {
             padding: 2rem 1.5rem !important;    /* Compact header on mobile */
         }
+        
+        /* Smaller expander text on mobile */
+        .streamlit-expanderHeader,
+        [data-testid="stExpanderHeader"],
+        .css-1vbkxwb {
+            font-size: 1.1rem !important;       /* Slightly smaller on mobile */
+            padding: 0.75rem 1rem !important;   /* Less padding on mobile */
+        }
+        
+        .streamlit-expanderHeader p,
+        [data-testid="stExpanderHeader"] p,
+        .css-1vbkxwb p {
+            font-size: 1.1rem !important;
+        }
     }
     
     @media (min-width: 1200px) {
@@ -247,6 +361,20 @@ def load_custom_css():
         
         .metric-card {
             padding: 2.25rem !important;        /* Balanced: 36px on large screens */
+        }
+        
+        /* Even larger expander text on large screens */
+        .streamlit-expanderHeader,
+        [data-testid="stExpanderHeader"],
+        .css-1vbkxwb {
+            font-size: 1.4rem !important;       /* Larger on desktop */
+            padding: 1.25rem 2rem !important;   /* More padding on desktop */
+        }
+        
+        .streamlit-expanderHeader p,
+        [data-testid="stExpanderHeader"] p,
+        .css-1vbkxwb p {
+            font-size: 1.4rem !important;
         }
     }
     
