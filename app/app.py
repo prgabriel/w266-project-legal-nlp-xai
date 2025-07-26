@@ -561,7 +561,7 @@ def render_home_page():
         """, unsafe_allow_html=True)
     
     # Quick start guide with FIXED formatting - use Markdown instead of HTML
-    st.markdown("## 📚 Quick Start Guide")
+    st.markdown("## Quick Start Guide")
 
     with st.expander("How to Use This Toolkit", expanded=True):
         st.markdown(f"""
