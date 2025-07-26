@@ -1,0 +1,951 @@
+/* This file contains the CSS styles for the web application. */ 
+
+/* 
+Legal NLP + Explainability Toolkit - Enhanced CSS Styles
+Professional styling for legal document analysis application
+*/
+
+/* =========================================================================
+   VARIABLES & ROOT CONFIGURATION
+========================================================================= */
+:root {
+    /* Legal Theme Color Palette */
+    --legal-primary: #1f4e79;
+    --legal-secondary: #4a6fa5;
+    --legal-accent: #d4af37;
+    --legal-dark: #0d2947;
+    --legal-light: #e8f0fe;
+    
+    /* Semantic Colors */
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --error-color: #dc3545;
+    --info-color: #17a2b8;
+    
+    /* Neutral Colors */
+    --text-primary: #2c3e50;
+    --text-secondary: #6c757d;
+    --text-muted: #adb5bd;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --border-color: #dee2e6;
+    
+    /* Typography */
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+    --font-legal: 'Times New Roman', serif;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+    
+    /* Borders & Shadows */
+    --border-radius: 8px;
+    --border-radius-sm: 4px;
+    --border-radius-lg: 12px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+    
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-normal: 300ms ease-in-out;
+    --transition-slow: 500ms ease-in-out;
+}
+
+/* =========================================================================
+   BASE STYLES
+========================================================================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 16px;
+    min-height: 100vh;
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+    color: var(--legal-primary);
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 2rem;
+    border-bottom: 2px solid var(--legal-accent);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: var(--legal-secondary);
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+a {
+    color: var(--legal-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--legal-secondary);
+    text-decoration: underline;
+}
+
+/* Code and Preformatted Text */
+code {
+    font-family: var(--font-mono);
+    background-color: var(--bg-tertiary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9em;
+}
+
+pre {
+    font-family: var(--font-mono);
+    background-color: var(--legal-dark);
+    color: #ffffff;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    border-left: 4px solid var(--legal-accent);
+}
+
+/* =========================================================================
+   LAYOUT COMPONENTS
+========================================================================= */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    background: var(--bg-primary);
+    min-height: 100vh;
+    box-shadow: var(--shadow-lg);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--bg-primary);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.container-fluid {
+    width: 100%;
+    padding: var(--spacing-md);
+}
+
+/* Grid System */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 calc(-1 * var(--spacing-sm));
+}
+
+.col {
+    flex: 1;
+    padding: 0 var(--spacing-sm);
+}
+
+.col-2 { flex: 0 0 50%; }
+.col-3 { flex: 0 0 33.333%; }
+.col-4 { flex: 0 0 25%; }
+
+/* =========================================================================
+   LEGAL-THEMED COMPONENTS
+========================================================================= */
+.legal-header {
+    background: linear-gradient(135deg, var(--legal-primary) 0%, var(--legal-secondary) 100%);
+    color: white;
+    padding: var(--spacing-xl);
+    text-align: center;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.legal-header::before {
+    content: '⚖️';
+    position: absolute;
+    top: 50%;
+    left: var(--spacing-lg);
+    transform: translateY(-50%);
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+.legal-header h1 {
+    color: white;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.legal-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-top: var(--spacing-sm);
+    font-weight: 300;
+}
+
+/* Feature Cards */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--legal-light) 100%);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--legal-primary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-left-color: var(--legal-accent);
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--legal-primary), var(--legal-accent));
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--legal-primary);
+    margin-bottom: var(--spacing-md);
+    display: block;
+}
+
+/* =========================================================================
+   INTERACTIVE ELEMENTS
+========================================================================= */
+.button, .btn {
+    background: linear-gradient(135deg, var(--legal-primary) 0%, var(--legal-secondary) 100%);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.button:hover, .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+}
+
+.button:active, .btn:active {
+    transform: translateY(0);
+}
+
+/* Button Variants */
+.btn-primary { background: linear-gradient(135deg, var(--legal-primary), var(--legal-secondary)); }
+.btn-secondary { background: linear-gradient(135deg, var(--text-secondary), #495057); }
+.btn-success { background: linear-gradient(135deg, var(--success-color), #20c997); }
+.btn-warning { background: linear-gradient(135deg, var(--warning-color), #fd7e14); }
+.btn-danger { background: linear-gradient(135deg, var(--error-color), #e74c3c); }
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--legal-primary);
+    color: var(--legal-primary);
+}
+
+.btn-outline:hover {
+    background: var(--legal-primary);
+    color: white;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 500;
+    color: var(--legal-primary);
+}
+
+.form-control {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast);
+    background: var(--bg-primary);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--legal-primary);
+    box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.1);
+}
+
+/* =========================================================================
+   STATUS & FEEDBACK COMPONENTS
+========================================================================= */
+.alert {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    border-left: 4px solid;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.alert-success {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left-color: var(--success-color);
+    color: #155724;
+}
+
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left-color: var(--warning-color);
+    color: #856404;
+}
+
+.alert-error, .alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: var(--error-color);
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: rgba(23, 162, 184, 0.1);
+    border-left-color: var(--info-color);
+    color: #0c5460;
+}
+
+/* Progress Indicators */
+.progress {
+    width: 100%;
+    height: 8px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin: var(--spacing-md) 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--legal-primary), var(--legal-accent));
+    transition: width var(--transition-normal);
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid var(--bg-tertiary);
+    border-top: 3px solid var(--legal-primary);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: var(--spacing-sm);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* =========================================================================
+   CONTENT CARDS & PANELS
+========================================================================= */
+.card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--legal-light) 0%, var(--bg-secondary) 100%);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--legal-primary);
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+.card-footer {
+    background: var(--bg-secondary);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--legal-primary);
+}
+
+.card-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.card-content {
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* Metric Cards */
+.metric-card {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--legal-primary);
+    display: block;
+    margin-bottom: var(--spacing-sm);
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* =========================================================================
+   NAVIGATION & TABS
+========================================================================= */
+.nav-tabs {
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--spacing-lg) 0;
+}
+
+.nav-tab {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-right: 2px;
+}
+
+.nav-tab:hover {
+    background: var(--legal-light);
+}
+
+.nav-tab.active {
+    background: var(--legal-primary);
+    color: white;
+    border-color: var(--legal-primary);
+}
+
+/* =========================================================================
+   CLAUSE EXTRACTION SPECIFIC STYLES
+========================================================================= */
+.clause-result {
+    background: var(--bg-primary);
+    border-left: 4px solid var(--legal-accent);
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.clause-type {
+    font-weight: 600;
+    color: var(--legal-primary);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.clause-confidence {
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: var(--spacing-sm);
+}
+
+.clause-text {
+    font-family: var(--font-legal);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    font-style: italic;
+    padding: var(--spacing-sm);
+    background: rgba(31, 78, 121, 0.05);
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-sm);
+}
+
+/* =========================================================================
+   EXPLAINABILITY VISUALIZATION STYLES
+========================================================================= */
+.explanation-container {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+}
+
+.shap-visualization {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    margin: var(--spacing-md) 0;
+}
+
+.attention-heatmap {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+}
+
+/* Highlighted text for explanations */
+.highlight-positive {
+    background-color: rgba(40, 167, 69, 0.3);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.highlight-negative {
+    background-color: rgba(220, 53, 69, 0.3);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* =========================================================================
+   SUMMARY DISPLAY STYLES
+========================================================================= */
+.summary-container {
+    background: linear-gradient(135deg, var(--legal-light) 0%, var(--bg-primary) 100%);
+    border: 1px solid var(--legal-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-lg) 0;
+    position: relative;
+}
+
+.summary-container::before {
+    content: '📄';
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    font-size: 1.5rem;
+    opacity: 0.5;
+}
+
+.summary-text {
+    font-family: var(--font-legal);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+    text-align: justify;
+}
+
+.summary-metrics {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* =========================================================================
+   RESPONSIVE DESIGN
+========================================================================= */
+@media (max-width: 768px) {
+    .main-container {
+        padding: var(--spacing-md);
+    }
+    
+    .container {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .row {
+        flex-direction: column;
+    }
+    
+    .col-2, .col-3, .col-4 {
+        flex: 1 1 100%;
+    }
+    
+    .legal-header::before {
+        display: none;
+    }
+    
+    .nav-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .nav-tab {
+        flex: 1;
+        text-align: center;
+        margin-bottom: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: var(--spacing-md);
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    .metric-value {
+        font-size: 2rem;
+    }
+    
+    .button, .btn {
+        padding: var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+}
+
+/* =========================================================================
+   ACCESSIBILITY ENHANCEMENTS
+========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --legal-primary: #000000;
+        --legal-secondary: #333333;
+        --text-primary: #000000;
+        --border-color: #000000;
+    }
+}
+
+/* Focus indicators for keyboard navigation */
+*:focus {
+    outline: 2px solid var(--legal-primary);
+    outline-offset: 2px;
+}
+
+.button:focus, .btn:focus, .form-control:focus {
+    outline: 2px solid var(--legal-accent);
+    outline-offset: 2px;
+}
+
+/* =========================================================================
+   PRINT STYLES
+========================================================================= */
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+    }
+    
+    .button, .btn {
+        display: none;
+    }
+    
+    .card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid black;
+    }
+    
+    .legal-header {
+        background: white !important;
+        color: black !important;
+        border: 2px solid black;
+    }
+    
+    .feature-card, .metric-card {
+        break-inside: avoid;
+    }
+}
+
+/* =========================================================================
+   UTILITY CLASSES
+========================================================================= */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-primary { color: var(--legal-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-success { color: var(--success-color); }
+.text-warning { color: var(--warning-color); }
+.text-danger { color: var(--error-color); }
+
+.bg-primary { background-color: var(--legal-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-light { background-color: var(--legal-light); }
+
+.border { border: 1px solid var(--border-color); }
+.border-top { border-top: 1px solid var(--border-color); }
+.border-bottom { border-bottom: 1px solid var(--border-color); }
+
+.rounded { border-radius: var(--border-radius); }
+.rounded-lg { border-radius: var(--border-radius-lg); }
+
+.shadow { box-shadow: var(--shadow-md); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+.p-1 { padding: var(--spacing-xs); }
+.p-2 { padding: var(--spacing-sm); }
+.p-3 { padding: var(--spacing-md); }
+.p-4 { padding: var(--spacing-lg); }
+
+.m-1 { margin: var(--spacing-xs); }
+.m-2 { margin: var(--spacing-sm); }
+.m-3 { margin: var(--spacing-md); }
+.m-4 { margin: var(--spacing-lg); }
+
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline { display: inline; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+
+.flex-column { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.justify-center { justify-content: center; }
+.align-center { align-items: center; }
+
+/* Animation classes */
+.fade-in {
+    animation: fadeIn var(--transition-normal) ease-in-out;
+}
+
+.slide-up {
+    animation: slideUp var(--transition-normal) ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* =========================================================================
+   LEGAL DOCUMENT SPECIFIC ENHANCEMENTS
+========================================================================= */
+.legal-document {
+    font-family: var(--font-legal);
+    line-height: 1.8;
+    text-align: justify;
+    padding: var(--spacing-xl);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.legal-section {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.legal-section:last-child {
+    border-bottom: none;
+}
+
+.legal-clause-number {
+    font-weight: 700;
+    color: var(--legal-primary);
+    margin-right: var(--spacing-sm);
+}
+
+.legal-definitions {
+    background: rgba(31, 78, 121, 0.05);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--legal-accent);
+    margin: var(--spacing-lg) 0;
+}
+
+.legal-signature-line {
+    border-bottom: 1px solid var(--legal-primary);
+    margin: var(--spacing-xl) 0 var(--spacing-sm) 0;
+    width: 300px;
+}
+
+/* Status indicators for clause detection confidence */
+.confidence-high { 
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    color: white;
+}
+
+.confidence-medium { 
+    background: linear-gradient(135deg, var(--warning-color), #fd7e14);
+    color: white;
+}
+
+.confidence-low { 
+    background: linear-gradient(135deg, var(--error-color), #e74c3c);
+    color: white;
+}
+
+/* Enhanced tooltips for legal terms */
+.legal-tooltip {
+    position: relative;
+    cursor: help;
+    border-bottom: 1px dotted var(--legal-primary);
+}
+
+.legal-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--legal-dark);
+    color: white;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+    z-index: 1000;
+}
+
+.legal-tooltip:hover::after {
+    opacity: 1;
+}
+
+/* End of Enhanced Legal NLP Toolkit CSS */
