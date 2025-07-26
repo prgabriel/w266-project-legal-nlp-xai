@@ -1118,9 +1118,22 @@ def main():
         # Footer
         st.markdown("---")
         st.markdown("""
-        <div style="text-align: center; color: #666; padding: 1rem;">
-        <p>⚖️ Legal NLP + Explainability Toolkit | Built for Responsible AI in Legal Document Analysis</p>
-        <p><small>For support or questions, please refer to the documentation or contact the development team.</small></p>
+        <div style="
+            text-align: center; 
+            color: white; 
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            border-radius: 20px;
+            margin-top: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        ">
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 0.5rem;">
+            ⚖️ Legal NLP + Explainability Toolkit | Built for Responsible AI in Legal Document Analysis
+            </p>
+            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin: 0;">
+            <small>For support or questions, please refer to the documentation or contact the development team.</small>
+            </p>
         </div>
         """, unsafe_allow_html=True)
         
