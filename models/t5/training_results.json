@@ -1,0 +1,49 @@
+{
+  "training_history": {
+    "train_loss": [
+      1.4119840581226613
+    ],
+    "val_metrics": [
+      {
+        "eval_loss": 0.061969488859176636,
+        "eval_runtime": 128.4276,
+        "eval_samples_per_second": 1.331,
+        "eval_steps_per_second": 0.335,
+        "epoch": 1.0,
+        "step": 121
+      },
+      {
+        "eval_loss": 0.0042373440228402615,
+        "eval_runtime": 116.5895,
+        "eval_samples_per_second": 1.467,
+        "eval_steps_per_second": 0.369,
+        "epoch": 2.0,
+        "step": 242
+      },
+      {
+        "eval_loss": 0.0017993174260482192,
+        "eval_runtime": 117.2634,
+        "eval_samples_per_second": 1.458,
+        "eval_steps_per_second": 0.367,
+        "epoch": 3.0,
+        "step": 363
+      }
+    ],
+    "rouge_scores": {
+      "rouge1": 0.6053911614257322,
+      "rouge2": 0.5619641239931734,
+      "rougeL": 0.598301928120056,
+      "rouge1_std": 0.3071027701985394,
+      "rouge2_std": 0.32418956517705877,
+      "rougeL_std": 0.3093201662276803
+    }
+  },
+  "final_train_loss": 1.4119840581226613,
+  "model_name": "t5-base",
+  "training_params": {
+    "epochs": 3,
+    "batch_size": 4,
+    "learning_rate": 3e-05,
+    "num_train_samples": 965
+  }
+}

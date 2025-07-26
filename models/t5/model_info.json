@@ -1,0 +1,7 @@
+{
+  "model_name": "t5-base",
+  "model_type": "T5 for Legal Document Summarization",
+  "task": "abstractive_summarization",
+  "domain": "legal",
+  "num_parameters": 222895872
+}
