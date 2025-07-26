@@ -840,7 +840,7 @@ def summarize_text(text: str,
 # Streamlit Interface Function
 def render_enhanced_summarization_interface():
     """Render the enhanced summarization interface for Streamlit"""
-    st.title("🏛️ Legal Document Summarization")
+    st.title("Enhanced Legal Document Summarization")
     st.markdown("Enhanced T5-based abstractive summarization for legal contracts and clauses")
     
     # Initialize summarizer

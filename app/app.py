@@ -707,7 +707,7 @@ def render_analytics_page(models: Dict):
     tab1, tab2, tab3 = st.tabs(["📈 Model Performance", "📋 Clause Analysis", "🔍 Usage Statistics"])
     
     with tab1:
-        st.markdown("## 🎯 Model Performance Metrics")
+        st.markdown("##  Model Performance Metrics")
         
         # Show live system metrics first
         col1, col2, col3, col4 = st.columns(4)
@@ -732,7 +732,7 @@ def render_analytics_page(models: Dict):
         try:
             performance_data = models['evaluator'].load_clause_performance_data()
             if performance_data is not None:
-                st.markdown("### 📊 Detailed Per-Clause Performance (Live Data)")
+                st.markdown("###  Detailed Per-Clause Performance (Live Data)")
                 
                 col1, col2, col3, col4 = st.columns(4)
                 
@@ -753,7 +753,7 @@ def render_analytics_page(models: Dict):
                     st.metric("Clause Types", total_clauses)
                 
                 # Performance visualization
-                st.markdown("### 📊 Per-Clause Performance")
+                st.markdown("###  Per-Clause Performance")
                 
                 # Create a cleaner display with proper column names
                 display_df = performance_data[['clause_name', 'precision', 'recall', 'f1', 'support', 'avg_confidence']].copy()
@@ -767,7 +767,7 @@ def render_analytics_page(models: Dict):
                 )
                 
                 # Add performance visualization
-                st.markdown("### 📈 Performance Visualization")
+                st.markdown("###  Performance Visualization")
                 
                 # Create a performance chart
                 fig = px.bar(
@@ -783,15 +783,15 @@ def render_analytics_page(models: Dict):
                 st.plotly_chart(fig, use_container_width=True)
                 
             else:
-                st.info("📊 Detailed performance data not available. Run model evaluation to generate live metrics.")
+                st.info(" Detailed performance data not available. Run model evaluation to generate live metrics.")
         
         except Exception as e:
             st.error(f"Error loading live performance data: {e}")
             logger.error(f"Analytics error: {e}")
     
     with tab2:
-        st.markdown("## 📋 Clause Type Analysis")
-        
+        st.markdown("##  Clause Type Analysis")
+
         # Use live data if available, otherwise show sample
         try:
             performance_data = models['evaluator'].load_clause_performance_data()
@@ -823,17 +823,17 @@ def render_analytics_page(models: Dict):
             }
         
         for category, clauses in clause_info.items():
-            with st.expander(f"📊 {category}"):
+            with st.expander(f" {category}"):
                 for clause in clauses:
                     st.markdown(f"- **{clause}**")
     
     with tab3:
-        st.markdown("## 📈 Usage Statistics")
+        st.markdown("##  Usage Statistics")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 🔢 Session Statistics (Live)")
+            st.markdown("###  Session Statistics (Live)")
             if 'session_stats' not in st.session_state:
                 st.session_state.session_stats = {
                     'extractions': 0,
@@ -847,7 +847,7 @@ def render_analytics_page(models: Dict):
             st.metric("Explanations", stats['explanations'])
             
             # Show model status
-            st.markdown("### 🤖 Model Status (Live)")
+            st.markdown("###  Model Status (Live)")
             clause_status = live_metrics['clause_extraction']['status']
             summ_status = live_metrics['summarization']['status']
             
@@ -855,7 +855,7 @@ def render_analytics_page(models: Dict):
             st.write(f"**Summarizer:** {'✅ Loaded' if summ_status == 'loaded' else '❌ Error'}")
         
         with col2:
-            st.markdown("### ⏱️ Live Performance Metrics")
+            st.markdown("###  Live Performance Metrics")
             st.info(f"""
             **Current System Performance:**
             - F1-Score: {live_metrics['clause_extraction']['f1_score']:.3f}

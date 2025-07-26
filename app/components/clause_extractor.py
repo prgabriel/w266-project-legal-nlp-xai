@@ -814,7 +814,7 @@ def render_enhanced_clause_interface():
     )
     
     # Input section (REMOVED OLD CONFIGURATION FROM MAIN AREA)
-    st.subheader("📄 Document Input")
+    st.subheader(" Document Input")
     
     input_method = st.radio(
         "Choose input method:",
