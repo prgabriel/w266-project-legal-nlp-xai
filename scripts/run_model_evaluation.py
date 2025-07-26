@@ -193,10 +193,14 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
         # Initialize extractor with model_path as a separate parameter
         try:
             extractor = LegalClauseExtractor(
-                model_path=str(models_dir), 
+                model_path=str(models_dir),
                 cache_dir=str(models_dir),
-                config=config
+                config=config  # Ensure config does not include model_path
             )
+            # Verify that model_path is not part of the config object
+            if hasattr(config, 'model_path'):
+                logger.warning("⚠️ 'model_path' found in config. It should only be passed as a separate parameter.")
+                delattr(config, 'model_path')
             logger.info("✅ LegalClauseExtractor initialized successfully")
         except Exception as e:
             logger.error(f"❌ Error initializing LegalClauseExtractor: {e}")
