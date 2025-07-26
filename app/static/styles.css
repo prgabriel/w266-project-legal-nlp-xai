@@ -47,12 +47,22 @@ Blue background with rounded, soft edges design
     --font-legal: 'Times New Roman', serif;
     
     /* Spacing */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-xxl: 3rem;
+    --spacing-xs: 0.25rem;      /* 4px */
+    --spacing-sm: 0.5rem;       /* 8px */
+    --spacing-md: 1rem;         /* 16px */
+    --spacing-lg: 1.5rem;       /* 24px */
+    --spacing-xl: 2rem;         /* 32px */
+    --spacing-xxl: 2.5rem;      /* 40px - Reduced from 3rem (48px) */
+    
+    /* New optimized card padding variables */
+    --card-padding-sm: 1.25rem; /* 20px - Compact cards */
+    --card-padding-md: 1.75rem; /* 28px - Balanced cards */
+    --card-padding-lg: 2.25rem; /* 36px - Spacious cards */
+    --card-padding-xl: 2.75rem; /* 44px - Extra spacious */
+    
+    /* Text-specific spacing inside cards */
+    --text-margin-sm: 0.75rem;  /* 12px - Between elements */
+    --text-margin-md: 1.25rem;  /* 20px - Section spacing */
     
     /* Enhanced Rounded Borders & Shadows */
     --border-radius: 20px;        /* Increased from 12px */
@@ -166,7 +176,7 @@ p {
     background: var(--bg-card);
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius-xl);     /* Extra rounded */
-    padding: var(--spacing-xxl);
+    padding: var(--card-padding-lg);             /* Optimized: 36px instead of 48px */
     transition: all var(--transition-normal);
     position: relative;
     box-shadow: var(--shadow-md);
@@ -180,6 +190,7 @@ p {
     background: var(--bg-card-hover);
     border-color: var(--accent-yellow);
     border-radius: var(--border-radius-xxl);    /* Even more rounded on hover */
+    padding: var(--card-padding-xl);             /* Slightly more padding on hover */
 }
 
 .feature-card::before {
@@ -195,20 +206,20 @@ p {
 
 .feature-card h3 {
     color: var(--white);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--text-margin-md);        /* Optimized: 20px instead of 24px */
     font-size: 1.4rem;
+    margin-top: 0;                               /* Remove top margin */
 }
 
 .feature-card p {
     color: var(--text-secondary);
     line-height: 1.7;
+    margin-bottom: var(--text-margin-sm);        /* Optimized: 12px bottom margin */
+    margin-top: 0;                               /* Remove top margin */
 }
 
-.feature-icon {
-    font-size: 3.5rem;
-    margin-bottom: var(--spacing-xl);
-    display: block;
-    text-align: center;
+.feature-card p:last-child {
+    margin-bottom: 0;                            /* Remove bottom margin from last paragraph */
 }
 
 /* =========================================================================
@@ -218,7 +229,7 @@ p {
     background: var(--bg-card);
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius-xl);     /* Extra rounded */
-    padding: var(--spacing-xxl);
+    padding: var(--card-padding-md);             /* Optimized: 28px instead of 48px */
     text-align: center;
     margin: var(--spacing-md);
     box-shadow: var(--shadow-md);
@@ -246,20 +257,26 @@ p {
     background: var(--bg-card-hover);
     border-color: var(--accent-yellow);
     border-radius: var(--border-radius-xxl);    /* Even more rounded on hover */
+    padding: var(--card-padding-lg);             /* More padding on hover */
 }
 
 .metric-card h4 {
     color: var(--white);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--text-margin-md);        /* Optimized: 20px instead of 24px */
+    margin-top: var(--text-margin-sm);           /* Small top margin: 12px */
     font-size: 1.4rem;
     font-weight: 600;
 }
 
 .metric-card p {
-    margin: var(--spacing-md) 0;
+    margin: var(--text-margin-sm) 0;             /* Optimized: 12px top/bottom */
     line-height: 1.7;
     color: var(--text-secondary);
     font-size: 1rem;
+}
+
+.metric-card p:last-child {
+    margin-bottom: 0;                            /* Remove bottom margin from last paragraph */
 }
 
 .metric-card p strong {
@@ -268,15 +285,27 @@ p {
     font-weight: 700;
 }
 
-/* Performance indicator boxes - rounded */
-.metric-card div {
-    color: var(--white) !important;
-    border-radius: var(--border-radius);
+/* Performance indicator boxes - optimized padding */
+.metric-card div[style*="background"] {
+    border-radius: var(--border-radius) !important;
+    padding: var(--text-margin-sm) var(--spacing-md) !important;  /* 12px vertical, 16px horizontal */
+    margin-top: var(--text-margin-md) !important;                 /* 20px top margin */
+    margin-bottom: 0 !important;                                  /* No bottom margin */
 }
 
 .metric-card small {
     color: var(--white) !important;
     font-weight: 600;
+    margin: 0;                                   /* Remove default margins */
+}
+
+/* Icon spacing optimization */
+.feature-icon {
+    font-size: 3.5rem;
+    margin-bottom: var(--text-margin-md);        /* Optimized: 20px instead of 32px */
+    margin-top: 0;                               /* Remove top margin */
+    display: block;
+    text-align: center;
 }
 
 /* =========================================================================
