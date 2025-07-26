@@ -461,7 +461,7 @@ def get_model_performance_metrics(models):
                         metrics['clause_extraction']['precision'] = test_metrics.get('precision_micro', 0.0)
                         metrics['clause_extraction']['recall'] = test_metrics.get('recall_micro', 0.0)
                         
-                        logger.info(f"✅ Loaded REAL BERT metrics - Model: {actual_model_name}")
+                        logger.info(f"INFO: Loaded REAL BERT metrics - Model: {actual_model_name}")
                         logger.info(f"   F1: {metrics['clause_extraction']['f1_score']:.4f}")
                         logger.info(f"   Precision: {metrics['clause_extraction']['precision']:.4f}")  
                         logger.info(f"   Recall: {metrics['clause_extraction']['recall']:.4f}")
