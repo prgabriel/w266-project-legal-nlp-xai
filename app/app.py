@@ -214,9 +214,12 @@ def load_custom_css():
     
     /* More visible text in performance indicators */
     .metric-card small {
-        color: #1A365D !important;              /* Dark blue instead of yellow - much more readable */
+        color: #1A365D !important;              /* Dark blue text */
+        background-color: #F0F4FA !important;    /* Light background for better contrast */
         font-weight: 700 !important;            /* Bolder for better visibility */
         font-size: 0.9rem !important;           /* Slightly larger */
+        padding: 0.2rem 0.4rem !important;       /* Add padding for better readability */
+        border-radius: 4px !important;          /* Rounded corners for aesthetics */
     }
     
     .metric-card small strong {
