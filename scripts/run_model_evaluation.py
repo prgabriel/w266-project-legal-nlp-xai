@@ -193,10 +193,6 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
         except Exception as e:
             logger.error(f"❌ Error creating ExtractionConfig: {e}")
             # Fallback: create config without dataclass if needed
-            class FallbackConfig:
-                def __init__(self, params):
-                    for k, v in params.items():
-                        setattr(self, k, v)
             extraction_config = FallbackConfig(extraction_config_params)
         
         # Initialize extractor with model_path as a separate parameter
