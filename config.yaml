@@ -5,23 +5,23 @@ data:
 
 model:
   batch_size: 8
-  bert_model_name: bert-base-uncased
+  bert_model_name: nlpaueb/legal-bert-base-uncased  # Changed this
   max_length: 512
   t5_model_name: t5-base
 
 paths:
-  app: ./app
-  data: ./data
-  data_processed: ./data/processed
-  data_raw: ./data/raw
-  logs: ./logs
-  models: ./models
-  models_bert: ./models/bert
-  models_fine_tuning: ./models/fine_tuning
-  models_t5: ./models/t5
-  notebooks: ./notebooks
-  scripts: ./scripts
-  tests: ./tests
+  app: ../app
+  data: ../data
+  data_processed: ../data/processed
+  data_raw: ../data/raw
+  logs: ../logs
+  models: ../models
+  models_bert: ../models/bert
+  models_fine_tuning: ../models/fine_tuning
+  models_t5: ../models/t5
+  notebooks: ../notebooks
+  scripts: ../scripts
+  tests: ../tests
 
 training:
   learning_rate: 2.0e-05
