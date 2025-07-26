@@ -30,7 +30,7 @@ jobs:
     - name: Create config directory and file
       run: |
         mkdir -p config
-        cat > config/config.yaml << EOF
+        cat > config/config.yaml << 'EOF'
         data:
           test_size: 0.1
           train_size: 0.7
@@ -54,7 +54,7 @@ jobs:
           scripts: /app/scripts
           tests: /app/tests
         training:
-          learning_rate: 2.0e-05
+          learning_rate: 2.0e-5
           num_epochs: 3
           warmup_steps: 500
           weight_decay: 0.01
