@@ -14,27 +14,29 @@ INDIVIDUAL TEXT ANALYSIS
 ----------------------------------------
 
 TEXT_1:
-  Text: e Co-Branded URLs shall be owned by the party that offers to pay the highest amount to the other for the ownership of such URLs upon payment of such a...
+  Text: line communications, virtual applications, social media, or the like, including but not limited to Groupon, Living Social, Facebook, Twitter, etc., th...
   Detected clauses: 0
 
 TEXT_2:
-  Text: ve been given or received at the time of delivery, telexing or faxing. Any notice mailed as aforesaid shall be deemed to have been received on the exp...
+  Text: rtain Events. If the Company proposes at any time (a) to declare any dividend or distribution upon any of its stock, whether in cash, property, stock,...
   Detected clauses: 0
 
 TEXT_3:
-  Text:  will conduct its operations in the Territory through offices or agencies to be maintained by DISTRIBUTOR at its sole cost and expense.
+  Text: ction 5.1(a).
 
-4.2 If DISTRI...
+"Forecast" shall have the meaning provided in Article 5 of this Agreement.
+
+"Forecast Territory" means those countries where a particul...
   Detected clauses: 0
 
 TEXT_4:
-  Text: in [***] of such request; provided that the debtor Party is excused from its obligation to deliver the Intellectual Property to the extent the debtor ...
+  Text:  than the revenue percentage attributable to the OB/Gyn Field as of the date of such launch, calculated on the same basis that revenue from the OB/Gyn...
   Detected clauses: 0
 
 TEXT_5:
-  Text: ll of Sale.
+  Text: ED MATERIAL IS MARKED WITH [* * *] AND HAS BEEN FILED SEPARATELY WITH THE SECURITIES AND EXCHANGE COMMISSION. 19.9 Injunctions
 
-3. Further Assurances. At any time and from time to time after the date of this Bill of Sale, Seller, at the Purchaser's request and subj...
+Each Party agrees that...
   Detected clauses: 0
 
 SHAP ANALYSIS COMPLETE

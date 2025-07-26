@@ -57,6 +57,8 @@ from typing import Dict, List, Any, Optional
 from pathlib import Path
 import time
 import json
+import numpy as np
+import pandas as pd
 
 # Add project root to path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -95,217 +97,292 @@ logger = logging.getLogger(__name__)
 
 # Custom CSS for enhanced styling
 def load_custom_css():
-    """Load custom CSS with proper styling"""
+    """Load custom CSS with optimized padding and extra rounded blue background theme"""
     st.markdown("""
     <style>
-    /* Import the main stylesheet */
+    /* Import the enhanced rounded blue background stylesheet */
     @import url('static/styles.css');
     
-    /* Override and additional styles for Streamlit */
+    /* Streamlit-specific overrides for extra rounded blue theme */
+    .stApp {
+        background: linear-gradient(135deg, #1A4480 0%, #2E5BBA 50%, #4A90E2 100%);
+        color: white;
+    }
+    
+    /* Enhanced main header - extra rounded with optimized padding */
     .main-header {
-        font-size: 3rem;
+        font-size: 3.2rem;
         font-weight: bold;
         text-align: center;
-        color: #1f4e79;
+        color: white;
         margin-bottom: 2rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        padding: 1rem;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        border-radius: 15px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        padding: 2.5rem 2rem;                    /* Optimized: reduced from 3rem */
+        background: linear-gradient(135deg, #4A90E2 0%, #2E5BBA 50%, #6BA4E8 100%);
+        border-radius: 36px;                    
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    /* Fix Streamlit container width */
-    .main .block-container {
-        max-width: 1200px;
-        padding: 2rem 1rem;
+    .main-header:hover {
+        border-radius: 50px;                    
+        transform: scale(1.02);
+        padding: 2.75rem 2.25rem;                /* Slightly more padding on hover */
     }
     
-    /* Sidebar styling */
-    .css-1d391kg {
-        background-color: #f8f9fa;
-    }
-    
-    /* Feature cards */
-    .feature-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        padding: 1.5rem;
-        border-radius: 12px;
-        margin: 1rem 0;
-        border-left: 5px solid #1f4e79;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
-    
-    .feature-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-    
-    /* Metric cards */
+    /* Optimized metric cards with better text-to-wall spacing */
     .metric-card {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 10px;
-        border: 1px solid #e0e0e0;
-        text-align: center;
-        margin: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        height: 100%;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        backdrop-filter: blur(15px);
+        border-radius: 28px !important;         
+        padding: 1.75rem !important;            /* Optimized: 28px instead of default */
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .metric-card:hover {
+        border-radius: 36px !important;        
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+        padding: 2.25rem !important;            /* More padding on hover: 36px */
     }
     
     .metric-card h4 {
-        color: #1f4e79;
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
+        color: white !important;
+        margin-bottom: 1.25rem !important;      /* Optimized: 20px */
+        margin-top: 0.75rem !important;         /* Small top margin: 12px */
     }
     
     .metric-card p {
-        margin: 0.5rem 0;
-        line-height: 1.5;
+        color: #E0E0E0 !important;
+        margin: 0.75rem 0 !important;           /* Optimized: 12px top/bottom */
     }
     
-    .metric-card p strong {
-        color: #d4af37;
-        font-size: 1.1rem;
+    .metric-card p:last-child {
+        margin-bottom: 0 !important;            /* Remove bottom margin from last p */
     }
     
-    /* Status boxes */
-    .success-box, .warning-box, .error-box {
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 1rem 0;
-        border-left: 4px solid;
+    .metric-card strong {
+        color: #FFD700 !important;              /* Restored to yellow (#FFD700) for better contrast and readability */
+        font-weight: 700 !important;
+        text-shadow: none !important;
     }
     
-    .success-box {
-        background-color: #d4edda;
-        border-left-color: #28a745;
-        color: #155724;
+    /* Optimized feature cards */
+    .feature-card {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        backdrop-filter: blur(15px);
+        border-radius: 28px !important;         
+        padding: 2.25rem !important;            /* Optimized: 36px instead of default */
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    .warning-box {
-        background-color: #fff3cd;
-        border-left-color: #ffc107;
-        color: #856404;
+    .feature-card:hover {
+        border-radius: 36px !important;        
+        transform: translateY(-8px) scale(1.02);
+        padding: 2.75rem !important;            /* More padding on hover: 44px */
     }
     
-    .error-box {
-        background-color: #f8d7da;
-        border-left-color: #dc3545;
-        color: #721c24;
+    .feature-card h3 {
+        color: white !important;
+        margin-bottom: 1.25rem !important;      /* Optimized: 20px */
+        margin-top: 0 !important;               /* Remove top margin */
     }
     
-    /* Sidebar improvements */
-    .sidebar-info {
-        background-color: #e7f3ff;
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 1rem 0;
-        border-left: 3px solid #0066cc;
+    .feature-card p {
+        color: #E0E0E0 !important;
+        margin: 0.75rem 0 !important;           /* Optimized: 12px top/bottom */
     }
     
-    /* Tab styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 4px;
-        background-color: #f8f9fa;
-        padding: 0.5rem;
-        border-radius: 10px;
+    .feature-card p:last-child {
+        margin-bottom: 0 !important;            /* Remove bottom margin from last p */
     }
     
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        padding: 0 20px;
-        background-color: transparent;
-        border-radius: 8px;
-        color: #6c757d;
-        font-weight: 500;
-        transition: all 0.3s ease;
+    /* Performance indicator boxes - optimized padding and MORE VISIBLE TEXT */
+    .metric-card div[style*="background"] {
+        border-radius: 20px !important;
+        padding: 0.75rem 1rem !important;       /* Optimized: 12px vertical, 16px horizontal */
+        margin-top: 1.25rem !important;         /* 20px top margin */
+        margin-bottom: 0 !important;            /* Remove bottom margin */
     }
     
-    .stTabs [data-baseweb="tab"]:hover {
-        background-color: #e9ecef;
-        color: #1f4e79;
+    /* More visible text in performance indicators */
+    .metric-card small {
+        color: #1A365D !important;              /* Dark blue text */
+        background-color: #F0F4FA !important;    /* Light background for better contrast */
+        font-weight: 700 !important;            /* Bolder for better visibility */
+        font-size: 0.9rem !important;           /* Slightly larger */
+        padding: 0.2rem 0.4rem !important;       /* Add padding for better readability */
+        border-radius: 4px !important;          /* Rounded corners for aesthetics */
     }
     
-    .stTabs [aria-selected="true"] {
-        background-color: #1f4e79;
+    .metric-card small strong {
+        color: #1A365D !important;              /* Consistent dark blue */
+        font-weight: 800 !important;            /* Extra bold */
+    }
+    
+    /* MISSING EXPANDER STYLING - ADD THIS SECTION */
+    /* Enhanced Streamlit expander styling - LARGER TEXT */
+    .streamlit-expanderHeader {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 2px solid rgba(255, 255, 255, 0.2) !important;
+        transition: all 200ms ease !important;
+        font-size: 1.3rem !important;           /* Increased from default ~0.9rem */
+        font-weight: 600 !important;            /* Bolder text */
+        padding: 1rem 1.5rem !important;        /* More padding for better touch target */
+    }
+    
+    .streamlit-expanderHeader:hover {
+        border-radius: 28px !important;
+        border-color: #4A90E2 !important;       /* Changed from yellow to blue */
+        background: rgba(255, 255, 255, 0.15) !important;
+        transform: scale(1.01) !important;
+    }
+    
+    /* Expander header text specifically */
+    .streamlit-expanderHeader p {
+        font-size: 1.3rem !important;           /* Match header size */
+        font-weight: 600 !important;            /* Bolder text */
+        color: white !important;                /* Ensure white text */
+        margin: 0 !important;                   /* Remove default margins */
+        letter-spacing: 0.025em !important;     /* Slight letter spacing for readability */
+    }
+    
+    /* Expander content area */
+    .streamlit-expanderContent {
+        border-radius: 0 0 20px 20px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(5px) !important;
+        border: 2px solid rgba(255, 255, 255, 0.1) !important;
+        border-top: none !important;
+    }
+    
+    /* Expander arrow/icon */
+    .streamlit-expanderHeader svg {
+        width: 1.5rem !important;               /* Larger arrow */
+        height: 1.5rem !important;
         color: white !important;
     }
     
-    /* Button improvements */
-    .stButton > button {
-        background: linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.5rem 1.5rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
+    /* Alternative targeting for expander header - Multiple selectors */
+    [data-testid="stExpanderHeader"] {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        padding: 1rem 1.5rem !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 20px !important;
+        border: 2px solid rgba(255, 255, 255, 0.2) !important;
     }
     
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(31, 78, 121, 0.3);
+    [data-testid="stExpanderHeader"] p {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        color: white !important;
+        margin: 0 !important;
     }
     
-    /* Text area improvements */
-    .stTextArea textarea {
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
-        font-family: 'Consolas', monospace;
-        line-height: 1.5;
+    /* Additional fallback selectors for expander styling */
+    .css-1vbkxwb p {                             /* Common Streamlit expander class */
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        color: white !important;
     }
     
-    .stTextArea textarea:focus {
-        border-color: #1f4e79;
-        box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.2);
+    .css-1vbkxwb {
+        font-size: 1.3rem !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 20px !important;
     }
     
-    /* Selectbox improvements */
-    .stSelectbox > div > div {
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
+    /* Universal expander targeting - catch-all approach */
+    div[data-baseweb="accordion"] > div > div:first-child {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        padding: 1rem 1.5rem !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 20px !important;
+        color: white !important;
     }
     
-    /* Metric styling */
-    .metric-container {
-        background: white;
-        padding: 1rem;
-        border-radius: 8px;
-        border: 1px solid #e9ecef;
-        text-align: center;
+    /* Call-to-action section - optimized padding */
+    .cta-section {
+        background: linear-gradient(135deg, #4A90E2 0%, #2E5BBA 100%) !important;  /* Changed from yellow to blue gradient */
+        color: white !important;                                                   /* Changed text to white for better contrast */
+        border-radius: 36px !important;
+        padding: 2rem !important;               /* Optimized: 32px */
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    /* Footer styling */
-    .footer {
-        text-align: center;
-        color: #6c757d;
-        padding: 2rem 1rem;
-        border-top: 1px solid #e9ecef;
-        margin-top: 3rem;
+    .cta-section:hover {
+        border-radius: 50px !important;
+        transform: scale(1.02);
+        padding: 2.25rem !important;            /* More padding on hover: 36px */
+        background: linear-gradient(135deg, #6BA4E8 0%, #4A90E2 100%) !important;  /* Lighter blue on hover */
     }
     
-    /* Hide Streamlit default elements */
-    #MainMenu {visibility: hidden;}
-    .stDeployButton {display:none;}
-    footer {visibility: hidden;}
-    .stApp > header {visibility: hidden;}
-    
-    /* Responsive design */
+    /* Responsive optimizations */
     @media (max-width: 768px) {
-        .main-header {
-            font-size: 2rem;
-        }
-        
         .metric-card {
-            margin: 0.5rem 0;
+            padding: 1.25rem !important;        /* Compact: 20px on mobile */
         }
         
         .feature-card {
-            margin: 1rem 0;
-            padding: 1rem;
+            padding: 1.25rem !important;        /* Compact: 20px on mobile */
+        }
+        
+        .main-header {
+            padding: 2rem 1.5rem !important;    /* Compact header on mobile */
+        }
+        
+        /* Smaller expander text on mobile */
+        .streamlit-expanderHeader,
+        [data-testid="stExpanderHeader"],
+        .css-1vbkxwb {
+            font-size: 1.1rem !important;       /* Slightly smaller on mobile */
+            padding: 0.75rem 1rem !important;   /* Less padding on mobile */
+        }
+        
+        .streamlit-expanderHeader p,
+        [data-testid="stExpanderHeader"] p,
+        .css-1vbkxwb p {
+            font-size: 1.1rem !important;
         }
     }
+    
+    @media (min-width: 1200px) {
+        .feature-card {
+            padding: 2.75rem !important;        /* Spacious: 44px on large screens */
+        }
+        
+        .metric-card {
+            padding: 2.25rem !important;        /* Balanced: 36px on large screens */
+        }
+        
+        /* Even larger expander text on large screens */
+        .streamlit-expanderHeader,
+        [data-testid="stExpanderHeader"],
+        .css-1vbkxwb {
+            font-size: 1.4rem !important;       /* Larger on desktop */
+            padding: 1.25rem 2rem !important;   /* More padding on desktop */
+        }
+        
+        .streamlit-expanderHeader p,
+        [data-testid="stExpanderHeader"] p,
+        .css-1vbkxwb p {
+            font-size: 1.4rem !important;
+        }
+    }
+    
+    /* Rest of existing styles... */
+    
     </style>
     """, unsafe_allow_html=True)
 
@@ -336,8 +413,146 @@ def initialize_models():
             st.error(f"Error initializing models: {e}")
             return {}
 
+def get_model_performance_metrics(models):
+    """Get actual performance metrics from models and training results - TRULY LIVE VERSION"""
+    metrics = {
+        'clause_extraction': {
+            'status': 'unknown',
+            'f1_score': 0.0,
+            'precision': 0.0,
+            'recall': 0.0,
+            'num_clause_types': 0,
+            'model_name': 'Unknown'
+        },
+        'summarization': {
+            'status': 'unknown',
+            'rouge_1': 0.0,
+            'rouge_2': 0.0,
+            'rouge_l': 0.0,
+            'model_name': 'Unknown'
+        }
+    }
+    
+    # Get clause extraction metrics - LOAD ACTUAL TRAINING RESULTS
+    if models.get('clause_extractor'):
+        try:
+            # First get model info
+            if hasattr(models['clause_extractor'], 'get_model_info'):
+                model_info = models['clause_extractor'].get_model_info()
+                metrics['clause_extraction']['status'] = 'loaded' if model_info.get('model_loaded', False) else 'error'
+                metrics['clause_extraction']['num_clause_types'] = model_info.get('num_clause_types', 41)
+            
+            # Load ACTUAL training results directly - NO FALLBACKS
+            project_root = Path(__file__).parent.parent
+            bert_training_path = project_root / 'models' / 'bert' / 'training_results.json'
+            
+            if bert_training_path.exists():
+                try:
+                    with open(bert_training_path, 'r') as f:
+                        training_data = json.load(f)
+                    
+                    # Get the ACTUAL model name from training results
+                    model_config = training_data.get('model_config', {})
+                    actual_model_name = model_config.get('model_name', training_data.get('model_name', 'nlpaueb/legal-bert-base-uncased'))
+                    metrics['clause_extraction']['model_name'] = actual_model_name
+                    
+                    # Get the ACTUAL test metrics (not fallbacks!)
+                    test_metrics = training_data.get('test_metrics', {})
+                    if test_metrics:
+                        # Use the REAL values from your training
+                        metrics['clause_extraction']['f1_score'] = test_metrics.get('f1_micro', 0.0)
+                        metrics['clause_extraction']['precision'] = test_metrics.get('precision_micro', 0.0)
+                        metrics['clause_extraction']['recall'] = test_metrics.get('recall_micro', 0.0)
+                        
+                        logger.info(f"INFO: Loaded REAL BERT metrics - Model: {actual_model_name}")
+                        logger.info(f"   F1: {metrics['clause_extraction']['f1_score']:.4f}")
+                        logger.info(f"   Precision: {metrics['clause_extraction']['precision']:.4f}")  
+                        logger.info(f"   Recall: {metrics['clause_extraction']['recall']:.4f}")
+                    else:
+                        # Try final validation metrics if no test_metrics
+                        val_history = training_data.get('training_history', {}).get('val_metrics', [])
+                        if val_history:
+                            final_val = val_history[-1]  # Last validation results
+                            metrics['clause_extraction']['f1_score'] = final_val.get('f1_micro', 0.0)
+                            metrics['clause_extraction']['precision'] = final_val.get('precision_micro', 0.0)
+                            metrics['clause_extraction']['recall'] = final_val.get('recall_micro', 0.0)
+                            logger.info(f"✅ Loaded validation metrics (no test metrics found)")
+                        else:
+                            logger.warning("❌ No test_metrics or validation metrics found in training results")
+                    
+                except Exception as e:
+                    logger.error(f"Error parsing BERT training results: {e}")
+                    metrics['clause_extraction']['model_name'] = 'nlpaueb/legal-bert-base-uncased'
+                    metrics['clause_extraction']['status'] = 'error'
+            else:
+                logger.warning(f"❌ BERT training results not found at {bert_training_path}")
+                metrics['clause_extraction']['model_name'] = 'bert-base-uncased'  # Fallback indicator
+                
+        except Exception as e:
+            logger.warning(f"Could not load clause extraction metrics: {e}")
+            metrics['clause_extraction']['status'] = 'error'
+    
+    # Get summarization metrics - LOAD ACTUAL T5 RESULTS  
+    if models.get('summarizer'):
+        try:
+            # First get model info
+            if hasattr(models['summarizer'], 'get_model_info'):
+                model_info = models['summarizer'].get_model_info()
+                metrics['summarization']['status'] = 'loaded' if model_info.get('model_loaded', False) else 'error'
+                base_model_name = model_info.get('model_name', 't5-base')
+                metrics['summarization']['model_name'] = base_model_name
+            
+            # Load ACTUAL T5 training results directly - NO FALLBACKS
+            project_root = Path(__file__).parent.parent
+            t5_training_path = project_root / 'models' / 't5' / 'training_results.json'
+            
+            if t5_training_path.exists():
+                try:
+                    with open(t5_training_path, 'r') as f:
+                        t5_data = json.load(f)
+                    
+                    # Get ACTUAL ROUGE scores from training results
+                    rouge_scores = t5_data.get('training_history', {}).get('rouge_scores', {})
+                    if rouge_scores:
+                        metrics['summarization']['rouge_1'] = rouge_scores.get('rouge1', 0.0)
+                        metrics['summarization']['rouge_2'] = rouge_scores.get('rouge2', 0.0) 
+                        metrics['summarization']['rouge_l'] = rouge_scores.get('rougeL', 0.0)
+                        
+                        logger.info(f"✅ Loaded REAL T5 metrics:")
+                        logger.info(f"   ROUGE-1: {metrics['summarization']['rouge_1']:.4f}")
+                        logger.info(f"   ROUGE-2: {metrics['summarization']['rouge_2']:.4f}")
+                        logger.info(f"   ROUGE-L: {metrics['summarization']['rouge_l']:.4f}")
+                    else:
+                        logger.warning("❌ No ROUGE scores found in T5 training results")
+                        
+                except Exception as e:
+                    logger.error(f"Error parsing T5 training results: {e}")
+            else:
+                logger.warning(f"❌ T5 training results not found at {t5_training_path}")
+                
+        except Exception as e:
+            logger.warning(f"Could not load summarization metrics: {e}")
+            metrics['summarization']['status'] = 'error'
+            metrics['summarization']['model_name'] = 't5-base'
+    
+    # Show what we loaded
+    logger.info("📊 Final loaded metrics:")
+    logger.info(f"   BERT F1: {metrics['clause_extraction']['f1_score']:.4f} ({'✅ Live' if metrics['clause_extraction']['f1_score'] > 0 else '❌ Missing'})")
+    logger.info(f"   T5 ROUGE-L: {metrics['summarization']['rouge_l']:.4f} ({'✅ Live' if metrics['summarization']['rouge_l'] > 0 else '❌ Missing'})")
+    
+    return metrics
+
+# Optional: Add a test function to verify it works
+# def test_metrics_function():
+#     """Test function to verify metrics loading works"""
+#     models = initialize_models()
+#     metrics = get_model_performance_metrics(models)
+#     st.write("🧪 **Metrics Test Results:**")
+#     st.json(metrics)
+#     return metrics
+
 def render_home_page():
-    """Render the home/overview page with improved layout"""
+    """Render the home/overview page with dynamic model information"""
     # Main header with better styling
     st.markdown("""
     <div class="main-header">
@@ -360,66 +575,104 @@ def render_home_page():
     </div>
     """, unsafe_allow_html=True)
     
-    # Feature overview with improved cards
-    st.markdown("<h2 style='text-align: center; color: #1f4e79; margin: 2rem 0;'> Core Features</h2>", unsafe_allow_html=True)
+    # Get dynamic metrics
+    models = initialize_models()
+    performance_metrics = get_model_performance_metrics(models)
+    
+    # Feature overview with DYNAMIC cards
+    # Interactive "Core Features" card with hover effect and consistent style
+    st.markdown("""
+    <div class="feature-card" style="
+        text-align: center;
+        background: linear-gradient(135deg, #e3ecfa 0%, #f5faff 100%);
+        color: white;
+        margin: 2rem 0 1.5rem 0;
+        padding: 1.5rem 1rem;
+        border-radius: 32px;
+        box-shadow: 0 4px 24px rgba(74,144,226,0.18), 0 1.5px 6px rgba(0,0,0,0.08);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        font-size: 2.1rem;
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    " onmouseover="this.style.background='linear-gradient(135deg, #d2e3fa 0%, #eaf6ff 100%)'; this.style.transform='scale(1.02)';"
+      onmouseout="this.style.background='linear-gradient(135deg, #e3ecfa 0%, #f5faff 100%)'; this.style.transform='scale(1)';">
+        Core Features
+        <div style="font-size: 1.1rem; font-weight: 400; margin-top: 0.5rem; color: #fff; opacity: 0.85;">
+            Explore clause extraction, summarization, and explainability below
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown("""
+        # Dynamic clause extraction metrics
+        clause_metrics = performance_metrics['clause_extraction']
+        f1_percentage = clause_metrics['f1_score'] * 100
+        num_clauses = clause_metrics['num_clause_types']
+        
+        st.markdown(f"""
         <div class="metric-card" style="color: #1f4e79;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
             <h4>Clause Extraction</h4>
-            <p><strong>41 Legal Clause Types</strong></p>
+            <p><strong>{num_clauses} Legal Clause Types</strong></p>
             <p>Multi-label BERT classification for comprehensive legal clause detection with clean, human-readable clause names and confidence scoring.</p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: #e7f3ff; border-radius: 5px; color: #0066cc;">
-                <small><strong>Accuracy:</strong> 89.2% F1-Score</small>
+                <small><strong>F1-Score:</strong> {f1_percentage:.1f}%</small>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
+        # Dynamic summarization metrics
+        summ_metrics = performance_metrics['summarization']
+        rouge_l = summ_metrics['rouge_l']
+        
+        st.markdown(f"""
         <div class="metric-card" style="color: #1f4e79;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
             <h4>Document Summarization</h4>
             <p><strong>T5-based Intelligence</strong></p>
             <p>Legal-optimized document summarization with extractive, abstractive, and hybrid summarization modes for different use cases.</p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: #fff3cd; border-radius: 5px; color: #0066cc;">
-                <small><strong>ROUGE-L:</strong> 0.847 Score</small>
+                <small><strong>ROUGE-L:</strong> {rouge_l:.3f} Score</small>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
-        st.markdown("""
+        # Dynamic explainability info
+        xai_methods = 4  # We'll make this dynamic in a later step
+        
+        st.markdown(f"""
         <div class="metric-card" style="color: #1f4e79;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
             <h4>AI Explainability</h4>
             <p><strong>SHAP, LIME & Attention</strong></p>
             <p>Comprehensive interpretability analysis to understand and trust AI decisions in critical legal document analysis.</p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: #d4edda; border-radius: 5px; color: #0066cc;">
-                <small><strong>Methods:</strong> 4 XAI Techniques</small>
+                <small><strong>Methods:</strong> {xai_methods} XAI Techniques</small>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
     # Quick start guide with FIXED formatting - use Markdown instead of HTML
-    st.markdown("## 📚 Quick Start Guide")
+    st.markdown("## Quick Start Guide")
 
     with st.expander("How to Use This Toolkit", expanded=True):
-        st.markdown("""
+        st.markdown(f"""
         ### 1. Clause Extraction
-        Upload or paste legal text to detect 41 different clause types simultaneously with confidence scoring and clean clause names.
+        Extract {num_clauses} different clause types with {f1_percentage:.1f}% F1-Score accuracy using our fine-tuned Legal-BERT model.
         
         ### 2. Document Summarization
-        Generate concise, accurate summaries of legal contracts using multiple summarization strategies optimized for legal language.
+        Generate summaries using {summ_metrics['model_name']} with {rouge_l:.3f} ROUGE-L score for legal document comprehension.
         
         ### 3. Explainability Analysis
-        Understand why the AI made specific predictions with SHAP, LIME, attention visualizations, and feature importance analysis.
+        Understand AI decisions using {xai_methods} available XAI methods including SHAP, LIME, attention visualizations, and feature importance.
         
         ### 4. Analytics Dashboard
-        Use the sidebar to navigate between analysis modes, configure settings, and view performance analytics.
+        Monitor real-time performance with live metrics from your actual model training results.
         
         ---
         
@@ -431,36 +684,219 @@ def render_home_page():
         - Export results in multiple formats for reporting and analysis
         """)
 
-    # Add a call-to-action section
-    st.markdown("""
-    <div style="text-align: center; margin: 2rem 0; padding: 2rem; background: linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%); color: white; border-radius: 15px;">
-        <h3 style="color: white; margin-bottom: 1rem;">Ready to Get Started? </h3>
-        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Choose an analysis mode from the sidebar to begin processing your legal documents with advanced AI.</p>
+    # Dynamic call-to-action based on model status
+    system_ready = (clause_metrics['status'] == 'loaded' and summ_metrics['status'] == 'loaded')
+    
+    if system_ready:
+        cta_color = "linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%)"
+        cta_text = "🚀 Ready to Get Started?"
+        cta_message = f"All systems operational with {f1_percentage:.1f}% F1-Score performance! Choose an analysis mode from the sidebar."
+    else:
+        cta_color = "linear-gradient(135deg, #856404 0%, #ffc107 100%)"
+        cta_text = "⚠️ Limited Functionality"
+        cta_message = "Some components are not fully loaded. You can still use available features."
+    
+    st.markdown(f"""
+    <div style="text-align: center; margin: 2rem 0; padding: 2rem; background: {cta_color}; color: white; border-radius: 15px;">
+        <h3 style="color: white; margin-bottom: 1rem;">{cta_text}</h3>
+        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">{cta_message}</p>
         <p style="font-size: 0.9rem; opacity: 0.9;">Built for legal professionals, researchers, and AI practitioners</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Model information section (optional)
+    # Dynamic model information section
     if st.checkbox("Show Model Information"):
         col1, col2 = st.columns(2)
         
         with col1:
             st.markdown("### BERT Clause Extractor")
-            st.info("""
-            - **Architecture**: Multi-label BERT
-            - **Clause Types**: 41 CUAD categories
-            - **Performance**: F1-macro optimized
-            - **Explainability**: SHAP + LIME ready
+            status_icon = "✅" if clause_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {clause_metrics['model_name']}
+            - **Status**: {status_icon} {clause_metrics['status'].title()}
+            - **Clause Types**: {clause_metrics['num_clause_types']} CUAD categories
+            - **F1-Score**: {clause_metrics['f1_score']:.3f}
+            - **Precision**: {clause_metrics['precision']:.3f}
+            - **Recall**: {clause_metrics['recall']:.3f}
             """)
         
         with col2:
             st.markdown("### T5 Summarizer")
-            st.info("""
-            - **Architecture**: T5-base fine-tuned
+            status_icon = "✅" if summ_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {summ_metrics['model_name']}
+            - **Status**: {status_icon} {summ_metrics['status'].title()}
+            - **ROUGE-1**: {summ_metrics['rouge_1']:.3f}
+            - **ROUGE-2**: {summ_metrics['rouge_2']:.3f}
+            - **ROUGE-L**: {summ_metrics['rouge_l']:.3f}
             - **Modes**: Abstractive, Extractive, Hybrid
-            - **Optimization**: Legal domain specific
-            - **Metrics**: ROUGE + Legal-specific
             """)
+
+    # TEMPORARY TEST - we'll remove this after verifying it works
+    # if st.button("🧪 Test Metrics Function"):
+    #     test_metrics_function()
+
+def render_home_page_old():
+    """Render the home/overview page - OLD VERSION"""
+    # Main header
+    st.markdown("# ⚖️ Legal NLP + Explainability Toolkit\nTowards Responsible AI in Legal Document Analysis")
+    
+    # Welcome message
+    st.markdown("""
+    <div class="feature-card">
+        <h3>Welcome to Advanced Legal AI</h3>
+        <p>
+            This comprehensive toolkit provides interpretable clause extraction, intelligent summarization, 
+            and detailed explainability analysis for legal document review and contract analysis.
+            Built with state-of-the-art transformer models and responsible AI principles.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Get dynamic metrics
+    models = initialize_models()
+    performance_metrics = get_model_performance_metrics(models)
+    
+    # Feature overview with DYNAMIC cards
+    st.markdown("## Core Features")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        # Dynamic clause extraction metrics
+        clause_metrics = performance_metrics['clause_extraction']
+        f1_percentage = clause_metrics['f1_score'] * 100
+        num_clauses = clause_metrics['num_clause_types']
+        
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">📋</div>
+            <div class="metric-info">
+                <h4>Clause Extraction</h4>
+                <p><strong>{num_clauses} Legal Clause Types</strong></p>
+                <p>Multi-label BERT classification for comprehensive legal clause detection.</p>
+                <div class="metric-value">
+                    <strong>F1-Score:</strong> {f1_percentage:.1f}%
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Dynamic summarization metrics
+        summ_metrics = performance_metrics['summarization']
+        rouge_l = summ_metrics['rouge_l']
+        
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">📄</div>
+            <div class="metric-info">
+                <h4>Document Summarization</h4>
+                <p><strong>T5-based Intelligence</strong></p>
+                <p>Legal-optimized document summarization with extractive and abstractive modes.</p>
+                <div class="metric-value">
+                    <strong>ROUGE-L:</strong> {rouge_l:.3f}
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        # Dynamic explainability info
+        xai_methods = 4  # We'll make this dynamic in a later step
+        
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">🔍</div>
+            <div class="metric-info">
+                <h4>AI Explainability</h4>
+                <p><strong>SHAP, LIME & Attention</strong></p>
+                <p>Comprehensive interpretability analysis to understand AI decisions.</p>
+                <div class="metric-value">
+                    <strong>Methods:</strong> {xai_methods} XAI Techniques
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Quick start guide with FIXED formatting - use Markdown instead of HTML
+    st.markdown("## Quick Start Guide")
+
+    with st.expander("How to Use This Toolkit", expanded=True):
+        st.markdown(f"""
+        ### 1. Clause Extraction
+        Extract {num_clauses} different clause types with {f1_percentage:.1f}% F1-Score accuracy using our fine-tuned Legal-BERT model.
+        
+        ### 2. Document Summarization
+        Generate summaries using {summ_metrics['model_name']} with {rouge_l:.3f} ROUGE-L score for legal document comprehension.
+        
+        ### 3. Explainability Analysis
+        Understand AI decisions using {xai_methods} available XAI methods including SHAP, LIME, attention visualizations, and feature importance.
+        
+        ### 4. Analytics Dashboard
+        Monitor real-time performance with live metrics from your actual model training results.
+        
+        ---
+        
+        ###  Pro Tips:
+        - Start with clause extraction to identify key contract provisions
+        - Use summarization for quick document overview and key points
+        - Apply explainability to understand AI reasoning for critical decisions
+        - Adjust confidence thresholds in the sidebar for optimal results
+        - Export results in multiple formats for reporting and analysis
+        """)
+
+    # Dynamic call-to-action based on model status
+    system_ready = (clause_metrics['status'] == 'loaded' and summ_metrics['status'] == 'loaded')
+    
+    if system_ready:
+        cta_color = "linear-gradient(135deg, #1f4e79 0%, #4a6fa5 100%)"
+        cta_text = "🚀 Ready to Get Started?"
+        cta_message = f"All systems operational with {f1_percentage:.1f}% F1-Score performance! Choose an analysis mode from the sidebar."
+    else:
+        cta_color = "linear-gradient(135deg, #856404 0%, #ffc107 100%)"
+        cta_text = "⚠️ Limited Functionality"
+        cta_message = "Some components are not fully loaded. You can still use available features."
+    
+    st.markdown(f"""
+    <div style="text-align: center; margin: 2rem 0; padding: 2rem; background: {cta_color}; color: white; border-radius: 15px;">
+        <h3 style="color: white; margin-bottom: 1rem;">{cta_text}</h3>
+        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">{cta_message}</p>
+        <p style="font-size: 0.9rem; opacity: 0.9;">Built for legal professionals, researchers, and AI practitioners</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Dynamic model information section
+    if st.checkbox("Show Model Information"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### 🤖 BERT Clause Extractor")
+            status_icon = "✅" if clause_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {clause_metrics['model_name']}
+            - **Status**: {status_icon} {clause_metrics['status'].title()}
+            - **Clause Types**: {clause_metrics['num_clause_types']} CUAD categories
+            - **F1-Score**: {clause_metrics['f1_score']:.3f}
+            - **Precision**: {clause_metrics['precision']:.3f}
+            - **Recall**: {clause_metrics['recall']:.3f}
+            """)
+        
+        with col2:
+            st.markdown("### 📝 T5 Summarizer")
+            status_icon = "✅" if summ_metrics['status'] == 'loaded' else "❌"
+            st.info(f"""
+            - **Model**: {summ_metrics['model_name']}
+            - **Status**: {status_icon} {summ_metrics['status'].title()}
+            - **ROUGE-1**: {summ_metrics['rouge_1']:.3f}
+            - **ROUGE-2**: {summ_metrics['rouge_2']:.3f}
+            - **ROUGE-L**: {summ_metrics['rouge_l']:.3f}
+            - **Modes**: Abstractive, Extractive, Hybrid
+            """)
+
+    # TEMPORARY TEST - we'll remove this after verifying it works
+    # if st.button("🧪 Test Metrics Function"):
+    #     test_metrics_function()
 
 def render_sidebar():
     """Render enhanced sidebar with navigation and settings"""
@@ -517,26 +953,49 @@ def render_sidebar():
     }
 
 def render_analytics_page(models: Dict):
-    """Render analytics and performance dashboard"""
+    """Render analytics and performance dashboard - LIVE DATA VERSION"""
     st.markdown("# 📊 Analytics Dashboard")
     
     if not models.get('evaluator'):
         st.warning("Analytics not available - evaluator not initialized")
         return
     
+    # Get live metrics for display
+    live_metrics = get_model_performance_metrics(models)
+    
     tab1, tab2, tab3 = st.tabs(["📈 Model Performance", "📋 Clause Analysis", "🔍 Usage Statistics"])
     
     with tab1:
-        st.markdown("## 🎯 Model Performance Metrics")
+        st.markdown("##  Model Performance Metrics")
         
-        # Load performance data
+        # Show live system metrics first
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            clause_f1 = live_metrics['clause_extraction']['f1_score']
+            st.metric("Clause F1 Score", f"{clause_f1:.3f}", delta=f"{'✅ Live' if clause_f1 > 0 else '❌ No Data'}")
+        
+        with col2:
+            clause_precision = live_metrics['clause_extraction']['precision']
+            st.metric("Clause Precision", f"{clause_precision:.3f}", delta=f"{'✅ Live' if clause_precision > 0 else '❌ No Data'}")
+        
+        with col3:
+            summ_rouge = live_metrics['summarization']['rouge_l']
+            st.metric("Summary ROUGE-L", f"{summ_rouge:.3f}", delta=f"{'✅ Live' if summ_rouge > 0 else '❌ No Data'}")
+        
+        with col4:
+            num_clauses = live_metrics['clause_extraction']['num_clause_types']
+            st.metric("Clause Types", num_clauses, delta=f"{'✅ Live' if num_clauses > 0 else '❌ No Data'}")
+        
+        # Load detailed performance data
         try:
             performance_data = models['evaluator'].load_clause_performance_data()
             if performance_data is not None:
+                st.markdown("###  Detailed Per-Clause Performance (Live Data)")
+                
                 col1, col2, col3, col4 = st.columns(4)
                 
                 with col1:
-                    # FIX: Use 'f1' instead of 'f1_score'
                     avg_f1 = performance_data['f1'].mean()
                     st.metric("Average F1 Score", f"{avg_f1:.3f}")
                 
@@ -553,13 +1012,12 @@ def render_analytics_page(models: Dict):
                     st.metric("Clause Types", total_clauses)
                 
                 # Performance visualization
-                st.markdown("### 📊 Per-Clause Performance")
+                st.markdown("###  Per-Clause Performance")
                 
                 # Create a cleaner display with proper column names
                 display_df = performance_data[['clause_name', 'precision', 'recall', 'f1', 'support', 'avg_confidence']].copy()
                 display_df.columns = ['Clause Name', 'Precision', 'Recall', 'F1 Score', 'Support', 'Avg Confidence']
                 
-                # FIX: Use 'f1' for sorting instead of 'f1_score'
                 display_df = display_df.sort_values('F1 Score', ascending=False)
                 
                 st.dataframe(
@@ -568,14 +1026,14 @@ def render_analytics_page(models: Dict):
                 )
                 
                 # Add performance visualization
-                st.markdown("### 📈 Performance Visualization")
+                st.markdown("###  Performance Visualization")
                 
                 # Create a performance chart
                 fig = px.bar(
                     x=performance_data['f1'].head(10),
                     y=performance_data['clause_name'].head(10),
                     orientation='h',
-                    title='Top 10 Clause Types by F1 Score',
+                    title='Top 10 Clause Types by F1 Score (Live Data)',
                     labels={'x': 'F1 Score', 'y': 'Clause Type'},
                     color=performance_data['f1'].head(10),
                     color_continuous_scale='RdYlGn'
@@ -584,34 +1042,57 @@ def render_analytics_page(models: Dict):
                 st.plotly_chart(fig, use_container_width=True)
                 
             else:
-                st.info("Performance data not available. Run model evaluation to generate metrics.")
+                st.info(" Detailed performance data not available. Run model evaluation to generate live metrics.")
         
         except Exception as e:
-            st.error(f"Error loading performance data: {e}")
+            st.error(f"Error loading live performance data: {e}")
             logger.error(f"Analytics error: {e}")
     
     with tab2:
-        st.markdown("## 📋 Clause Type Analysis")
-        
-        # Sample clause information
-        clause_info = {
-            'High Performance': ['License Grant', 'Agreement Date', 'Parties', 'Document Name'],
-            'Medium Performance': ['Governing Law', 'Termination', 'Insurance', 'Audit Rights'],
-            'Challenging': ['Most Favored Nation', 'Revenue Sharing', 'IP Ownership', 'Anti-Assignment']
-        }
+        st.markdown("##  Clause Type Analysis")
+
+        # Use live data if available, otherwise show sample
+        try:
+            performance_data = models['evaluator'].load_clause_performance_data()
+            if performance_data is not None:
+                # Create dynamic categories based on actual performance
+                high_perf = performance_data[performance_data['f1'] >= 0.8]['clause_name'].tolist()
+                medium_perf = performance_data[(performance_data['f1'] >= 0.6) & (performance_data['f1'] < 0.8)]['clause_name'].tolist()
+                low_perf = performance_data[performance_data['f1'] < 0.6]['clause_name'].tolist()
+                
+                clause_info = {
+                    f'High Performance (F1 ≥ 0.8) - {len(high_perf)} clauses': high_perf[:10],  # Show top 10
+                    f'Medium Performance (0.6 ≤ F1 < 0.8) - {len(medium_perf)} clauses': medium_perf[:10],
+                    f'Challenging (F1 < 0.6) - {len(low_perf)} clauses': low_perf[:10]
+                }
+            else:
+                # Fallback to sample data
+                clause_info = {
+                    'High Performance (Sample)': ['License Grant', 'Agreement Date', 'Parties', 'Document Name'],
+                    'Medium Performance (Sample)': ['Governing Law', 'Termination', 'Insurance', 'Audit Rights'],
+                    'Challenging (Sample)': ['Most Favored Nation', 'Revenue Sharing', 'IP Ownership', 'Anti-Assignment']
+                }
+        except Exception as e:
+            logger.error(f"Error categorizing clauses: {e}")
+            # Fallback to sample data
+            clause_info = {
+                'High Performance (Sample)': ['License Grant', 'Agreement Date', 'Parties', 'Document Name'],
+                'Medium Performance (Sample)': ['Governing Law', 'Termination', 'Insurance', 'Audit Rights'],
+                'Challenging (Sample)': ['Most Favored Nation', 'Revenue Sharing', 'IP Ownership', 'Anti-Assignment']
+            }
         
         for category, clauses in clause_info.items():
-            with st.expander(f"📊 {category} Clauses"):
+            with st.expander(f" {category}"):
                 for clause in clauses:
                     st.markdown(f"- **{clause}**")
     
     with tab3:
-        st.markdown("## 📈 Usage Statistics")
+        st.markdown("##  Usage Statistics")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 🔢 Session Statistics")
+            st.markdown("###  Session Statistics (Live)")
             if 'session_stats' not in st.session_state:
                 st.session_state.session_stats = {
                     'extractions': 0,
@@ -623,10 +1104,23 @@ def render_analytics_page(models: Dict):
             st.metric("Clause Extractions", stats['extractions'])
             st.metric("Summarizations", stats['summarizations'])
             st.metric("Explanations", stats['explanations'])
+            
+            # Show model status
+            st.markdown("###  Model Status (Live)")
+            clause_status = live_metrics['clause_extraction']['status']
+            summ_status = live_metrics['summarization']['status']
+            
+            st.write(f"**Clause Extractor:** {'✅ Loaded' if clause_status == 'loaded' else '❌ Error'}")
+            st.write(f"**Summarizer:** {'✅ Loaded' if summ_status == 'loaded' else '❌ Error'}")
         
         with col2:
-            st.markdown("### ⏱️ Performance Metrics")
-            st.info("Real-time performance tracking coming soon!")
+            st.markdown("###  Live Performance Metrics")
+            st.info(f"""
+            **Current System Performance:**
+            - F1-Score: {live_metrics['clause_extraction']['f1_score']:.3f}
+            - ROUGE-L: {live_metrics['summarization']['rouge_l']:.3f}
+            - Active Clause Types: {live_metrics['clause_extraction']['num_clause_types']}
+            """)
 
 def handle_error(error: Exception, context: str = ""):
     """Centralized error handling with user-friendly messages"""
@@ -755,9 +1249,22 @@ def main():
         # Footer
         st.markdown("---")
         st.markdown("""
-        <div style="text-align: center; color: #666; padding: 1rem;">
-        <p>⚖️ Legal NLP + Explainability Toolkit | Built for Responsible AI in Legal Document Analysis</p>
-        <p><small>For support or questions, please refer to the documentation or contact the development team.</small></p>
+        <div style="
+            text-align: center; 
+            color: white; 
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            border-radius: 20px;
+            margin-top: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        ">
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 0.5rem;">
+            ⚖️ Legal NLP + Explainability Toolkit | Built for Responsible AI in Legal Document Analysis
+            </p>
+            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin: 0;">
+            <small>For support or questions, please refer to the documentation or contact the development team.</small>
+            </p>
         </div>
         """, unsafe_allow_html=True)
         
