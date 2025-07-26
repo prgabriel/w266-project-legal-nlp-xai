@@ -505,7 +505,7 @@ def render_home_page():
     performance_metrics = get_model_performance_metrics(models)
     
     # Feature overview with DYNAMIC cards
-    st.markdown("<h2 style='text-align: center; color: #1f4e79; margin: 2rem 0;'>🚀 Core Features</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color: #1f4e79; margin: 2rem 0;'>Core Features</h2>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
