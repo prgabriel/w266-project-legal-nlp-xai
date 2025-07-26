@@ -1,0 +1,568 @@
+{
+  "training_history": {
+    "train_loss": [
+      0.6475555329654473,
+      0.4662527267691579,
+      0.3066703831273427,
+      0.1768915300340614,
+      0.11181301229542948,
+      0.07554103058684628,
+      0.056096503209185807,
+      0.038595638034701486,
+      0.030685850779044385,
+      0.02326409450840337,
+      0.01851444628323108,
+      0.01549938169811862,
+      0.013391912925048557,
+      0.012320488360264337,
+      0.011644891871208462
+    ],
+    "val_metrics": [
+      {
+        "loss": 0.6076678280983496,
+        "precision_micro": 0.6666666666666666,
+        "recall_micro": 0.023094688221709007,
+        "f1_micro": 0.044642857142857144,
+        "precision_macro": 0.024390243902439025,
+        "recall_macro": 0.01524390243902439,
+        "f1_macro": 0.01876172607879925,
+        "hamming_loss": 0.01198510262944191
+      },
+      {
+        "loss": 0.514228541198947,
+        "precision_micro": 0.2975206611570248,
+        "recall_micro": 0.08314087759815242,
+        "f1_micro": 0.1299638989169675,
+        "precision_macro": 0.09650787489307254,
+        "recall_macro": 0.06711225766103815,
+        "f1_macro": 0.06517615176151761,
+        "hamming_loss": 0.013497241746240654
+      },
+      {
+        "loss": 0.3442515380543853,
+        "precision_micro": 0.311284046692607,
+        "recall_micro": 0.18475750577367206,
+        "f1_micro": 0.2318840579710145,
+        "precision_macro": 0.10766730746125196,
+        "recall_macro": 0.13894100479466334,
+        "f1_macro": 0.09840135811793659,
+        "hamming_loss": 0.014841365405617316
+      },
+      {
+        "loss": 0.28948403961546376,
+        "precision_micro": 0.3728395061728395,
+        "recall_micro": 0.34872979214780603,
+        "f1_micro": 0.360381861575179,
+        "precision_macro": 0.1929120252399491,
+        "recall_macro": 0.23205336668751303,
+        "f1_macro": 0.18048017876850594,
+        "hamming_loss": 0.0150093808630394
+      },
+      {
+        "loss": 0.2907567851826412,
+        "precision_micro": 0.6323529411764706,
+        "recall_micro": 0.49653579676674364,
+        "f1_micro": 0.55627425614489,
+        "precision_macro": 0.2821762730027925,
+        "recall_macro": 0.2893864401181474,
+        "f1_macro": 0.26175134501961334,
+        "hamming_loss": 0.009604883649295735
+      },
+      {
+        "loss": 0.30810519954223836,
+        "precision_micro": 0.8222996515679443,
+        "recall_micro": 0.5450346420323325,
+        "f1_micro": 0.6555555555555556,
+        "precision_macro": 0.3788199469906787,
+        "recall_macro": 0.32194279974767775,
+        "f1_macro": 0.3394537898946636,
+        "hamming_loss": 0.006944638906779424
+      },
+      {
+        "loss": 0.28786618573539846,
+        "precision_micro": 0.707774798927614,
+        "recall_micro": 0.6096997690531177,
+        "f1_micro": 0.6550868486352357,
+        "precision_macro": 0.3631857606819265,
+        "recall_macro": 0.3506232250134689,
+        "f1_macro": 0.34657793915445784,
+        "hamming_loss": 0.007784716193889838
+      },
+      {
+        "loss": 0.3440763950732391,
+        "precision_micro": 0.8566775244299675,
+        "recall_micro": 0.6073903002309469,
+        "f1_micro": 0.7108108108108108,
+        "precision_macro": 0.4141084762715058,
+        "recall_macro": 0.35481318139854723,
+        "f1_macro": 0.378227486524702,
+        "hamming_loss": 0.005992551314720955
+      },
+      {
+        "loss": 0.2784523564837275,
+        "precision_micro": 0.8440366972477065,
+        "recall_micro": 0.6374133949191686,
+        "f1_micro": 0.7263157894736842,
+        "precision_macro": 0.4459704387618743,
+        "recall_macro": 0.3692199128784495,
+        "f1_macro": 0.3920294919316124,
+        "hamming_loss": 0.005824535857298871
+      },
+      {
+        "loss": 0.26987776130869334,
+        "precision_micro": 0.8584615384615385,
+        "recall_micro": 0.6443418013856813,
+        "f1_micro": 0.7361477572559367,
+        "precision_macro": 0.4240207173134002,
+        "recall_macro": 0.37502743868597527,
+        "f1_macro": 0.39402459734178913,
+        "hamming_loss": 0.005600515247402761
+      },
+      {
+        "loss": 0.3248028603420858,
+        "precision_micro": 0.8225352112676056,
+        "recall_micro": 0.674364896073903,
+        "f1_micro": 0.7411167512690355,
+        "precision_macro": 0.4286790754493319,
+        "recall_macro": 0.40479712699224896,
+        "f1_macro": 0.4123302464371479,
+        "hamming_loss": 0.0057125255523508165
+      },
+      {
+        "loss": 0.35245357715864367,
+        "precision_micro": 0.8796296296296297,
+        "recall_micro": 0.6581986143187067,
+        "f1_micro": 0.7529722589167768,
+        "precision_macro": 0.46155776678924637,
+        "recall_macro": 0.39311290335680577,
+        "f1_macro": 0.4144422736436514,
+        "hamming_loss": 0.005236481756321581
+      },
+      {
+        "loss": 0.33642531390389463,
+        "precision_micro": 0.8731117824773413,
+        "recall_micro": 0.6674364896073903,
+        "f1_micro": 0.756544502617801,
+        "precision_macro": 0.4539838616667885,
+        "recall_macro": 0.4039559627364505,
+        "f1_macro": 0.4206357116051632,
+        "hamming_loss": 0.005208479180084568
+      },
+      {
+        "loss": 0.3507389641583709,
+        "precision_micro": 0.8834355828220859,
+        "recall_micro": 0.6651270207852193,
+        "f1_micro": 0.758893280632411,
+        "precision_macro": 0.45671441397846485,
+        "recall_macro": 0.3980012128792617,
+        "f1_macro": 0.4228548297968044,
+        "hamming_loss": 0.0051244714513735265
+      },
+      {
+        "loss": 0.34949196863186827,
+        "precision_micro": 0.8926380368098159,
+        "recall_micro": 0.6720554272517321,
+        "f1_micro": 0.766798418972332,
+        "precision_macro": 0.4591507126568102,
+        "recall_macro": 0.40555845238772065,
+        "f1_macro": 0.4281992454321116,
+        "hamming_loss": 0.004956455993951444
+      }
+    ]
+  },
+  "test_metrics": {
+    "loss": 0.15713405985050885,
+    "precision_micro": 0.8921568627450981,
+    "recall_micro": 0.7036082474226805,
+    "f1_micro": 0.7867435158501441,
+    "precision_macro": 0.5125103148646478,
+    "recall_macro": 0.5135527098694678,
+    "f1_macro": 0.4904865021627939,
+    "hamming_loss": 0.004146761743321052
+  },
+  "per_class_metrics": [
+    {
+      "clean_clause_name": "Parties",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": null,
+      "predictions_made": 0,
+      "avg_probability": 0.0014922259142622352
+    },
+    {
+      "clean_clause_name": "No-Solicit Of Customers",
+      "precision": 0.7222222222222222,
+      "recall": 0.6842105263157895,
+      "f1": 0.7027027027027027,
+      "support": null,
+      "predictions_made": 18,
+      "avg_probability": 0.01676812581717968
+    },
+    {
+      "clean_clause_name": "Anti-Assignment",
+      "precision": 1.0,
+      "recall": 0.007936507936507936,
+      "f1": 0.015748031496062992,
+      "support": null,
+      "predictions_made": 1,
+      "avg_probability": 0.032756686210632324
+    },
+    {
+      "clean_clause_name": "Cap On Liability",
+      "precision": 1.0,
+      "recall": 0.8695652173913043,
+      "f1": 0.9302325581395349,
+      "support": null,
+      "predictions_made": 20,
+      "avg_probability": 0.015891682356595993
+    },
+    {
+      "clean_clause_name": "Volume Restriction",
+      "precision": 0.8333333333333334,
+      "recall": 0.9210526315789473,
+      "f1": 0.875,
+      "support": null,
+      "predictions_made": 42,
+      "avg_probability": 0.033304452896118164
+    },
+    {
+      "clean_clause_name": "No-Solicit Of Employees",
+      "precision": 0.8888888888888888,
+      "recall": 0.9411764705882353,
+      "f1": 0.9142857142857143,
+      "support": null,
+      "predictions_made": 18,
+      "avg_probability": 0.015321304090321064
+    },
+    {
+      "clean_clause_name": "Price Restrictions",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": null,
+      "predictions_made": 0,
+      "avg_probability": 0.0013452668208628893
+    },
+    {
+      "clean_clause_name": "Post-Termination Services",
+      "precision": 0.8723404255319149,
+      "recall": 0.7884615384615384,
+      "f1": 0.8282828282828283,
+      "support": null,
+      "predictions_made": 47,
+      "avg_probability": 0.034758999943733215
+    },
+    {
+      "clean_clause_name": "Non-Disparagement",
+      "precision": 0.6923076923076923,
+      "recall": 0.75,
+      "f1": 0.72,
+      "support": null,
+      "predictions_made": 13,
+      "avg_probability": 0.01392366923391819
+    },
+    {
+      "clean_clause_name": "Notice Period To Terminate Renewal",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": null,
+      "predictions_made": 0,
+      "avg_probability": 0.0017184241442009807
+    },
+    {
+      "clean_clause_name": "Affiliate License-Licensor",
+      "precision": 0.75,
+      "recall": 0.8823529411764706,
+      "f1": 0.8108108108108109,
+      "support": null,
+      "predictions_made": 20,
+      "avg_probability": 0.017087507992982864
+    },
+    {
+      "clean_clause_name": "Agreement Date",
+      "precision": 0.9277777777777778,
+      "recall": 0.893048128342246,
+      "f1": 0.9100817438692098,
+      "support": null,
+      "predictions_made": 180,
+      "avg_probability": 0.11359981447458267
+    },
+    {
+      "clean_clause_name": "Expiration Date",
+      "precision": 1.0,
+      "recall": 0.9761904761904762,
+      "f1": 0.9879518072289156,
+      "support": null,
+      "predictions_made": 41,
+      "avg_probability": 0.028470195829868317
+    },
+    {
+      "clean_clause_name": "Insurance",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": null,
+      "predictions_made": 0,
+      "avg_probability": 0.004567526280879974
+    },
+    {
+      "clean_clause_name": "Irrevocable Or Perpetual License",
+      "precision": 0.9615384615384616,
+      "recall": 1.0,
+      "f1": 0.9803921568627451,
+      "support": null,
+      "predictions_made": 26,
+      "avg_probability": 0.019834864884614944
+    },
+    {
+      "clean_clause_name": "Competitive Restriction Exception",
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1": 0.875,
+      "support": null,
+      "predictions_made": 24,
+      "avg_probability": 0.0191432423889637
+    },
+    {
+      "clean_clause_name": "Liquidated Damages",
+      "precision": 0.2,
+      "recall": 1.0,
+      "f1": 0.3333333333333333,
+      "support": null,
+      "predictions_made": 5,
+      "avg_probability": 0.006631902884691954
+    },
+    {
+      "clean_clause_name": "Unlimited/All-You-Can-Eat-License",
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "support": null,
+      "predictions_made": 2,
+      "avg_probability": 0.005800824612379074
+    },
+    {
+      "clean_clause_name": "Effective Date",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": null,
+      "predictions_made": 2,
+      "avg_probability": 0.0033940409775823355
+    },
+    {
+      "clean_clause_name": "Change Of Control",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": null,
+      "predictions_made": 0,
+      "avg_probability": 0.0015894880052655935
+    },
+    {
+      "clean_clause_name": "Non-Compete",
+      "precision": 0.8888888888888888,
+      "recall": 0.6857142857142857,
+      "f1": 0.7741935483870968,
+      "support": null,
+      "predictions_made": 27,
+      "avg_probability": 0.022703956812620163
+    },
+    {
+      "clean_clause_name": "Revenue/Profit Sharing",
+      "precision": 1.0,
+      "recall": 0.8571428571428571,
+      "f1": 0.9230769230769231,
+      "support": null,
+      "predictions_made": 18,
+      "avg_probability": 0.014018544927239418
+    },
+    {
+      "clean_clause_name": "Termination For Convenience",
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "support": null,
+      "predictions_made": 3,
+      "avg_probability": 0.005127102602273226
+    },
+    {
+      "clean_clause_name": "Governing Law",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": null,
+      "predictions_made": 0,
+      "avg_probability": 0.0011956739472225308
+    },
+    {
+      "clean_clause_name": "Covenant Not To Sue",
+      "precision": 0.8709677419354839,
+      "recall": 0.9642857142857143,
+      "f1": 0.9152542372881356,
+      "support": null,
+      "predictions_made": 31,
+      "avg_probability": 0.023967474699020386
+    },
+    {
+      "clean_clause_name": "License Grant",
+      "precision": 1.0,
+      "recall": 0.8333333333333334,
+      "f1": 0.9090909090909091,
+      "support": null,
+      "predictions_made": 10,
+      "avg_probability": 0.009707039222121239
+    },
+    {
+      "clean_clause_name": "Third Party Beneficiary",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": null,
+      "predictions_made": 7,
+      "avg_probability": 0.006382889114320278
+    },
+    {
+      "clean_clause_name": "Minimum Commitment",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": null,
+      "predictions_made": 0,
+      "avg_probability": 0.007464322727173567
+    },
+    {
+      "clean_clause_name": "Source Code Escrow",
+      "precision": 0.8947368421052632,
+      "recall": 0.85,
+      "f1": 0.8717948717948718,
+      "support": null,
+      "predictions_made": 19,
+      "avg_probability": 0.016896164044737816
+    },
+    {
+      "clean_clause_name": "Rofr/Rofo/Rofn",
+      "precision": 0.8571428571428571,
+      "recall": 0.8,
+      "f1": 0.8275862068965517,
+      "support": null,
+      "predictions_made": 14,
+      "avg_probability": 0.014759941957890987
+    },
+    {
+      "clean_clause_name": "Non-Transferable License",
+      "precision": 0.6666666666666666,
+      "recall": 1.0,
+      "f1": 0.8,
+      "support": null,
+      "predictions_made": 6,
+      "avg_probability": 0.008705547079443932
+    },
+    {
+      "clean_clause_name": "Document Name",
+      "precision": 0.9444444444444444,
+      "recall": 0.8095238095238095,
+      "f1": 0.8717948717948718,
+      "support": null,
+      "predictions_made": 18,
+      "avg_probability": 0.013301610946655273
+    }
+  ],
+  "clean_clause_names": [
+    "Parties",
+    "Joint Ip Ownership",
+    "No-Solicit Of Customers",
+    "Anti-Assignment",
+    "Cap On Liability",
+    "Volume Restriction",
+    "No-Solicit Of Employees",
+    "Exclusivity",
+    "Price Restrictions",
+    "Post-Termination Services",
+    "Non-Disparagement",
+    "Notice Period To Terminate Renewal",
+    "Affiliate License-Licensor",
+    "Agreement Date",
+    "Expiration Date",
+    "Insurance",
+    "Affiliate License-Licensee",
+    "Most Favored Nation",
+    "Irrevocable Or Perpetual License",
+    "Ip Ownership Assignment",
+    "Competitive Restriction Exception",
+    "Renewal Term",
+    "Liquidated Damages",
+    "Warranty Duration",
+    "Unlimited/All-You-Can-Eat-License",
+    "Effective Date",
+    "Uncapped Liability",
+    "Change Of Control",
+    "Non-Compete",
+    "Revenue/Profit Sharing",
+    "Termination For Convenience",
+    "Governing Law",
+    "Covenant Not To Sue",
+    "License Grant",
+    "Third Party Beneficiary",
+    "Minimum Commitment",
+    "Source Code Escrow",
+    "Rofr/Rofo/Rofn",
+    "Audit Rights",
+    "Non-Transferable License",
+    "Document Name"
+  ],
+  "original_to_clean_mapping": {
+    "Highlight the parts (if any) of this contract related to \"Affiliate License-Licensee\" that should be reviewed by a lawyer. Details: Does the contract contain a license grant to a licensee (incl. sublicensor) and the affiliates of such licensee/sublicensor?": "Affiliate License-Licensee",
+    "Highlight the parts (if any) of this contract related to \"Affiliate License-Licensor\" that should be reviewed by a lawyer. Details: Does the contract contain a license grant by affiliates of the licensor or that includes intellectual property of affiliates of the licensor?\u00a0": "Affiliate License-Licensor",
+    "Highlight the parts (if any) of this contract related to \"Agreement Date\" that should be reviewed by a lawyer. Details: The date of the contract": "Agreement Date",
+    "Highlight the parts (if any) of this contract related to \"Anti-Assignment\" that should be reviewed by a lawyer. Details: Is consent or notice required of a party if the contract is assigned to a third party?": "Anti-Assignment",
+    "Highlight the parts (if any) of this contract related to \"Audit Rights\" that should be reviewed by a lawyer. Details: Does a party have the right to\u00a0 audit the books, records, or physical locations of the counterparty to ensure compliance with the contract?": "Audit Rights",
+    "Highlight the parts (if any) of this contract related to \"Cap On Liability\" that should be reviewed by a lawyer. Details: Does the contract include a cap on liability upon the breach of a party\u2019s obligation? This includes time limitation for the counterparty to bring claims or maximum amount for recovery.": "Cap On Liability",
+    "Highlight the parts (if any) of this contract related to \"Change Of Control\" that should be reviewed by a lawyer. Details: Does one party have the right to terminate or is consent or notice required of the counterparty if such party undergoes a change of control, such as a merger, stock sale, transfer of all or substantially all of its assets or business, or assignment by operation of law?": "Change Of Control",
+    "Highlight the parts (if any) of this contract related to \"Competitive Restriction Exception\" that should be reviewed by a lawyer. Details: This category includes the exceptions or carveouts to Non-Compete, Exclusivity and No-Solicit of Customers above.": "Competitive Restriction Exception",
+    "Highlight the parts (if any) of this contract related to \"Covenant Not To Sue\" that should be reviewed by a lawyer. Details: Is a party restricted from contesting the validity of the counterparty\u2019s ownership of intellectual property or otherwise bringing a claim against the counterparty for matters unrelated to the contract?": "Covenant Not To Sue",
+    "Highlight the parts (if any) of this contract related to \"Document Name\" that should be reviewed by a lawyer. Details: The name of the contract": "Document Name",
+    "Highlight the parts (if any) of this contract related to \"Effective Date\" that should be reviewed by a lawyer. Details: The date when the contract is effective\u00a0": "Effective Date",
+    "Highlight the parts (if any) of this contract related to \"Exclusivity\" that should be reviewed by a lawyer. Details: Is there an exclusive dealing\u00a0 commitment with the counterparty? This includes a commitment to procure all \u201crequirements\u201d from one party of certain technology, goods, or services or a prohibition on licensing or selling technology, goods or services to third parties, or a prohibition on\u00a0 collaborating or working with other parties), whether during the contract or\u00a0 after the contract ends (or both).": "Exclusivity",
+    "Highlight the parts (if any) of this contract related to \"Expiration Date\" that should be reviewed by a lawyer. Details: On what date will the contract's initial term expire?": "Expiration Date",
+    "Highlight the parts (if any) of this contract related to \"Governing Law\" that should be reviewed by a lawyer. Details: Which state/country's law governs the interpretation of the contract?": "Governing Law",
+    "Highlight the parts (if any) of this contract related to \"Insurance\" that should be reviewed by a lawyer. Details: Is there a requirement for insurance that must be maintained by one party for the benefit of the counterparty?": "Insurance",
+    "Highlight the parts (if any) of this contract related to \"Ip Ownership Assignment\" that should be reviewed by a lawyer. Details: Does intellectual property created\u00a0 by one party become the property of the counterparty, either per the terms of the contract or upon the occurrence of certain events?": "Ip Ownership Assignment",
+    "Highlight the parts (if any) of this contract related to \"Irrevocable Or Perpetual License\" that should be reviewed by a lawyer. Details: Does the contract contain a\u00a0 license grant that is irrevocable or perpetual?": "Irrevocable Or Perpetual License",
+    "Highlight the parts (if any) of this contract related to \"Joint Ip Ownership\" that should be reviewed by a lawyer. Details: Is there any clause providing for joint or shared ownership of intellectual property between the parties to the contract?": "Joint Ip Ownership",
+    "Highlight the parts (if any) of this contract related to \"License Grant\" that should be reviewed by a lawyer. Details: Does the contract contain a license granted by one party to its counterparty?": "License Grant",
+    "Highlight the parts (if any) of this contract related to \"Liquidated Damages\" that should be reviewed by a lawyer. Details: Does the contract contain a clause that would award either party liquidated damages for breach or a fee upon the termination of a contract (termination fee)?": "Liquidated Damages",
+    "Highlight the parts (if any) of this contract related to \"Minimum Commitment\" that should be reviewed by a lawyer. Details: Is there a minimum order size or minimum amount or units per-time period that one party must buy from the counterparty under the contract?": "Minimum Commitment",
+    "Highlight the parts (if any) of this contract related to \"Most Favored Nation\" that should be reviewed by a lawyer. Details: Is there a clause that if a third party gets better terms on the licensing or sale of technology/goods/services described in the contract, the buyer of such technology/goods/services under the contract shall be entitled to those better terms?": "Most Favored Nation",
+    "Highlight the parts (if any) of this contract related to \"No-Solicit Of Customers\" that should be reviewed by a lawyer. Details: Is a party restricted from contracting or soliciting customers or partners of the counterparty, whether during the contract or after the contract ends (or both)?": "No-Solicit Of Customers",
+    "Highlight the parts (if any) of this contract related to \"No-Solicit Of Employees\" that should be reviewed by a lawyer. Details: Is there a restriction on a party\u2019s soliciting or hiring employees and/or contractors from the\u00a0 counterparty, whether during the contract or after the contract ends (or both)?": "No-Solicit Of Employees",
+    "Highlight the parts (if any) of this contract related to \"Non-Compete\" that should be reviewed by a lawyer. Details: Is there a restriction on the ability of a party to compete with the counterparty or operate in a certain geography or business or technology sector?\u00a0": "Non-Compete",
+    "Highlight the parts (if any) of this contract related to \"Non-Disparagement\" that should be reviewed by a lawyer. Details: Is there a requirement on a party not to disparage the counterparty?": "Non-Disparagement",
+    "Highlight the parts (if any) of this contract related to \"Non-Transferable License\" that should be reviewed by a lawyer. Details: Does the contract limit the ability of a party to transfer the license being granted to a third party?": "Non-Transferable License",
+    "Highlight the parts (if any) of this contract related to \"Notice Period To Terminate Renewal\" that should be reviewed by a lawyer. Details: What is the notice period required to terminate renewal?": "Notice Period To Terminate Renewal",
+    "Highlight the parts (if any) of this contract related to \"Parties\" that should be reviewed by a lawyer. Details: The two or more parties who signed the contract": "Parties",
+    "Highlight the parts (if any) of this contract related to \"Post-Termination Services\" that should be reviewed by a lawyer. Details: Is a party subject to obligations after the termination or expiration of a contract, including any post-termination transition, payment, transfer of IP, wind-down, last-buy, or similar commitments?": "Post-Termination Services",
+    "Highlight the parts (if any) of this contract related to \"Price Restrictions\" that should be reviewed by a lawyer. Details: Is there a restriction on the\u00a0 ability of a party to raise or reduce prices of technology, goods, or\u00a0 services provided?": "Price Restrictions",
+    "Highlight the parts (if any) of this contract related to \"Renewal Term\" that should be reviewed by a lawyer. Details: What is the renewal term after the initial term expires? This includes automatic extensions and unilateral extensions with prior notice.": "Renewal Term",
+    "Highlight the parts (if any) of this contract related to \"Revenue/Profit Sharing\" that should be reviewed by a lawyer. Details: Is one party required to share revenue or profit with the counterparty for any technology, goods, or\u00a0services?": "Revenue/Profit Sharing",
+    "Highlight the parts (if any) of this contract related to \"Rofr/Rofo/Rofn\" that should be reviewed by a lawyer. Details: Is there a clause granting one party a right of first refusal, right of first offer or right of first negotiation to purchase, license, market, or distribute equity interest, technology, assets, products or services?": "Rofr/Rofo/Rofn",
+    "Highlight the parts (if any) of this contract related to \"Source Code Escrow\" that should be reviewed by a lawyer. Details: Is one party required to deposit its source code into escrow with a third party, which can be released to the counterparty upon the occurrence of certain events (bankruptcy,\u00a0 insolvency, etc.)?": "Source Code Escrow",
+    "Highlight the parts (if any) of this contract related to \"Termination For Convenience\" that should be reviewed by a lawyer. Details: Can a party terminate this\u00a0 contract without cause (solely by giving a notice and allowing a waiting\u00a0 period to expire)?": "Termination For Convenience",
+    "Highlight the parts (if any) of this contract related to \"Third Party Beneficiary\" that should be reviewed by a lawyer. Details: Is there a non-contracting party who is a beneficiary to some or all of the clauses in the contract and therefore can enforce its rights against a contracting party?": "Third Party Beneficiary",
+    "Highlight the parts (if any) of this contract related to \"Uncapped Liability\" that should be reviewed by a lawyer. Details: Is a party\u2019s liability uncapped upon the breach of its obligation in the contract? This also includes uncap liability for a particular type of breach such as IP infringement or breach of confidentiality obligation.": "Uncapped Liability",
+    "Highlight the parts (if any) of this contract related to \"Unlimited/All-You-Can-Eat-License\" that should be reviewed by a lawyer. Details: Is there a clause granting one party an \u201centerprise,\u201d \u201call you can eat\u201d or unlimited usage license?": "Unlimited/All-You-Can-Eat-License",
+    "Highlight the parts (if any) of this contract related to \"Volume Restriction\" that should be reviewed by a lawyer. Details: Is there a fee increase or consent requirement, etc. if one party\u2019s use of the product/services exceeds certain threshold?": "Volume Restriction",
+    "Highlight the parts (if any) of this contract related to \"Warranty Duration\" that should be reviewed by a lawyer. Details: What is the duration of any\u00a0 warranty against defects or errors in technology, products, or services\u00a0 provided under the contract?": "Warranty Duration"
+  },
+  "model_config": {
+    "model_name": "bert-base-uncased",
+    "max_length": 512,
+    "batch_size": 8,
+    "learning_rate": 2e-05,
+    "epochs": 15,
+    "num_labels": 41,
+    "uses_clean_clause_names": true
+  }
+}

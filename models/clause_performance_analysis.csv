@@ -1,0 +1,11 @@
+clause_name,clause_type,precision,recall,f1,support,avg_confidence,tp,fp,tn,fn
+Affiliate License Licensee,Legal clause: Affiliate License Licensee,0.0,0.0,0.0,0,0.0,0,0,50,0
+Affiliate License Licensor,Legal clause: Affiliate License Licensor,0.0,0.0,0.0,0,0.0,0,0,50,0
+Agreement Date,Legal clause: Agreement Date,0.02,1.0,0.0392156862745098,1,0.4424543088674545,1,49,0,0
+Anti Assignment,Legal clause: Anti Assignment,0.0,0.0,0.0,3,0.0,0,0,47,3
+Audit Rights,Legal clause: Audit Rights,0.0,0.0,0.0,0,0.4406328535079956,0,50,0,0
+Cap On Liability,Legal clause: Cap On Liability,0.0,0.0,0.0,0,0.5135050290822982,0,50,0,0
+Change Of Control,Legal clause: Change Of Control,0.02,1.0,0.0392156862745098,1,0.6205129158496857,1,49,0,0
+Competitive Restriction Except,Legal clause: Competitive Restriction Except,0.0,0.0,0.0,0,0.0,0,0,50,0
+Covenant Not To Sue,Legal clause: Covenant Not To Sue,0.0,0.0,0.0,0,0.36304687082767484,0,50,0,0
+Document Name,Legal clause: Document Name,0.04,1.0,0.07692307692307693,2,0.5051326149702072,2,48,0,0
