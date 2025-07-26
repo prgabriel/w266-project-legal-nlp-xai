@@ -168,7 +168,6 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             with open(models_dir / 'training_results.json', 'w') as f:
                 json.dump(training_results, f, indent=2)
         
-        # Define extraction configuration parameters in a single dictionary to avoid duplication
         extraction_config_params = {
             'confidence_threshold': 0.3,
             'max_length': 512,
