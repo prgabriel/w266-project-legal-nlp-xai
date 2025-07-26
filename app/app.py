@@ -97,33 +97,39 @@ logger = logging.getLogger(__name__)
 
 # Custom CSS for enhanced styling
 def load_custom_css():
-    """Load custom CSS with blue background and white text theme"""
+    """Load custom CSS with extra rounded blue background theme"""
     st.markdown("""
     <style>
-    /* Import the enhanced blue background stylesheet */
+    /* Import the enhanced rounded blue background stylesheet */
     @import url('static/styles.css');
     
-    /* Streamlit-specific overrides for blue background theme */
+    /* Streamlit-specific overrides for extra rounded blue theme */
     .stApp {
         background: linear-gradient(135deg, #1A4480 0%, #2E5BBA 50%, #4A90E2 100%);
         color: white;
     }
     
-    /* Enhanced main header */
+    /* Enhanced main header - extra rounded */
     .main-header {
         font-size: 3.2rem;
         font-weight: bold;
         text-align: center;
         color: white;
         margin-bottom: 2rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
         padding: 3rem 2rem;
         background: linear-gradient(135deg, #4A90E2 0%, #2E5BBA 50%, #6BA4E8 100%);
-        border-radius: 20px;
+        border-radius: 36px;                    /* Extra rounded header */
         position: relative;
         overflow: hidden;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
         border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .main-header:hover {
+        border-radius: 50px;                    /* Even more rounded on hover */
+        transform: scale(1.02);
     }
     
     .main-header::before {
@@ -131,11 +137,11 @@ def load_custom_css():
         position: absolute;
         top: -50%;
         right: -20%;
-        width: 200px;
-        height: 200px;
+        width: 220px;
+        height: 220px;
         background: #FFD700;
         border-radius: 50%;
-        opacity: 0.2;
+        opacity: 0.15;
     }
     
     .main-header::after {
@@ -143,25 +149,34 @@ def load_custom_css():
         position: absolute;
         bottom: -30%;
         left: -10%;
-        width: 150px;
-        height: 150px;
+        width: 170px;
+        height: 170px;
         background: #FF6B6B;
         border-radius: 50%;
-        opacity: 0.2;
+        opacity: 0.15;
     }
     
-    /* Sidebar styling */
+    /* Sidebar styling - rounded */
     .css-1d391kg {
         background: linear-gradient(180deg, #2E5BBA 0%, #1A4480 100%);
         color: white;
+        border-radius: 0 28px 28px 0;           /* Rounded right edge */
     }
     
-    /* Fix metric cards to be more visible */
+    /* Fix metric cards to be extra rounded */
     .metric-card {
         background: rgba(255, 255, 255, 0.15) !important;
         border: 2px solid rgba(255, 255, 255, 0.3) !important;
         color: white !important;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
+        border-radius: 28px !important;         /* Extra rounded cards */
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .metric-card:hover {
+        border-radius: 36px !important;        /* Even more rounded on hover */
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
     }
     
     .metric-card h4 {
@@ -176,12 +191,19 @@ def load_custom_css():
         color: #FFD700 !important;
     }
     
-    /* Feature cards visibility */
+    /* Feature cards extra rounded */
     .feature-card {
         background: rgba(255, 255, 255, 0.15) !important;
         border: 2px solid rgba(255, 255, 255, 0.3) !important;
         color: white !important;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
+        border-radius: 28px !important;         /* Extra rounded */
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .feature-card:hover {
+        border-radius: 36px !important;        /* Even more rounded on hover */
+        transform: translateY(-8px) scale(1.02);
     }
     
     .feature-card h3 {
@@ -190,6 +212,89 @@ def load_custom_css():
     
     .feature-card p {
         color: #E0E0E0 !important;
+    }
+    
+    /* Performance indicator boxes - rounded */
+    .metric-card div[style*="background"] {
+        border-radius: 20px !important;
+        padding: 12px !important;
+        margin-top: 16px !important;
+    }
+    
+    /* Streamlit buttons - extra rounded */
+    .stButton > button {
+        border-radius: 50px !important;        /* Super rounded buttons */
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        color: #1A4480;
+        font-weight: 600;
+        padding: 12px 32px;
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
+        border: none;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 16px 40px rgba(255, 215, 0, 0.4);
+        border-radius: 50px !important;
+    }
+    
+    /* Streamlit selectbox - rounded */
+    .stSelectbox > div > div {
+        border-radius: 20px !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 200ms ease;
+    }
+    
+    .stSelectbox > div > div:hover {
+        border-radius: 28px !important;
+        border-color: #FFD700;
+    }
+    
+    /* Streamlit expander - rounded */
+    .streamlit-expanderHeader {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .streamlit-expanderContent {
+        border-radius: 0 0 20px 20px !important;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+    }
+    
+    /* Streamlit checkbox - rounded */
+    .stCheckbox > label {
+        border-radius: 12px !important;
+        padding: 8px 12px;
+        transition: all 200ms ease;
+    }
+    
+    .stCheckbox > label:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px !important;
+    }
+    
+    /* Streamlit slider - rounded track */
+    .stSlider > div > div > div > div {
+        border-radius: 20px !important;
+    }
+    
+    /* Call-to-action section - extra rounded */
+    .cta-section {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+        color: #1A4480 !important;
+        border-radius: 36px !important;
+        transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .cta-section:hover {
+        border-radius: 50px !important;
+        transform: scale(1.02);
     }
     
     /* Fix text visibility in all components */
@@ -201,10 +306,18 @@ def load_custom_css():
         color: #E0E0E0 !important;
     }
     
-    /* Call-to-action section */
-    .cta-section {
-        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
-        color: #1A4480 !important;
+    /* Streamlit info boxes - rounded */
+    .stAlert {
+        border-radius: 20px !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Streamlit dataframe - rounded */
+    .stDataFrame {
+        border-radius: 20px !important;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
     </style>
     """, unsafe_allow_html=True)

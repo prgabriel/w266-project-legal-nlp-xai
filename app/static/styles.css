@@ -2,7 +2,7 @@
 
 /* 
 Legal NLP + Explainability Toolkit - Enhanced CSS Styles
-Blue background with white text design
+Blue background with rounded, soft edges design
 */
 
 /* =========================================================================
@@ -19,22 +19,15 @@ Blue background with white text design
     --accent-coral: #FF6B6B;
     --white: #FFFFFF;
     --light-gray: #F8F9FA;
-    --dark-text: #FFFFFF;  /* Changed to white */
-    --medium-gray: #E0E0E0;  /* Lighter for visibility */
+    --dark-text: #FFFFFF;
+    --medium-gray: #E0E0E0;
     
     /* Main background colors */
-    --bg-primary: var(--deep-blue);  /* Blue background */
+    --bg-primary: var(--deep-blue);
     --bg-secondary: var(--primary-blue);
     --bg-tertiary: var(--light-blue);
-    --bg-card: rgba(255, 255, 255, 0.1);  /* Semi-transparent white for cards */
+    --bg-card: rgba(255, 255, 255, 0.1);
     --bg-card-hover: rgba(255, 255, 255, 0.2);
-    
-    /* Legacy Legal Theme Colors - updated for dark theme */
-    --legal-primary: var(--primary-blue);
-    --legal-secondary: var(--light-blue);
-    --legal-accent: var(--accent-yellow);
-    --legal-dark: var(--dark-blue);
-    --legal-light: rgba(255, 255, 255, 0.1);
     
     /* Text colors for dark theme */
     --text-primary: var(--white);
@@ -61,23 +54,25 @@ Blue background with white text design
     --spacing-xl: 2rem;
     --spacing-xxl: 3rem;
     
-    /* Borders & Shadows */
-    --border-radius: 12px;
-    --border-radius-sm: 6px;
-    --border-radius-lg: 16px;
-    --border-radius-xl: 20px;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+    /* Enhanced Rounded Borders & Shadows */
+    --border-radius: 20px;        /* Increased from 12px */
+    --border-radius-sm: 12px;     /* Increased from 6px */
+    --border-radius-lg: 28px;     /* Increased from 16px */
+    --border-radius-xl: 36px;     /* Increased from 20px */
+    --border-radius-xxl: 50px;    /* New extra large radius */
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.25);
+    --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.3);
     
     /* Transitions */
-    --transition-fast: 150ms ease-in-out;
-    --transition-normal: 300ms ease-in-out;
-    --transition-slow: 500ms ease-in-out;
+    --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* =========================================================================
-   BASE STYLES - Blue Background Theme
+   BASE STYLES - Rounded Blue Background Theme
 ========================================================================= */
 * {
     box-sizing: border-box;
@@ -105,13 +100,14 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     font-size: 2.8rem;
     font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
     color: var(--white);
 }
 
 h2 {
     font-size: 2.2rem;
     border-bottom: 3px solid var(--accent-yellow);
+    border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
     padding-bottom: var(--spacing-sm);
     margin-bottom: var(--spacing-lg);
     color: var(--white);
@@ -133,30 +129,31 @@ p {
 }
 
 /* =========================================================================
-   LAYOUT COMPONENTS - Blue Theme
+   LAYOUT COMPONENTS - Rounded Blue Theme
 ========================================================================= */
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
     background: transparent;
     min-height: 100vh;
+    border-radius: var(--border-radius-xl);
 }
 
 .container {
     max-width: 900px;
     margin: 0 auto;
     background: var(--bg-card);
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
+    padding: var(--spacing-xxl);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-lg);
     margin-bottom: var(--spacing-xl);
-    border: 1px solid var(--border-color);
-    backdrop-filter: blur(10px);
+    border: 2px solid var(--border-color);
+    backdrop-filter: blur(15px);
 }
 
 /* =========================================================================
-   FEATURE CARDS - Enhanced for Blue Theme
+   FEATURE CARDS - Extra Rounded for Blue Theme
 ========================================================================= */
 .feature-grid {
     display: grid;
@@ -168,20 +165,21 @@ p {
 .feature-card {
     background: var(--bg-card);
     border: 2px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-xl);     /* Extra rounded */
+    padding: var(--spacing-xxl);
     transition: all var(--transition-normal);
     position: relative;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-xl);
     background: var(--bg-card-hover);
     border-color: var(--accent-yellow);
+    border-radius: var(--border-radius-xxl);    /* Even more rounded on hover */
 }
 
 .feature-card::before {
@@ -190,44 +188,45 @@ p {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 6px;
     background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--accent-orange) 50%, var(--accent-coral) 100%);
-    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
 }
 
 .feature-card h3 {
     color: var(--white);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.4rem;
 }
 
 .feature-card p {
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .feature-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-lg);
+    font-size: 3.5rem;
+    margin-bottom: var(--spacing-xl);
     display: block;
     text-align: center;
 }
 
 /* =========================================================================
-   METRIC CARDS - Blue Background Theme
+   METRIC CARDS - Super Rounded Blue Background Theme
 ========================================================================= */
 .metric-card {
     background: var(--bg-card);
     border: 2px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-xl);     /* Extra rounded */
+    padding: var(--spacing-xxl);
     text-align: center;
-    margin: var(--spacing-sm);
-    box-shadow: var(--shadow-sm);
+    margin: var(--spacing-md);
+    box-shadow: var(--shadow-md);
     height: 100%;
     transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .metric-card::before {
@@ -236,39 +235,43 @@ p {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 6px;
     background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--accent-orange) 50%, var(--accent-coral) 100%);
+    border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
 }
 
 .metric-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: var(--shadow-xl);
     background: var(--bg-card-hover);
     border-color: var(--accent-yellow);
+    border-radius: var(--border-radius-xxl);    /* Even more rounded on hover */
 }
 
 .metric-card h4 {
     color: var(--white);
-    margin-bottom: var(--spacing-md);
-    font-size: 1.3rem;
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.4rem;
     font-weight: 600;
 }
 
 .metric-card p {
-    margin: var(--spacing-sm) 0;
-    line-height: 1.6;
+    margin: var(--spacing-md) 0;
+    line-height: 1.7;
     color: var(--text-secondary);
+    font-size: 1rem;
 }
 
 .metric-card p strong {
     color: var(--accent-yellow);
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.3rem;
+    font-weight: 700;
 }
 
-/* Performance indicator boxes */
+/* Performance indicator boxes - rounded */
 .metric-card div {
     color: var(--white) !important;
+    border-radius: var(--border-radius);
 }
 
 .metric-card small {
@@ -277,38 +280,39 @@ p {
 }
 
 /* =========================================================================
-   INTERACTIVE ELEMENTS - Blue Theme
+   INTERACTIVE ELEMENTS - Rounded Blue Theme
 ========================================================================= */
 .button, .btn {
     background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
     color: var(--dark-blue);
-    padding: var(--spacing-md) var(--spacing-xl);
+    padding: var(--spacing-lg) var(--spacing-xxl);
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-xxl);    /* Extra rounded buttons */
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     text-decoration: none;
     display: inline-block;
     transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
 }
 
 .button:hover, .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: var(--shadow-xl);
     background: linear-gradient(135deg, var(--white) 0%, var(--light-gray) 100%);
     color: var(--dark-blue);
+    border-radius: var(--border-radius-xxl);
 }
 
-/* Form Elements */
+/* Form Elements - Rounded */
 .form-control {
     width: 100%;
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-xl);
     border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);     /* More rounded inputs */
     font-size: 1rem;
     transition: all var(--transition-fast);
     background: var(--bg-card);
@@ -319,7 +323,9 @@ p {
 .form-control:focus {
     outline: none;
     border-color: var(--accent-yellow);
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.3);
+    border-radius: var(--border-radius-xl);     /* Even more rounded on focus */
+    transform: scale(1.02);
 }
 
 .form-control::placeholder {
@@ -327,113 +333,115 @@ p {
 }
 
 /* =========================================================================
-   STATUS & FEEDBACK COMPONENTS
+   STATUS & FEEDBACK COMPONENTS - Rounded
 ========================================================================= */
 .alert {
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-radius: var(--border-radius);
-    border-left: 5px solid;
-    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-xl) var(--spacing-xxl);
+    border-radius: var(--border-radius-lg);
+    border-left: 6px solid;
+    margin-bottom: var(--spacing-xl);
     position: relative;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     color: var(--white);
+    box-shadow: var(--shadow-sm);
 }
 
 .alert-success {
     background: rgba(76, 175, 80, 0.2);
     border-left-color: var(--success-color);
+    border-radius: var(--border-radius-lg);
 }
 
 .alert-warning {
     background: rgba(255, 165, 0, 0.2);
     border-left-color: var(--accent-orange);
+    border-radius: var(--border-radius-lg);
 }
 
 .alert-error, .alert-danger {
     background: rgba(255, 107, 107, 0.2);
     border-left-color: var(--accent-coral);
+    border-radius: var(--border-radius-lg);
 }
 
 .alert-info {
     background: rgba(255, 215, 0, 0.2);
     border-left-color: var(--accent-yellow);
+    border-radius: var(--border-radius-lg);
 }
 
 /* =========================================================================
-   CONTENT CARDS & PANELS
+   CONTENT CARDS & PANELS - Extra Rounded
 ========================================================================= */
 .card {
     background: var(--bg-card);
     border: 2px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: var(--spacing-lg);
+    border-radius: var(--border-radius-xl);     /* Extra rounded cards */
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-xl);
     overflow: hidden;
     transition: all var(--transition-normal);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px) scale(1.02);
     border-color: var(--accent-yellow);
     background: var(--bg-card-hover);
+    border-radius: var(--border-radius-xxl);    /* Even more rounded on hover */
 }
 
 .card-header {
     background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
-    padding: var(--spacing-lg) var(--spacing-xl);
+    padding: var(--spacing-xl) var(--spacing-xxl);
     border-bottom: none;
     font-weight: 600;
     color: var(--dark-blue);
+    border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
 }
 
 .card-body {
-    padding: var(--spacing-xl);
+    padding: var(--spacing-xxl);
     color: var(--white);
 }
 
 .card-title {
     color: var(--white);
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     font-weight: 600;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
 }
 
 .card-subtitle {
     color: var(--text-secondary);
-    font-size: 1rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.card-content {
-    color: var(--text-primary);
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-lg);
 }
 
 /* =========================================================================
-   NAVIGATION & TABS
+   NAVIGATION & TABS - Rounded
 ========================================================================= */
 .nav-tabs {
     border-bottom: 3px solid var(--border-color);
     display: flex;
     list-style: none;
-    padding: var(--spacing-sm);
-    margin: 0 0 var(--spacing-lg) 0;
+    padding: var(--spacing-md);
+    margin: 0 0 var(--spacing-xl) 0;
     background: var(--bg-card);
-    border-radius: var(--border-radius-lg);
-    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-xl);     /* Extra rounded nav */
+    backdrop-filter: blur(15px);
+    box-shadow: var(--shadow-sm);
 }
 
 .nav-tab {
-    padding: var(--spacing-md) var(--spacing-xl);
+    padding: var(--spacing-lg) var(--spacing-xl);
     background: rgba(255, 255, 255, 0.1);
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);     /* Rounded tabs */
     cursor: pointer;
     transition: all var(--transition-fast);
-    margin-right: var(--spacing-sm);
+    margin-right: var(--spacing-md);
     color: var(--white);
     font-weight: 600;
     backdrop-filter: blur(10px);
@@ -441,42 +449,46 @@ p {
 
 .nav-tab:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.05);
+    border-radius: var(--border-radius-xl);     /* More rounded on hover */
 }
 
 .nav-tab.active {
     background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
     color: var(--dark-blue);
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    border-radius: var(--border-radius-xl);
+    transform: scale(1.08);
 }
 
 /* =========================================================================
-   CLAUSE EXTRACTION SPECIFIC STYLES
+   CLAUSE EXTRACTION SPECIFIC STYLES - Rounded
 ========================================================================= */
 .clause-result {
     background: var(--bg-card);
-    border-left: 5px solid var(--accent-yellow);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-md) 0;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    border-left: 6px solid var(--accent-yellow);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-lg) 0;
+    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
     box-shadow: var(--shadow-sm);
     transition: all var(--transition-fast);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
+    backdrop-filter: blur(15px);
+    border: 2px solid var(--border-color);
 }
 
 .clause-result:hover {
-    transform: translateX(4px);
+    transform: translateX(6px) scale(1.02);
     box-shadow: var(--shadow-md);
     background: var(--bg-card-hover);
+    border-radius: 0 var(--border-radius-xl) var(--border-radius-xl) 0;
 }
 
 .clause-type {
     font-weight: 700;
     color: var(--accent-yellow);
-    font-size: 1.2rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-md);
 }
 
 .clause-text {
@@ -485,19 +497,95 @@ p {
     line-height: 1.8;
     color: var(--text-primary);
     font-style: italic;
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
     background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--border-radius);
-    margin-top: var(--spacing-md);
+    border-radius: var(--border-radius-lg);     /* Rounded clause text */
+    margin-top: var(--spacing-lg);
     border: 1px solid var(--border-color);
 }
 
 /* =========================================================================
-   RESPONSIVE DESIGN
+   PERFORMANCE INDICATORS - Rounded Badges
+========================================================================= */
+.performance-badge {
+    display: inline-block;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-xxl);    /* Super rounded badges */
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.performance-badge:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.performance-badge.live {
+    background: linear-gradient(135deg, var(--success-color) 0%, #66BB6A 100%);
+    color: white;
+}
+
+.performance-badge.missing {
+    background: linear-gradient(135deg, var(--accent-coral) 0%, #FF8A80 100%);
+    color: white;
+}
+
+.performance-badge.sample {
+    background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
+    color: var(--dark-blue);
+}
+
+/* =========================================================================
+   EXPANDABLE SECTIONS - Rounded
+========================================================================= */
+details {
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    backdrop-filter: blur(15px);
+    transition: all var(--transition-normal);
+}
+
+details:hover {
+    border-color: var(--accent-yellow);
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius-xl);
+}
+
+summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--white);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-fast);
+}
+
+summary:hover {
+    color: var(--accent-yellow);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-lg);
+}
+
+/* =========================================================================
+   RESPONSIVE DESIGN - Maintain Rounded Edges
 ========================================================================= */
 @media (max-width: 768px) {
     .main-container {
-        padding: var(--spacing-md);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius-lg);
+    }
+    
+    .container {
+        padding: var(--spacing-xl);
+        border-radius: var(--border-radius-lg);
     }
     
     .feature-grid {
@@ -507,40 +595,82 @@ p {
     
     .nav-tabs {
         flex-direction: column;
+        border-radius: var(--border-radius-lg);
     }
     
     .nav-tab {
         margin-right: 0;
         margin-bottom: var(--spacing-sm);
+        border-radius: var(--border-radius);
     }
     
-    h1 {
-        font-size: 2.2rem;
+    .metric-card {
+        margin: var(--spacing-sm) 0;
+        border-radius: var(--border-radius-lg);
     }
     
-    h2 {
-        font-size: 1.8rem;
+    .feature-card {
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-xl);
     }
 }
 
 /* =========================================================================
-   SCROLLBAR STYLING
+   SCROLLBAR STYLING - Rounded
 ========================================================================= */
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 14px;
 }
 
 ::-webkit-scrollbar-track {
     background: var(--dark-blue);
+    border-radius: var(--border-radius);
 }
 
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
-    border-radius: 6px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--dark-blue);
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, var(--accent-orange) 0%, var(--accent-coral) 100%);
+    border-radius: var(--border-radius);
 }
 
-/* End of Blue Background Theme CSS */
+/* =========================================================================
+   ANIMATIONS - Smooth Rounded Transitions
+========================================================================= */
+@keyframes fadeInUpRounded {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        border-radius: var(--border-radius-sm);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        border-radius: var(--border-radius-xl);
+    }
+}
+
+.animate-in-rounded {
+    animation: fadeInUpRounded 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes pulseRounded {
+    0%, 100% { 
+        transform: scale(1);
+        border-radius: var(--border-radius-lg);
+    }
+    50% { 
+        transform: scale(1.05);
+        border-radius: var(--border-radius-xl);
+    }
+}
+
+.pulse-rounded {
+    animation: pulseRounded 2s infinite;
+}
+
+/* End of Extra Rounded Blue Background Theme CSS */
