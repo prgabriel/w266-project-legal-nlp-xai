@@ -257,10 +257,21 @@ def evaluate_summarization_model() -> Dict[str, Any]:
         models_dir = project_root / 'models' / 't5'
         models_dir.mkdir(parents=True, exist_ok=True)
         
+        # Create proper SummarizationConfig with the desired parameters
+        summarization_config = SummarizationConfig(
+            max_output_length=256,
+            min_output_length=50,
+            model_name='t5-base',
+            summary_type='extractive_abstractive',
+            num_beams=4,
+            early_stopping=True
+        )
+        
+        # Initialize summarizer with proper parameters
         summarizer = LegalDocumentSummarizer(
             model_path=str(models_dir),
-            max_length=256,
-            min_length=50
+            config=summarization_config,
+            cache_dir=str(models_dir)
         )
         
         # Sample legal documents for testing
