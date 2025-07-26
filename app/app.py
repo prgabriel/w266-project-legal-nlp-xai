@@ -339,7 +339,7 @@ def initialize_models():
             return {}
 
 def get_model_performance_metrics(models):
-    """Get actual performance metrics from models and training results - FIXED VERSION"""
+    """Get actual performance metrics from models and training results - TRULY LIVE VERSION"""
     metrics = {
         'clause_extraction': {
             'status': 'unknown',
@@ -358,7 +358,7 @@ def get_model_performance_metrics(models):
         }
     }
     
-    # Get clause extraction metrics - DIRECT TRAINING RESULTS LOADING
+    # Get clause extraction metrics - LOAD ACTUAL TRAINING RESULTS
     if models.get('clause_extractor'):
         try:
             # First get model info
@@ -367,7 +367,7 @@ def get_model_performance_metrics(models):
                 metrics['clause_extraction']['status'] = 'loaded' if model_info.get('model_loaded', False) else 'error'
                 metrics['clause_extraction']['num_clause_types'] = model_info.get('num_clause_types', 41)
             
-            # Load ACTUAL training results directly
+            # Load ACTUAL training results directly - NO FALLBACKS
             project_root = Path(__file__).parent.parent
             bert_training_path = project_root / 'models' / 'bert' / 'training_results.json'
             
@@ -377,39 +377,47 @@ def get_model_performance_metrics(models):
                         training_data = json.load(f)
                     
                     # Get the ACTUAL model name from training results
-                    actual_model_name = training_data.get('model_name', 'nlpaueb/legal-bert-base-uncased')
+                    model_config = training_data.get('model_config', {})
+                    actual_model_name = model_config.get('model_name', training_data.get('model_name', 'nlpaueb/legal-bert-base-uncased'))
                     metrics['clause_extraction']['model_name'] = actual_model_name
                     
-                    # Get the LATEST test metrics (last epoch)
+                    # Get the ACTUAL test metrics (not fallbacks!)
                     test_metrics = training_data.get('test_metrics', {})
                     if test_metrics:
-                        metrics['clause_extraction']['f1_score'] = test_metrics.get('f1_micro', test_metrics.get('f1', 0.913))
-                        metrics['clause_extraction']['precision'] = test_metrics.get('precision_micro', test_metrics.get('precision', 0.921))
-                        metrics['clause_extraction']['recall'] = test_metrics.get('recall_micro', test_metrics.get('recall', 0.866))
+                        # Use the REAL values from your training
+                        metrics['clause_extraction']['f1_score'] = test_metrics.get('f1_micro', 0.0)
+                        metrics['clause_extraction']['precision'] = test_metrics.get('precision_micro', 0.0)
+                        metrics['clause_extraction']['recall'] = test_metrics.get('recall_micro', 0.0)
+                        
+                        logger.info(f"✅ Loaded REAL BERT metrics - Model: {actual_model_name}")
+                        logger.info(f"   F1: {metrics['clause_extraction']['f1_score']:.4f}")
+                        logger.info(f"   Precision: {metrics['clause_extraction']['precision']:.4f}")  
+                        logger.info(f"   Recall: {metrics['clause_extraction']['recall']:.4f}")
                     else:
-                        # Use end-of-training validation metrics if test_metrics not available
+                        # Try final validation metrics if no test_metrics
                         val_history = training_data.get('training_history', {}).get('val_metrics', [])
                         if val_history:
                             final_val = val_history[-1]  # Last validation results
-                            metrics['clause_extraction']['f1_score'] = final_val.get('f1_micro', 0.913)
-                            metrics['clause_extraction']['precision'] = final_val.get('precision_micro', 0.921)
-                            metrics['clause_extraction']['recall'] = final_val.get('recall_micro', 0.866)
-                    
-                    logger.info(f"✅ Loaded BERT metrics - Model: {actual_model_name}, F1: {metrics['clause_extraction']['f1_score']:.3f}")
+                            metrics['clause_extraction']['f1_score'] = final_val.get('f1_micro', 0.0)
+                            metrics['clause_extraction']['precision'] = final_val.get('precision_micro', 0.0)
+                            metrics['clause_extraction']['recall'] = final_val.get('recall_micro', 0.0)
+                            logger.info(f"✅ Loaded validation metrics (no test metrics found)")
+                        else:
+                            logger.warning("❌ No test_metrics or validation metrics found in training results")
                     
                 except Exception as e:
                     logger.error(f"Error parsing BERT training results: {e}")
-                    # Fallback to legal-bert name even if metrics fail
                     metrics['clause_extraction']['model_name'] = 'nlpaueb/legal-bert-base-uncased'
+                    metrics['clause_extraction']['status'] = 'error'
             else:
-                logger.warning(f"BERT training results not found at {bert_training_path}")
-                metrics['clause_extraction']['model_name'] = 'bert-base-uncased'  # Keep as indicator
+                logger.warning(f"❌ BERT training results not found at {bert_training_path}")
+                metrics['clause_extraction']['model_name'] = 'bert-base-uncased'  # Fallback indicator
                 
         except Exception as e:
             logger.warning(f"Could not load clause extraction metrics: {e}")
             metrics['clause_extraction']['status'] = 'error'
     
-    # Get summarization metrics - DIRECT TRAINING RESULTS LOADING
+    # Get summarization metrics - LOAD ACTUAL T5 RESULTS  
     if models.get('summarizer'):
         try:
             # First get model info
@@ -419,7 +427,7 @@ def get_model_performance_metrics(models):
                 base_model_name = model_info.get('model_name', 't5-base')
                 metrics['summarization']['model_name'] = base_model_name
             
-            # Load ACTUAL T5 training results directly
+            # Load ACTUAL T5 training results directly - NO FALLBACKS
             project_root = Path(__file__).parent.parent
             t5_training_path = project_root / 'models' / 't5' / 'training_results.json'
             
@@ -435,21 +443,27 @@ def get_model_performance_metrics(models):
                         metrics['summarization']['rouge_2'] = rouge_scores.get('rouge2', 0.0) 
                         metrics['summarization']['rouge_l'] = rouge_scores.get('rougeL', 0.0)
                         
-                        logger.info(f"✅ Loaded T5 metrics - ROUGE-1: {metrics['summarization']['rouge_1']:.3f}, ROUGE-L: {metrics['summarization']['rouge_l']:.3f}")
+                        logger.info(f"✅ Loaded REAL T5 metrics:")
+                        logger.info(f"   ROUGE-1: {metrics['summarization']['rouge_1']:.4f}")
+                        logger.info(f"   ROUGE-2: {metrics['summarization']['rouge_2']:.4f}")
+                        logger.info(f"   ROUGE-L: {metrics['summarization']['rouge_l']:.4f}")
                     else:
-                        logger.warning("No ROUGE scores found in T5 training results")
-                        # Keep zeros to indicate missing data
+                        logger.warning("❌ No ROUGE scores found in T5 training results")
                         
                 except Exception as e:
                     logger.error(f"Error parsing T5 training results: {e}")
             else:
-                logger.warning(f"T5 training results not found at {t5_training_path}")
-                # Keep zeros to indicate missing data
+                logger.warning(f"❌ T5 training results not found at {t5_training_path}")
                 
         except Exception as e:
             logger.warning(f"Could not load summarization metrics: {e}")
             metrics['summarization']['status'] = 'error'
             metrics['summarization']['model_name'] = 't5-base'
+    
+    # Show what we loaded
+    logger.info("📊 Final loaded metrics:")
+    logger.info(f"   BERT F1: {metrics['clause_extraction']['f1_score']:.4f} ({'✅ Live' if metrics['clause_extraction']['f1_score'] > 0 else '❌ Missing'})")
+    logger.info(f"   T5 ROUGE-L: {metrics['summarization']['rouge_l']:.4f} ({'✅ Live' if metrics['summarization']['rouge_l'] > 0 else '❌ Missing'})")
     
     return metrics
 
