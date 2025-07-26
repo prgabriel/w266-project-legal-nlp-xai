@@ -14,27 +14,31 @@ INDIVIDUAL TEXT ANALYSIS
 ----------------------------------------
 
 TEXT_1:
-  Text: e Co-Branded URLs shall be owned by the party that offers to pay the highest amount to the other for the ownership of such URLs upon payment of such a...
+  Text: no warrants, options or rights of any kind to acquire shares of capital stock of any Subsidiary.
+
+(xxiv) The Bank is a member in good standing of the ...
   Detected clauses: 0
 
 TEXT_2:
-  Text: ve been given or received at the time of delivery, telexing or faxing. Any notice mailed as aforesaid shall be deemed to have been received on the exp...
+  Text: rsede any and all previous agreements and understandings, oral or written, relating to the subject matter hereof. This Agreement shall become effectiv...
   Detected clauses: 0
 
 TEXT_3:
-  Text:  will conduct its operations in the Territory through offices or agencies to be maintained by DISTRIBUTOR at its sole cost and expense.
+  Text:  also provide, on a timely basis, impression tracking reports from a third party tracking system, confirming guaranteed impression delivery.
 
-4.2 If DISTRI...
+4. Exclu...
   Detected clauses: 0
 
 TEXT_4:
-  Text: in [***] of such request; provided that the debtor Party is excused from its obligation to deliver the Intellectual Property to the extent the debtor ...
+  Text: days. 5.5. In the event of a termination in accordance to clause 5.3 the Defaulting Party has to indemnify and hold harmless the Non-Defaulting Party ...
   Detected clauses: 0
 
 TEXT_5:
-  Text: ll of Sale.
+  Text: ANCHISE AGREEMENT
 
-3. Further Assurances. At any time and from time to time after the date of this Bill of Sale, Seller, at the Purchaser's request and subj...
+20
+
+ 9.2 Non-Disclosure Agreement. You agree that your relationship with us does not vest in you any interest in the Confidential I...
   Detected clauses: 0
 
 SHAP ANALYSIS COMPLETE
