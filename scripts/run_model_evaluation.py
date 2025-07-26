@@ -71,12 +71,13 @@ except ImportError as e:
 
 try:
     try:
-        from components.summarizer import LegalDocumentSummarizer
+        from components.summarizer import LegalDocumentSummarizer, SummarizationConfig
     except ImportError:
-        from summarizer import LegalDocumentSummarizer
+        from summarizer import LegalDocumentSummarizer, SummarizationConfig
 except ImportError as e:
     error_messages.append(f"summarizer: {e}")
     LegalDocumentSummarizer = None
+    SummarizationConfig = None
     components_available = False
 
 if not components_available:
@@ -167,22 +168,41 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             with open(models_dir / 'training_results.json', 'w') as f:
                 json.dump(training_results, f, indent=2)
         
-        # Create proper ExtractionConfig with valid parameters only
-        config = ExtractionConfig(
-            batch_size=8,
-            max_length=512,
-            confidence_threshold=0.3,
-            return_positions=True,
-            return_matched_text=True,
-            enable_preprocessing=True
-        )
+        # Create proper ExtractionConfig with valid parameters only - EXPLICIT FIELD NAMES
+        try:
+            config = ExtractionConfig(
+                confidence_threshold=0.3,
+                max_length=512,
+                batch_size=8,
+                return_positions=True,
+                return_matched_text=True,
+                enable_preprocessing=True
+            )
+            logger.info("✅ ExtractionConfig created successfully")
+        except Exception as e:
+            logger.error(f"❌ Error creating ExtractionConfig: {e}")
+            # Fallback: create config without dataclass if needed
+            class FallbackConfig:
+                def __init__(self):
+                    self.confidence_threshold = 0.3
+                    self.max_length = 512
+                    self.batch_size = 8
+                    self.return_positions = True
+                    self.return_matched_text = True
+                    self.enable_preprocessing = True
+            config = FallbackConfig()
         
         # Initialize extractor with model_path as a separate parameter
-        extractor = LegalClauseExtractor(
-            model_path=str(models_dir), 
-            cache_dir=str(models_dir),
-            config=config
-        )
+        try:
+            extractor = LegalClauseExtractor(
+                model_path=str(models_dir), 
+                cache_dir=str(models_dir),
+                config=config
+            )
+            logger.info("✅ LegalClauseExtractor initialized successfully")
+        except Exception as e:
+            logger.error(f"❌ Error initializing LegalClauseExtractor: {e}")
+            raise
         
         # Load test data
         test_data_path = data_dir / 'test_multi_label.csv'
@@ -258,21 +278,32 @@ def evaluate_summarization_model() -> Dict[str, Any]:
         models_dir.mkdir(parents=True, exist_ok=True)
         
         # Create proper SummarizationConfig with the desired parameters
-        summarization_config = SummarizationConfig(
-            max_output_length=256,
-            min_output_length=50,
-            model_name='t5-base',
-            summary_type='extractive_abstractive',
-            num_beams=4,
-            early_stopping=True
-        )
+        try:
+            summarization_config = SummarizationConfig(
+                model_name='t5-base',
+                max_output_length=256,
+                min_output_length=50,
+                summary_type='extractive_abstractive',
+                num_beams=4,
+                early_stopping=True
+            )
+            logger.info("✅ SummarizationConfig created successfully")
+        except Exception as e:
+            logger.error(f"❌ Error creating SummarizationConfig: {e}")
+            # Fallback without config
+            summarization_config = None
         
         # Initialize summarizer with proper parameters
-        summarizer = LegalDocumentSummarizer(
-            model_path=str(models_dir),
-            config=summarization_config,
-            cache_dir=str(models_dir)
-        )
+        try:
+            summarizer = LegalDocumentSummarizer(
+                model_path=str(models_dir),
+                config=summarization_config,
+                cache_dir=str(models_dir)
+            )
+            logger.info("✅ LegalDocumentSummarizer initialized successfully")
+        except Exception as e:
+            logger.error(f"❌ Error initializing LegalDocumentSummarizer: {e}")
+            raise
         
         # Sample legal documents for testing
         sample_documents = [
