@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Legal NLP + Explainability Toolkit
 
 ## Project Title
