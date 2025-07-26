@@ -277,7 +277,7 @@ class LegalClauseExtractor:
             learning_rate=learning_rate,
             logging_dir=os.path.join(self.output_dir, 'logs'),
             logging_steps=100,
-            eval_strategy="epoch",  # FIXED: Changed from evaluation_strategy to eval_strategy
+            eval_strategy="epoch",  # Evaluate at the end of each epoch
             save_strategy="epoch",
             save_total_limit=3,
             load_best_model_at_end=True,
