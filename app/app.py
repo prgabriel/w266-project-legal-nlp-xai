@@ -578,7 +578,7 @@ def render_home_page():
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 🤖 BERT Clause Extractor")
+            st.markdown("### BERT Clause Extractor")
             status_icon = "✅" if clause_metrics['status'] == 'loaded' else "❌"
             st.info(f"""
             - **Model**: {clause_metrics['model_name']}
@@ -590,7 +590,7 @@ def render_home_page():
             """)
         
         with col2:
-            st.markdown("### 📝 T5 Summarizer")
+            st.markdown("### T5 Summarizer")
             status_icon = "✅" if summ_metrics['status'] == 'loaded' else "❌"
             st.info(f"""
             - **Model**: {summ_metrics['model_name']}
