@@ -167,16 +167,22 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             with open(models_dir / 'training_results.json', 'w') as f:
                 json.dump(training_results, f, indent=2)
         
-        # Initialize configuration
+        # Create proper ExtractionConfig with valid parameters only
         config = ExtractionConfig(
-            model_path=str(models_dir),
-            data_path=str(data_dir),
             batch_size=8,
-            max_length=512
+            max_length=512,
+            confidence_threshold=0.3,
+            return_positions=True,
+            return_matched_text=True,
+            enable_preprocessing=True
         )
         
-        # Initialize extractor
-        extractor = LegalClauseExtractor(config)
+        # Initialize extractor with model_path as a separate parameter
+        extractor = LegalClauseExtractor(
+            model_path=str(models_dir), 
+            cache_dir=str(models_dir),
+            config=config
+        )
         
         # Load test data
         test_data_path = data_dir / 'test_multi_label.csv'
