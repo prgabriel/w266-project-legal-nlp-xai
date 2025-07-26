@@ -202,11 +202,7 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
             extractor = LegalClauseExtractor(
                 model_path=str(models_dir),
                 cache_dir=str(models_dir),
-<<<<<<< HEAD
                 config=extraction_config
-=======
-                config=config  # Ensure config does not include model_path
->>>>>>> 981aaf7e1b96a6472e39b5c77205a3f493ec7c76
             )
             # Initialize LegalClauseExtractor
             logger.info("✅ LegalClauseExtractor initialized successfully")
