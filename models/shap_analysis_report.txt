@@ -14,33 +14,27 @@ INDIVIDUAL TEXT ANALYSIS
 ----------------------------------------
 
 TEXT_1:
-  Text: rs: Can appear only in White or 4 Color Process comprised of Morado, Tungsten and Black. If reversed out White, use only on dark background color for ...
+  Text: e Co-Branded URLs shall be owned by the party that offers to pay the highest amount to the other for the ownership of such URLs upon payment of such a...
   Detected clauses: 0
 
 TEXT_2:
-  Text:  to
-
-Source: PHASEBIO PHARMACEUTICALS INC, 10-K, 3/30/2020
-
-the operation of such Third Party contractor's business or improvements, or improvements t...
+  Text: ve been given or received at the time of delivery, telexing or faxing. Any notice mailed as aforesaid shall be deemed to have been received on the exp...
   Detected clauses: 0
 
 TEXT_3:
-  Text:  Xencor Patents and Xencor's interest in Joint Collaboration Patents, and a non-exclusive, payment bearing license under and with respect to Xencor Kn...
+  Text:  will conduct its operations in the Territory through offices or agencies to be maintained by DISTRIBUTOR at its sole cost and expense.
+
+4.2 If DISTRI...
   Detected clauses: 0
 
 TEXT_4:
-  Text: bove. Subject to Section 2.3.2, all decisions relating to the specific promotional activities of the Company and the Online Group hereunder, including...
+  Text: in [***] of such request; provided that the debtor Party is excused from its obligation to deliver the Intellectual Property to the extent the debtor ...
   Detected clauses: 0
 
 TEXT_5:
-  Text: ecutive Officer 5
+  Text: ll of Sale.
 
-Source: HF ENTERPRISES INC., S-1, 12/23/2019
-
- SCHEDULE 1 TECHNOLOGY DEVELOPMENT SERVICES (Attached) 6
-
-Source: HF ENTERPRISES INC....
+3. Further Assurances. At any time and from time to time after the date of this Bill of Sale, Seller, at the Purchaser's request and subj...
   Detected clauses: 0
 
 SHAP ANALYSIS COMPLETE

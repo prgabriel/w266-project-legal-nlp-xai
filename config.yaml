@@ -1,13 +1,14 @@
-<<<<<<< HEAD
 data:
   test_size: 0.1
   train_size: 0.7
   val_size: 0.2
+
 model:
   batch_size: 8
   bert_model_name: bert-base-uncased
   max_length: 512
   t5_model_name: t5-base
+
 paths:
   app: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\app
   data: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\data
@@ -21,37 +22,9 @@ paths:
   notebooks: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\notebooks
   scripts: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\scripts
   tests: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\tests
+
 training:
   learning_rate: 2.0e-05
   num_epochs: 3
   warmup_steps: 500
   weight_decay: 0.01
-=======
-data:
-  test_size: 0.1
-  train_size: 0.7
-  val_size: 0.2
-model:
-  batch_size: 8
-  bert_model_name: bert-base-uncased
-  max_length: 512
-  t5_model_name: t5-base
-paths:
-  app: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\app
-  data: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\data
-  data_processed: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\data\processed
-  data_raw: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\data\raw
-  logs: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\logs
-  models: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\models
-  models_bert: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\models\bert
-  models_fine_tuning: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\models\fine_tuning
-  models_t5: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\models\t5
-  notebooks: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\notebooks
-  scripts: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\scripts
-  tests: C:\Users\pgabriel\Documents\Berkeley\w266-project-legal-nlp-xai\tests
-training:
-  learning_rate: 2.0e-05
-  num_epochs: 3
-  warmup_steps: 500
-  weight_decay: 0.01
->>>>>>> b99079c363609da82459cbd14e821754e35ab838
