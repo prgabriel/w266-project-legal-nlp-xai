@@ -7,10 +7,10 @@ on:
 
 env:
   AZURE_CONTAINER_REGISTRY: acrlegalnlptoolkitxhpyytf4ph474
-  CONTAINER_NAME: legal-nlp-app
+  CONTAINER_NAME: legal-nlp-toolkit # Name of the container image
   RESOURCE_GROUP: legal-nlp-rg
   APP_NAME: legal-nlp-toolkit
-  CONTAINER_APP_ENV: legal-nlp-env
+  CONTAINER_APP_ENV: legal-nlp-toolkit-env
 
 jobs:
   build-and-deploy:
@@ -86,7 +86,7 @@ jobs:
 
     - name: Ensure resource group exists
       run: |
-        az group create --name ${{ env.RESOURCE_GROUP }} --location "East US" || echo "Resource group already exists"
+        az group create --name ${{ env.RESOURCE_GROUP }} --location "West US 2" || echo "Resource group already exists"
 
     - name: Create Azure Container Registry if not exists
       run: |

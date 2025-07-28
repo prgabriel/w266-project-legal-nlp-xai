@@ -39,7 +39,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01'
   }
 }
 
-// Container App with placeholder image
+// Container App with custom image
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
@@ -61,29 +61,33 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       ]
       ingress: {
         external: true
-        targetPort: 80  // Changed from 8501 to 80 for placeholder image
+        targetPort: 8501  // Using port 8501 for the custom image
       }
     }
     template: {
       containers: [
         {
-          name: 'placeholder-app'
-          image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'  // Placeholder image
+          name: 'legal-nlp-app'
+          image: '${containerRegistry.properties.loginServer}/legal-nlp-toolkit:latest'
           resources: {
-            cpu: json('0.25')  // Reduced resources for placeholder
-            memory: '0.5Gi'
+            cpu: json('1.0')
+            memory: '2Gi'
           }
           env: [
             {
-              name: 'PLACEHOLDER_MESSAGE'
-              value: 'Legal NLP Toolkit - Building and deploying...'
+              name: 'PROJECT_ROOT'
+              value: '/app'
+            }
+            {
+              name: 'PYTHONPATH'
+              value: '/app:/app/app:/app/components'
             }
           ]
         }
       ]
       scale: {
         minReplicas: 1
-        maxReplicas: 1  // Single replica for placeholder
+        maxReplicas: 3
       }
     }
   }
