@@ -61,7 +61,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       ]
       ingress: {
         external: true
-        targetPort: 8501  // Changed from 8501 to 80 for custom image
+        targetPort: 8501  // Using port 8501 for the custom image
       }
     }
     template: {
