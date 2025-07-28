@@ -6,7 +6,7 @@
 *.safetensors filter=lfs diff=lfs merge=lfs -text
 *.h5 filter=lfs diff=lfs merge=lfs -text
 # Tokenizer files that might be large
-*.json filter=lfs diff=lfs merge=lfs -text
+# Removed the global pattern for JSON files to avoid unnecessary LFS overhead.
 spiece.model filter=lfs diff=lfs merge=lfs -text
 # Directory patterns
 models/**/*.pt filter=lfs diff=lfs merge=lfs -text
