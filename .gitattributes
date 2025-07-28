@@ -1,4 +1,22 @@
+# Model files - PyTorch
 *.pt filter=lfs diff=lfs merge=lfs -text
+*.pth filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
+# Model files - Safetensors and HuggingFace
 *.safetensors filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+# Tokenizer files that might be large
+*.json filter=lfs diff=lfs merge=lfs -text
+spiece.model filter=lfs diff=lfs merge=lfs -text
+# Directory patterns
 models/**/*.pt filter=lfs diff=lfs merge=lfs -text
+models/**/*.pth filter=lfs diff=lfs merge=lfs -text
+models/**/*.bin filter=lfs diff=lfs merge=lfs -text
 models/**/*.safetensors filter=lfs diff=lfs merge=lfs -text
+models/**/*.h5 filter=lfs diff=lfs merge=lfs -text
+models/**/*.json filter=lfs diff=lfs merge=lfs -text
+models/**/spiece.model filter=lfs diff=lfs merge=lfs -text
+# Checkpoint directories
+models/**/checkpoint-*/*.bin filter=lfs diff=lfs merge=lfs -text
+models/**/checkpoint-*/*.safetensors filter=lfs diff=lfs merge=lfs -text
+models/**/checkpoint-*/*.json filter=lfs diff=lfs merge=lfs -text
