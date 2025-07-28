@@ -17,11 +17,15 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy application code (including models via LFS)
 COPY . .
 
-# Create models directory and download base models if needed
-RUN mkdir -p models/bert models/t5
+# Verify models are present
+RUN ls -la models/bert/ && echo "BERT model files found" || echo "BERT model files missing"
+RUN ls -la models/t5/ && echo "T5 model files found" || echo "T5 model files missing"
+
+# Create additional directories if needed
+RUN mkdir -p logs
 
 # Download NLTK data
 RUN python -c "import nltk; nltk.download('punkt')"
