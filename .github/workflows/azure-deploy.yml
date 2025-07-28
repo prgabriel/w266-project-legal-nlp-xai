@@ -113,7 +113,7 @@ jobs:
           max_length: 512
           t5_model_name: t5-base
         paths:
-          app: /app/app
+          app: /app
           data: /app/data
           data_processed: /app/data/processed
           data_raw: /app/data/raw
