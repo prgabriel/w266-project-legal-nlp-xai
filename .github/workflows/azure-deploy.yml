@@ -20,8 +20,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        lfs: true  # This ensures LFS files are downloaded
+        lfs: true  # IMPORTANT: This pulls LFS files
         fetch-depth: 0
+
+        
+    - name: Verify model files exist
+      run: |
+        echo "Checking for model files..."
+        ls -la models/bert/ || echo "BERT models missing"
+        ls -la models/t5/ || echo "T5 models missing"
+        
+        # Check if files are actual binaries (not LFS pointers)
+        file models/bert/final_model.pt || echo "BERT model file missing"
+        file models/t5/model.safetensors || echo "T5 model file missing"
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -60,14 +71,6 @@ jobs:
           warmup_steps: 500
           weight_decay: 0.01
         EOF
-
-    - name: Create mock data directories and files
-      run: |
-        mkdir -p data/processed models/bert tests
-        echo '{"clause_types": ["test"], "clean_clause_names": {"test": "Test Clause"}}' > data/processed/metadata.json
-        echo '{"test_metrics": {"f1_micro": 0.8}}' > models/bert/training_results.json
-        touch tests/__init__.py
-        echo "def test_placeholder(): pass" > tests/test_placeholder.py
 
     - name: Install dependencies
       run: |
