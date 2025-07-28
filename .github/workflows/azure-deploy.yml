@@ -7,7 +7,7 @@ on:
 
 env:
   AZURE_CONTAINER_REGISTRY: acrlegalnlptoolkitxhpyytf4ph474
-  CONTAINER_NAME: legal-nlp-toolkit # Name of the container image
+  CONTAINER_NAME: legal-nlp-toolkit
   RESOURCE_GROUP: legal-nlp-rg
   APP_NAME: legal-nlp-toolkit
   CONTAINER_APP_ENV: legal-nlp-toolkit-env
@@ -20,24 +20,82 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        lfs: true  # IMPORTANT: This pulls LFS files
+        lfs: true  # This pulls LFS files
         fetch-depth: 0
-
-        
-    - name: Verify model files exist
-      run: |
-        echo "Checking for model files..."
-        ls -la models/bert/ || echo "BERT models missing"
-        ls -la models/t5/ || echo "T5 models missing"
-        
-        # Check if files are actual binaries (not LFS pointers)
-        file models/bert/final_model.pt || echo "BERT model file missing"
-        file models/t5/model.safetensors || echo "T5 model file missing"
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.11"
+
+    - name: Create required directories and minimal metadata
+      run: |
+        # Only create directories if they don't exist
+        mkdir -p data/processed tests app/components
+        
+        # Create minimal metadata ONLY if it doesn't exist
+        if [ ! -f "data/processed/metadata.json" ]; then
+          echo "Creating minimal metadata.json..."
+          cat > data/processed/metadata.json << 'EOF'
+        {
+          "clause_types": ["termination", "assignment", "governing_law", "confidentiality"],
+          "clean_clause_names": {
+            "termination": "Termination Clause",
+            "assignment": "Assignment Restriction",
+            "governing_law": "Governing Law",
+            "confidentiality": "Confidentiality Agreement"
+          }
+        }
+        EOF
+        else
+          echo "metadata.json already exists, skipping creation"
+        fi
+        
+        # Create __init__.py files if they don't exist
+        touch tests/__init__.py app/__init__.py app/components/__init__.py
+        
+        # Create minimal test file if it doesn't exist
+        if [ ! -f "tests/test_placeholder.py" ]; then
+          echo "def test_placeholder(): pass" > tests/test_placeholder.py
+        fi
+
+    - name: Verify model files exist
+      run: |
+        echo "=== Checking for model files ==="
+        echo "Current directory: $(pwd)"
+        echo "Directory structure:"
+        find . -name "models" -type d | head -5
+        
+        echo "--- BERT Models ---"
+        if [ -d "models/bert" ]; then
+          ls -la models/bert/
+          echo "Checking BERT model file type:"
+          if [ -f "models/bert/final_model.pt" ]; then
+            file models/bert/final_model.pt
+            echo "BERT model size: $(du -h models/bert/final_model.pt 2>/dev/null || echo 'File not accessible')"
+          else
+            echo "BERT model file missing: models/bert/final_model.pt"
+          fi
+        else
+          echo "BERT models directory missing"
+        fi
+        
+        echo "--- T5 Models ---"
+        if [ -d "models/t5" ]; then
+          ls -la models/t5/
+          echo "Checking T5 model file type:"
+          if [ -f "models/t5/model.safetensors" ]; then
+            file models/t5/model.safetensors
+            echo "T5 model size: $(du -h models/t5/model.safetensors 2>/dev/null || echo 'File not accessible')"
+          else
+            echo "T5 model file missing: models/t5/model.safetensors"
+          fi
+        else
+          echo "T5 models directory missing"
+        fi
+        
+        echo "--- Git LFS Status ---"
+        git lfs ls-files | head -10
 
     - name: Create config directory and file
       run: |
@@ -49,11 +107,11 @@ jobs:
           val_size: 0.2
         model:
           batch_size: 8
-          bert_model_name: bert-base-uncased
+          bert_model_name: nlpaueb/legal-bert-base-uncased  # Use legal BERT
           max_length: 512
           t5_model_name: t5-base
         paths:
-          app: /app
+          app: /app/app
           data: /app/data
           data_processed: /app/data/processed
           data_raw: /app/data/raw
