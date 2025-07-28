@@ -74,10 +74,12 @@ jobs:
             file models/bert/final_model.pt
             echo "BERT model size: $(du -h models/bert/final_model.pt 2>/dev/null || echo 'File not accessible')"
           else
-            echo "BERT model file missing: models/bert/final_model.pt"
+            echo "ERROR: BERT model file missing: models/bert/final_model.pt"
+            exit 1
           fi
         else
-          echo "BERT models directory missing"
+          echo "ERROR: BERT models directory missing"
+          exit 1
         fi
         
         echo "--- T5 Models ---"
