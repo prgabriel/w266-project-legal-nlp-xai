@@ -27,12 +27,12 @@ jobs:
     - name: Verify model files exist
       run: |
         echo "Checking for model files..."
-        ls -la models/bert/ || echo "BERT models missing"
-        ls -la models/t5/ || echo "T5 models missing"
+        ls -la models/bert/ || { echo "ERROR: BERT models directory not found. Workflow will fail."; exit 1; }
+        ls -la models/t5/ || { echo "ERROR: T5 models directory not found. Workflow will fail."; exit 1; }
         
         # Check if files are actual binaries (not LFS pointers)
-        file models/bert/final_model.pt || echo "BERT model file missing"
-        file models/t5/model.safetensors || echo "T5 model file missing"
+        file models/bert/final_model.pt || { echo "ERROR: BERT model file not found. Workflow will fail."; exit 1; }
+        file models/t5/model.safetensors || { echo "ERROR: T5 model file not found. Workflow will fail."; exit 1; }
 
     - name: Set up Python
       uses: actions/setup-python@v4
