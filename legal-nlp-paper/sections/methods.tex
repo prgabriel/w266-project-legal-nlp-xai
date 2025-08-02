@@ -1,0 +1,112 @@
+\section{Methodology}
+
+\subsection{Dataset Analysis and Preprocessing}
+
+My approach begins with comprehensive analysis of the CUAD dataset to understand the specific challenges of legal clause extraction. The dataset contains 510 legal contracts with annotations for 41 clause types, presented in a question-answering format where each clause type corresponds to a specific question about contract content.
+
+Initial exploration revealed significant class imbalance across clause types. As shown in Figure \ref{fig:clause_presence_distribution}, only 32.1\% of question-context pairs contain positive clause instances, with substantial variation across clause types (Figure \ref{fig:clause_presence_frequency}). Nine clause types appear in fewer than 10\% of documents, while others like "Document Name" appear universally, creating a challenging multi-label classification scenario.
+
+The preprocessing pipeline includes several domain-specific adaptations:
+
+\begin{enumerate}
+    \item \textbf{Clause Name Normalization}: Converting verbose CUAD questions to clean, human-readable clause names (e.g., "Highlight the parts related to Agreement Date..." → "Agreement Date")
+    \item \textbf{Legal Text Normalization}: Standardizing legal terminology and formatting inconsistencies
+    \item \textbf{Multi-Label Conversion}: Transforming the question-answering format into multi-label classification labels for each document context
+    \item \textbf{Sequence Length Optimization}: Handling long legal documents (mean length ~4,800 characters) through appropriate truncation and sliding window strategies
+\end{enumerate}
+
+\subsection{Multi-Label BERT Architecture}
+
+For clause extraction, I employ a domain-specialized BERT architecture fine-tuned on legal text. The base model utilizes nlpaueb/legal-bert-base-uncased \cite{chalkidis2020legal}, which has been pre-trained on legal corpora and demonstrates superior performance on legal language understanding tasks compared to general-purpose BERT models.
+
+The multi-label classification architecture consists of:
+
+\begin{algorithm}
+\caption{Multi-Label Legal BERT Architecture}
+\begin{algorithmic}
+\STATE \textbf{Input}: Legal document context $x = [x_1, x_2, ..., x_n]$
+\STATE \textbf{Tokenization}: $tokens = \text{Legal-BERT-Tokenizer}(x)$
+\STATE \textbf{Encoding}: $h = \text{Legal-BERT-Encoder}(tokens)$
+\STATE \textbf{Pooling}: $pooled = \text{MeanPooling}(h)$
+\STATE \textbf{Classification}: $logits = \text{Linear}_{41}(pooled)$
+\STATE \textbf{Output}: $predictions = \text{Sigmoid}(logits)$
+\end{algorithmic}
+\end{algorithm}
+
+Key architectural considerations include:
+
+\begin{itemize}
+    \item \textbf{Multi-Label Head}: 41-dimensional output layer with sigmoid activation to handle simultaneous clause detection
+    \item \textbf{Class Imbalance Handling}: Weighted binary cross-entropy loss with class-specific weights based on clause frequency
+    \item \textbf{Sequence Length Management}: 512-token maximum length with truncation strategies optimized for legal document structure
+    \item \textbf{Domain-Specific Fine-Tuning}: Legal-BERT initialization with additional training on CUAD-specific patterns
+\end{itemize}
+
+\subsection{T5-Based Legal Summarization}
+
+For document summarization, I implement a T5-based architecture \cite{raffel2020t5} with legal-domain adaptations. The text-to-text framework enables flexible summarization approaches while maintaining the model's ability to preserve critical legal information.
+
+The summarization pipeline incorporates:
+
+\begin{enumerate}
+    \item \textbf{Legal Phrase Normalization}: Converting complex legal terminology to more accessible language
+    \item \textbf{Clause Relationship Preservation}: Maintaining logical connections between related legal concepts
+    \item \textbf{Compression Ratio Optimization}: Targeting 4:1 compression ratios while preserving essential legal content
+    \item \textbf{Domain-Specific Beam Search}: Optimized decoding parameters for legal text generation
+\end{enumerate}
+
+\subsection{Explainability Integration}
+
+To address the critical requirement for interpretable legal AI, I integrate multiple explainability techniques into the analysis pipeline:
+
+\subsubsection{SHAP Analysis}
+
+SHAP (SHapley Additive exPlanations) \cite{lundberg2017unified} provides the primary interpretability framework. For each clause prediction, SHAP generates:
+
+\begin{itemize}
+    \item \textbf{Token-Level Attributions}: Quantifying the contribution of individual words/phrases to specific clause predictions
+    \item \textbf{Global Feature Importance}: Identifying the most influential legal terms across all clause types
+    \item \textbf{Clause-Specific Explanations}: Targeted analysis for high-stakes clause types with legal practitioner validation
+\end{itemize}
+
+\subsubsection{Attention Visualization}
+
+The BERT model's attention mechanisms provide complementary insights into model behavior:
+
+\begin{itemize}
+    \item \textbf{Multi-Head Attention Analysis}: Examining different attention heads to understand various aspects of legal language processing
+    \item \textbf{Layer-wise Attention Patterns}: Analyzing how attention evolves through the model's depth
+    \item \textbf{Legal Phrase Detection}: Identifying attention patterns on domain-specific legal terminology
+\end{itemize}
+
+\subsection{Evaluation Framework}
+
+The evaluation methodology addresses both predictive performance and explainability quality:
+
+\subsubsection{Multi-Label Classification Metrics}
+
+\begin{itemize}
+    \item \textbf{F1 Scores}: Micro, macro, and weighted F1 scores for comprehensive multi-label assessment
+    \item \textbf{Per-Clause Analysis}: Individual performance metrics for each of the 41 clause types
+    \item \textbf{Hamming Loss}: Multi-label prediction accuracy across all labels
+    \item \textbf{Jaccard Similarity}: Set-based similarity between predicted and true label sets
+\end{itemize}
+
+\subsubsection{Explainability Validation}
+
+\begin{itemize}
+    \item \textbf{Explanation Consistency}: Measuring stability of SHAP explanations across similar inputs
+    \item \textbf{Legal Domain Relevance}: Validating that highlighted terms align with legal professional expectations
+    \item \textbf{Attention-SHAP Correlation}: Cross-validation between attention weights and SHAP attributions
+\end{itemize}
+
+\subsection{Implementation and Deployment}
+
+The complete framework is implemented as a production-ready web application using Streamlit, enabling real-world validation of the explainable AI techniques. The deployment architecture includes:
+
+\begin{itemize}
+    \item \textbf{Interactive Legal Dashboard}: Real-time clause detection and explanation generation
+    \item \textbf{Containerized Deployment}: Docker-based deployment for scalability and reproducibility
+    \item \textbf{Azure Integration}: Cloud-based deployment with appropriate legal data privacy protections
+    \item \textbf{Performance Monitoring}: Ongoing evaluation of model performance and explanation quality
+\end{itemize}
