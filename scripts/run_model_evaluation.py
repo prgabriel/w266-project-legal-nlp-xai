@@ -189,9 +189,9 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
         
         try:
             extraction_config = ExtractionConfig(**extraction_config_params)
-            logger.info("✅ ExtractionConfig created successfully")
+            logger.info("ExtractionConfig created successfully")
         except Exception as e:
-            logger.error(f"❌ Error creating ExtractionConfig: {e}")
+            logger.error(f"Error creating ExtractionConfig: {e}")
             # Fallback: create config without dataclass if needed
             class FallbackConfig:
                 def __init__(self, config: Dict[str, Any]):
@@ -207,9 +207,9 @@ def evaluate_clause_extraction_model() -> Dict[str, Any]:
                 config=extraction_config
             )
             # Initialize LegalClauseExtractor
-            logger.info("✅ LegalClauseExtractor initialized successfully")
+            logger.info("LegalClauseExtractor initialized successfully")
         except Exception as e:
-            logger.error(f"❌ Error initializing LegalClauseExtractor: {e}")
+            logger.error(f"Error initializing LegalClauseExtractor: {e}")
             raise
         
         # Load test data
@@ -295,9 +295,9 @@ def evaluate_summarization_model() -> Dict[str, Any]:
                 num_beams=4,
                 early_stopping=True
             )
-            logger.info("✅ SummarizationConfig created successfully")
+            logger.info("SummarizationConfig created successfully")
         except Exception as e:
-            logger.error(f"❌ Error creating SummarizationConfig: {e}. Using fallback default configuration.")
+            logger.error(f"Error creating SummarizationConfig: {e}. Using fallback default configuration.")
             # Fallback without config
             # Fallback: provide a working default configuration
             class FallbackSummarizationConfig:
@@ -316,9 +316,9 @@ def evaluate_summarization_model() -> Dict[str, Any]:
                 config=summarization_config,
                 cache_dir=str(models_dir)
             )
-            logger.info("✅ LegalDocumentSummarizer initialized successfully")
+            logger.info("LegalDocumentSummarizer initialized successfully")
         except Exception as e:
-            logger.error(f"❌ Error initializing LegalDocumentSummarizer: {e}")
+            logger.error(f"Error initializing LegalDocumentSummarizer: {e}")
             raise
         
         # Sample legal documents for testing
