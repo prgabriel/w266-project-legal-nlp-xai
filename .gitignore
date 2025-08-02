@@ -5,3 +5,4 @@ data/interim/
 **/**/checkpoint-*
 reference_pdfs/
 legal-nlp-paper/main.synctex.gz
+legal-nlp-paper/main.bbl
