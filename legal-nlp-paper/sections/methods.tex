@@ -73,11 +73,6 @@ For performance metrics, I went with the full spread—micro, macro, and weighte
 On the explainability side, I had to make sure SHAP wasn't just making things up. I checked that similar contracts got similar explanations, that the highlighted terms actually made sense to lawyers (not just random legal-sounding words), and that when both SHAP and attention patterns agreed on something, they were actually onto something real. The whole point was making sure these explanations would hold up when a skeptical lawyer started poking at them.
 \subsection{Implementation and Deployment}
 
-I built the whole thing as a web app using Streamlit so people could actually try it out. The deployment includes:
+I built the whole thing as a web app using Streamlit because I wanted people to actually be able to try it out without needing a PhD in computer science. The interface is pretty straightforward—you upload a contract, hit a button, and it shows you all the clauses it found along with explanations for why it thinks they're there. No command line nonsense, no complicated setup, just drag and drop.
 
-\begin{itemize}
-    \item \textbf{Interactive Legal Dashboard}: Real-time clause detection with explanations.
-    \item \textbf{Containerized Deployment}: Docker setup for easy deployment and scaling.
-    \item \textbf{Azure Integration}: Cloud deployment with proper security for legal data.
-    \item \textbf{Performance Monitoring}: Keeping track of how well everything works in practice.
-\end{itemize}
+Getting it deployed was its own adventure. I wrapped everything in Docker containers because trying to get all the dependencies to play nice together on different machines was giving me nightmares. For the actual hosting, I went with Azure since they have decent security features for handling sensitive legal documents—the last thing I need is someone's merger agreement ending up on the internet. The whole setup monitors itself now, tracking response times and accuracy so I know when something breaks before angry lawyers start calling.
