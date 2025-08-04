@@ -1,23 +1,27 @@
 \section{Experiments and Results}
 \label{sec:experiments}
 
-This section presents comprehensive experimental evaluation of my explainable AI framework for legal contract analysis, demonstrating both predictive performance and interpretability characteristics essential for professional legal adoption.
-
 \subsection{Experimental Setup}
-\label{subsec:experimental_setup}
+
+So here's what I actually did to test this thing. I used the CUAD dataset \cite{hendrycks2021cuad}, which has 510 contracts with 41 different clause types that lawyers care about. The class imbalance is absolutely brutal—some clauses show up in every contract while others (like "Source Code Escrow") appear in maybe 2.5\% of documents. It's like trying to train a model to recognize both dogs and unicorns.
+
+For the technical setup, I went with Legal-BERT since it already knows legal language, then fine-tuned it for all 41 clause types at once. The 512-token limit was a real pain—contracts can be thousands of words long, so I had to slice them up with sliding windows. It's like trying to understand a conversation by only hearing every third sentence. Training took forever (35 epochs), and I spent way too much time tweaking the loss function to make sure the model actually paid attention to the rare clauses instead of just memorizing the common ones. Nothing fancy with the data split—just the standard train/validation/test setup that came with CUAD.
 
 \subsubsection{Dataset Configuration}
-My experiments utilize the Contract Understanding Atticus Dataset (CUAD) \cite{hendrycks2021cuad}, comprising 510 professionally annotated legal contracts with 41 distinct clause types. The dataset exhibits significant class imbalance characteristic of real-world legal documents, with clause presence rates ranging from 2.5\% (specialized clauses like ``Source Code Escrow'') to 100\% (universal clauses like ``Parties''). I employ the standard train/validation/test split provided with CUAD, ensuring consistent evaluation across experiments.
 
-Data preprocessing includes document segmentation to accommodate BERT's 512-token limit, with longer contracts processed through sliding window techniques. I apply domain-specific text normalization while preserving legal terminology integrity, and implement stratified sampling to maintain class distribution across splits despite severe imbalance.
+I used the CUAD dataset \cite{hendrycks2021cuad} for all my experiments—it's got 510 contracts that lawyers actually annotated, marking 41 different types of clauses. The class imbalance is absolutely ridiculous. Some clauses like "Parties" show up in literally every contract, while others like "Source Code Escrow" appear in maybe 2.5\% of documents. It's like trying to teach someone to recognize both cars and UFOs using real-world photos.
+
+For preprocessing, I had to deal with BERT's annoying 512-token limit by chopping up these massive contracts into sliding windows. I tried to keep the legal language intact (no point in "simplifying" terms that actually matter legally) and used stratified sampling to make sure the rare clauses at least showed up somewhere in each data split. Just stuck with CUAD's standard train/validation/test split—no need to reinvent the wheel there.
 
 \subsubsection{Model Architecture and Training}
-My explainable AI framework leverages the legal domain-specific BERT variant (nlpaueb/legal-bert-base-uncased), fine-tuned for multi-label classification with 41 output dimensions corresponding to CUAD clause types. The architecture incorporates a dropout layer (p=0.3) and linear classification head, optimized using AdamW with learning rate $2 \times 10^{-5}$ over 35 epochs with batch size 8.
 
-Training employs binary cross-entropy loss with class weight balancing to address severe label imbalance. I implement early stopping based on validation F1-macro score and gradient clipping to ensure stable convergence. The final model selection uses comprehensive multi-label evaluation metrics rather than single-metric optimization.
+I went with Legal-BERT (nlpaueb/legal-bert-base-uncased) since it already speaks lawyer, then added a multi-label head with 41 outputs—one for each clause type in CUAD. Nothing too fancy architecture-wise: just slapped on a dropout layer (0.3) to prevent overfitting and a linear classifier on top. The whole thing was trained with AdamW, learning rate 2e-5, batch size 8, for what felt like an eternity (35 epochs).
+
+The real headache was dealing with the class imbalance. I used weighted binary cross-entropy loss because otherwise the model would just ignore all the rare clauses and call it a day. Had to babysit the training with early stopping based on validation F1-macro scores, plus gradient clipping to stop the whole thing from exploding. The final model wasn't picked based on some single magic number—I looked at all the metrics to make sure it actually worked across different clause types, not just the common ones.
 
 \subsubsection{Evaluation Methodology}
-I evaluate my framework using standard multi-label classification metrics including F1-score (micro, macro, weighted), precision, recall, Hamming loss, and Jaccard similarity. For document summarization, I employ ROUGE metrics (ROUGE-1, ROUGE-2, ROUGE-L) to assess content coverage and fluency. Explainability evaluation combines quantitative attribution analysis with qualitative assessment of interpretation consistency.
+
+I threw every metric I could think of at this thing to see if it actually worked. For the classification part, I used F1-scores (micro, macro, and weighted because different perspectives matter), plus precision, recall, Hamming loss, and Jaccard similarity. Basically, I wanted to know if the model was finding the right clauses without flagging everything under the sun. For the summarization piece, I used ROUGE scores to check if the summaries actually captured what mattered. And for explainability? That was trickier—I had to make sure the explanations weren't just highlighting random legal words but actually made sense to someone who knows contracts.
 
 \subsection{Performance Analysis}
 \label{subsec:performance_analysis}
