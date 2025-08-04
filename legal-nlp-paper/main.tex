@@ -1,0 +1,73 @@
+\documentclass[conference]{IEEEtran}
+
+% Essential packages
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{subfigure}
+\usepackage{color}
+
+% For better tables
+\usepackage{array}
+\usepackage{tabularx}
+
+% For code listings (if needed)
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Set up paths - Fixed to match figure references
+\graphicspath{{../figures/}}
+
+\begin{document}
+
+\title{Towards Responsible AI in Legal NLP: An Explainable Multi-Label Framework for Contract Clause Detection and Analysis}
+
+\author{
+\IEEEauthorblockN{Perry Gabriel}
+\IEEEauthorblockA{
+University of California, Berkeley\\
+School of Information\\
+Email: pgabriel@berkeley.edu\\
+Summer 2025
+}
+}
+
+\maketitle
+
+% Add page numbers for draft/review purposes
+\thispagestyle{plain}
+\pagestyle{plain}
+
+\begin{abstract}
+Legal document analysis with AI is fascinating but frustrating. We have these powerful systems that can process contracts in seconds, yet most lawyers won't touch them. Why? Because when an AI flags a liability clause or spots a missing termination provision, it can't explain its reasoning the way a junior associate would. The technology is there, but the trust isn't. Legal contracts are particularly challenging for machine learning—some clause types appear so rarely that models barely see them during training, the terminology is highly specialized, and perhaps most critically, the stakes are too high for black-box decisions. This disconnect between technical capability and practical adoption is what drove me to develop a framework that doesn't just detect contract clauses, but actually explains its reasoning in ways that make sense to legal professionals.
+
+In this paper, I present a framework I've developed that brings together fine-tuned legal language models with explainable AI techniques to tackle automated contract clause detection. I've been working with the Contract Understanding Atticus Dataset (CUAD), which has 510 professionally annotated contracts covering 41 different clause types. What I discovered is that clause frequencies are all over the map—some appear in only 2.5\% of contracts while others are practically everywhere \cite{hendrycks2021cuad}. My approach takes a legal-specific BERT model (nlpaueb/legal-bert-base-uncased) and fine-tunes it for multi-label classification \cite{chalkidis2020legal}, then adds T5-based summarization on top. But here's where it gets interesting: I've integrated multiple explainability methods—SHAP, LIME, and attention visualization—to give transparent insights into why the model makes specific decisions \cite{lundberg2017unified}.
+
+The results are promising—the system performs well on standard metrics, but more importantly, it actually explains its decisions in ways lawyers understand. I built it as a web app so I could see how real people interact with it, and what I learned is that the explainability features make all the difference. When lawyers can see why the AI flagged something, they're much more willing to trust it.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Legal NLP, Explainable AI, Multi-label Classification, Contract Analysis, BERT, SHAP, LIME, CUAD, Legal Technology
+\end{IEEEkeywords}
+
+% Include sections
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/methods}
+% \input{sections/results}
+\input{sections/experiments}
+\input{sections/future_work}
+\input{sections/conclusion}
+
+% References
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

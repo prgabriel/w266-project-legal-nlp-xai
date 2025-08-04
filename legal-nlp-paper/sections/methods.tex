@@ -1,0 +1,78 @@
+\section{Methodology}
+
+\subsection{Dataset Analysis and Preprocessing}
+
+So picture this: I'm staring at 510 legal contracts, each one stuffed with 41 different types of clauses that I need to find. The whole CUAD dataset is set up like a treasure hunt—every clause type has its own question like "Where does it mention the agreement date?" and I have to dig through pages of legal jargon to find the answer.
+
+The first thing that hit me was how unbalanced everything was. Most of the time, when I asked "Does this contract have a covenant not to sue clause?" the answer was a big fat "no." Only about a third of the questions actually had positive answers (Figure \ref{fig:clause_presence_distribution}). Some clause types were so rare I started wondering if they actually existed—nine of them show up in less than 10\% of contracts. Meanwhile, "Document Name" appears in every single contract because, well, every contract has a name. It's like playing Where's Waldo, except Waldo only shows up in every tenth book.
+
+I had to do some serious cleanup to make this workable:
+
+\begin{enumerate}
+    \item \textbf{Clause Name Normalization}: The original questions were these massive sentences like "Highlight the parts related to Agreement Date that are specified as of a particular date or within a particular time period..." I just turned that into "Agreement Date" and called it a day.
+    \item \textbf{Legal Text Normalization}: The formatting in these legal documents was all over the place—some used all caps for important sections, others had weird indentations, and don't even get me started on the inconsistent numbering schemes. I did my best to clean things up without accidentally changing the meaning of anything.
+    \item \textbf{Multi-Label Conversion}: Converted the whole question-answer format into something my models could actually work with.
+    \item \textbf{Sequence Length Optimization}: These contracts are monsters—averaging almost 5,000 characters each. Most models tap out at 512 tokens, so I had to get creative with chopping things up.
+\end{enumerate}
+
+\subsection{Multi-Label BERT Architecture}
+
+For the actual clause extraction, I decided to use Legal-BERT \cite{chalkidis2020legal} instead of regular BERT. I'd tried regular BERT first, obviously, and it was painful to watch. The thing would completely choke on basic legal phrases—seeing "whereas" and just giving up like it had encountered alien hieroglyphics. Meanwhile, Legal-BERT actually knows what it's looking at because someone had the sense to train it on real legal documents. When I fed it a contract full of "notwithstanding the foregoing" and "subject to the terms hereinafter set forth," it didn't have a nervous breakdown. It's kind of like the difference between me trying to read a medical chart versus an actual doctor—one of us knows what all those abbreviations mean, and it's definitely not me.
+
+Here's how the architecture works:
+
+\begin{algorithm}
+\caption{Multi-Label Legal BERT Architecture}
+\begin{algorithmic}
+\STATE \textbf{Input}: Legal document context $x = [x_1, x_2, ..., x_n]$
+\STATE \textbf{Tokenization}: $tokens = \text{Legal-BERT-Tokenizer}(x)$
+\STATE \textbf{Encoding}: $h = \text{Legal-BERT-Encoder}(tokens)$
+\STATE \textbf{Pooling}: $pooled = \text{MeanPooling}(h)$
+\STATE \textbf{Classification}: $logits = \text{Linear}_{41}(pooled)$
+\STATE \textbf{Output}: $predictions = \text{Sigmoid}(logits)$
+\end{algorithmic}
+\end{algorithm}
+
+The tricky parts were:
+
+\begin{itemize}
+    \item \textbf{Multi-Label Head}: Here's the thing—contracts are messy. You might have termination clauses, liability caps, and confidentiality stuff all in the same document. I couldn't just build a model that picks one clause type and calls it a day. So I set up 41 different outputs with sigmoid activation, which basically lets the model get excited about multiple things at once. It's like being able to say "this contract has liability AND termination AND IP clauses" instead of forcing it to choose just one.
+    \item \textbf{Class Imbalance Handling}: This was a nightmare. Some clauses show up everywhere, others barely exist. I had to weight the loss function so the model wouldn't just ignore the rare clauses completely. Otherwise it would learn to always say "no covenant not to sue clause" and be right 97% of the time.
+    \item \textbf{Sequence Length Management}: Legal documents are way too long for most models to handle. I was stuck with 512 tokens, which is like trying to summarize a novel in a tweet. Had to get creative about which parts to keep and which parts to sacrifice.
+    \item \textbf{Domain-Specific Fine-Tuning}: Even Legal-BERT, which already understood legal language pretty well, was completely lost when it came to CUAD's specific quirks. It's like hiring someone who speaks fluent Spanish and then dropping them in a tiny village where everyone uses weird local expressions that aren't in any textbook. I had to spend extra time teaching it exactly what to look for in these particular contracts, because apparently knowing legal language in general isn't the same as knowing how these 510 contracts like to hide their clause types.
+\end{itemize}
+
+\subsection{T5-Based Legal Summarization}
+
+For summarization, I used T5 \cite{raffel2020t5} because its text-to-text approach is pretty flexible. The challenge was making sure it didn't butcher important legal details while making things more readable.
+
+My summarization pipeline does:
+
+\begin{enumerate}
+    \item \textbf{Legal Phrase Normalization}: Honestly, half the battle was just getting the model to understand what lawyers are actually saying. I’d read a sentence like “heretofore the party of the first part” and think, “Why can’t they just say ‘the company agrees’ and call it a day?” It felt like every contract was a puzzle, and my job was to help the model cut through all the fancy words and get to the
+    \item \textbf{Clause Relationship Preservation}: Making sure that when the model shortens things, it doesn't accidentally disconnect related ideas. Like, if a liability clause references a termination section, I need the summary to keep that connection clear instead of making them sound like random unrelated thoughts.
+    \item \textbf{Compression Ratio Optimization}: I was shooting for something like 4:1 compression—turn a 20-page contract into a 5-page summary without losing anything that would get someone sued later. Harder than it sounds when every word might be legally significant.
+    \item \textbf{Domain-Specific Beam Search}: Spent way too much time tweaking the model's decoding settings because it kept generating summaries that sounded like they were written by a robot having a legal vocabulary seizure. Had to teach it to sound more like an actual human explaining a contract.
+\end{enumerate}
+
+\subsection{Explainability Integration}
+
+This is where things get really interesting. See, lawyers aren't like most technical users, they can't just trust a black box that spits out predictions. If they're going to stake their reputation on an AI's analysis, they need to know exactly why it flagged something. That's where explainability tools saved my bacon.
+
+I used SHAP \cite{lundberg2017unified} to basically crack open the model's brain and see what was going on in there. It showed me exactly which words were triggering each prediction—like when the model saw "notwithstanding" followed by "termination," it would light up like a Christmas tree. SHAP could tell me which legal terms mattered most across all contracts and give detailed breakdowns for those nightmare clauses that keep lawyers up at night. 
+
+I also looked at BERT's attention patterns, which was pretty wild. Turns out different parts of the model focus on totally different things—one part's obsessed with dates and names, another's tracking all those "subject to" and "pursuant to" connections that make contracts such a pain to follow. The shallow layers just grab obvious legal words, but the deeper you go, the more it actually understands how clauses relate to each other. Kind of amazing when you think about it.
+
+The real test was making sure these explanations actually made sense. I had to check that SHAP wasn't just highlighting random legal-sounding words, that similar contracts got similar explanations, and that when both SHAP and attention agreed on something important, they were actually right. Turns out, when the model really understood a clause, both methods would zero in on the same key phrases—that's when I knew I had something lawyers could actually trust.
+\subsection{Evaluation Framework}
+
+I had to figure out two things: whether my model actually works, and whether its explanations make any sense to actual humans.
+
+For performance metrics, I went with the full spread—micro, macro, and weighted F1 scores—because one number never tells the whole story. Breaking it down by clause type was eye-opening: the model nailed obvious stuff like "Document Name" but completely choked on "Most Favored Nation" clauses. Hamming loss showed me how often the model got all 41 predictions right for a single contract (spoiler: not often), while Jaccard similarity basically told me if the model was catching the important stuff or missing half the checklist.
+
+On the explainability side, I had to make sure SHAP wasn't just making things up. I checked that similar contracts got similar explanations, that the highlighted terms actually made sense to lawyers (not just random legal-sounding words), and that when both SHAP and attention patterns agreed on something, they were actually onto something real. The whole point was making sure these explanations would hold up when a skeptical lawyer started poking at them.
+\subsection{Implementation and Deployment}
+
+I built the whole thing as a web app using Streamlit because I wanted people to actually be able to try it out without needing a PhD in computer science. The interface is pretty straightforward—you upload a contract, hit a button, and it shows you all the clauses it found along with explanations for why it thinks they're there. No command line nonsense, no complicated setup, just drag and drop.
+
+Getting it deployed was its own adventure. I wrapped everything in Docker containers because trying to get all the dependencies to play nice together on different machines was giving me nightmares. For the actual hosting, I went with Azure since they have decent security features for handling sensitive legal documents—the last thing I need is someone's merger agreement ending up on the internet. The whole setup monitors itself now, tracking response times and accuracy so I know when something breaks before angry lawyers start calling.
