@@ -68,24 +68,9 @@ The real test was making sure these explanations actually made sense. I had to c
 
 I had to figure out two things: whether my model actually works, and whether its explanations make any sense to actual humans.
 
-\subsubsection{Multi-Label Classification Metrics}
+For performance metrics, I went with the full spread—micro, macro, and weighted F1 scores—because one number never tells the whole story. Breaking it down by clause type was eye-opening: the model nailed obvious stuff like "Document Name" but completely choked on "Most Favored Nation" clauses. Hamming loss showed me how often the model got all 41 predictions right for a single contract (spoiler: not often), while Jaccard similarity basically told me if the model was catching the important stuff or missing half the checklist.
 
-\begin{itemize}
-    \item \textbf{F1 Scores}: I calculated micro, macro, and weighted F1 scores because honestly, one number never tells the whole story. It's like trying to judge a restaurant by only tasting the bread—you need to try everything to know if it's actually good.
-    \item \textbf{Per-Clause Analysis}: I broke down the performance for each of the 41 clause types individually. Some clauses the model nailed every time, others it struggled with like me trying to understand tax law. Turns out "Most Favored Nation" clauses are way harder to spot than "Document Name" (shocking, I know).
-    \item \textbf{Hamming Loss}: This one tells me how often the model gets the entire set of predictions right for a contract. Spoiler alert: not as often as I'd hoped. Getting 41 things right at the same time is apparently really hard.
-    \item \textbf{Jaccard Similarity}: Basically comparing the predicted clause set with what's actually there, like checking if someone packed everything on the vacation checklist. The model usually remembers the big stuff but sometimes forgets the sunscreen, if you know what I mean.
-\end{itemize}
-
-
-\subsubsection{Explainability Validation}
-
-\begin{itemize}
-    \item \textbf{Explanation Consistency}: Making sure SHAP gives similar explanations for similar inputs.
-    \item \textbf{Legal Domain Relevance}: Checking that highlighted terms actually make sense to legal professionals.
-    \item \textbf{Attention-SHAP Correlation}: Seeing if attention weights and SHAP attributions agree with each other.
-\end{itemize}
-
+On the explainability side, I had to make sure SHAP wasn't just making things up. I checked that similar contracts got similar explanations, that the highlighted terms actually made sense to lawyers (not just random legal-sounding words), and that when both SHAP and attention patterns agreed on something, they were actually onto something real. The whole point was making sure these explanations would hold up when a skeptical lawyer started poking at them.
 \subsection{Implementation and Deployment}
 
 I built the whole thing as a web app using Streamlit so people could actually try it out. The deployment includes:
