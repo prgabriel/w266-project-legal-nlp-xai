@@ -6,3 +6,8 @@ data/interim/
 reference_pdfs/
 legal-nlp-paper/main.synctex.gz
 legal-nlp-paper/main.bbl
+presentation/latex/main.out
+presentation/latex/main.log
+presentation/latex/main.fls
+presentation/latex/main.fdb_latexmk
+presentation/latex/main.aux
