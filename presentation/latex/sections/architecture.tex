@@ -1,0 +1,80 @@
+% Architecture Section
+
+\section{System Architecture}
+
+\begin{frame}{High-Level System Overview}
+\begin{center}
+\includegraphics[width=0.95\textwidth]{\figpath/system_architecture.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}{Model Architecture Details}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{\figpath/model_architecture.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}{Data Processing Pipeline}
+\begin{center}
+\includegraphics[width=0.95\textwidth]{\figpath/data_flow_pipeline.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}{Component Integration}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Core Components:}
+\begin{itemize}
+    \item \highlight{Data Preprocessor} - Text cleaning and tokenization
+    \item \highlight{BERT Encoder} - Contextual embeddings
+    \item \highlight{Classification Head} - Clause type prediction
+    \item \highlight{Explainer Module} - Multi-method analysis
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Integration Features:}
+\begin{itemize}
+    \item Modular design for extensibility
+    \item Consistent API across explainers
+    \item Efficient batch processing
+    \item Configurable output formats
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{0.5cm}
+\begin{alertblock}{Scalability Considerations}
+System designed to handle large-scale legal document processing with parallel explainability analysis.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Implementation Stack}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Core Technologies:}
+\begin{itemize}
+    \item \textbf{PyTorch} - Deep learning framework
+    \item \textbf{Transformers} - BERT implementation
+    \item \textbf{SHAP} - Explainability library
+    \item \textbf{LIME} - Local explanations
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Supporting Tools:}
+\begin{itemize}
+    \item \textbf{Pandas/NumPy} - Data processing
+    \item \textbf{Matplotlib/Seaborn} - Visualization
+    \item \textbf{Jupyter} - Interactive development
+    \item \textbf{Git/Docker} - Development workflow
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{0.5cm}
+\textbf{Deployment Considerations:}
+\begin{itemize}
+    \item Cloud-ready architecture (Azure-compatible)
+    \item RESTful API for model serving
+    \item Web-based dashboard for visualization
+\end{itemize}
+\end{frame}

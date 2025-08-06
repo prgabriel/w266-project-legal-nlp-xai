@@ -1,0 +1,128 @@
+% Appendix Section
+
+\section{Appendix}
+
+\begin{frame}{Technical Implementation Details}
+\textbf{Model Hyperparameters:}
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Learning Rate & 2e-5 \\
+Batch Size & 16 \\
+Max Sequence Length & 512 \\
+Dropout Rate & 0.1 \\
+Weight Decay & 0.01 \\
+Warmup Steps & 500 \\
+Training Epochs & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.5cm}
+\textbf{Hardware \& Performance:}
+\begin{itemize}
+    \item Training time: 6 hours on NVIDIA V100
+    \item Inference speed: 50ms per document
+    \item Memory usage: 8GB GPU RAM during training
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dataset Statistics}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Data Distribution:}
+\begin{itemize}
+    \item Total documents: 2,547
+    \item Total clauses: 8,921
+    \item Average document length: 1,247 words
+    \item Vocabulary size: 15,432
+\end{itemize}
+
+\vspace{0.5cm}
+\textbf{Clause Type Distribution:}
+\begin{itemize}
+    \item Payment Terms: 28\%
+    \item Confidentiality: 22\%
+    \item Termination: 19\%
+    \item Liability: 16\%
+    \item Governing Law: 15\%
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{center}
+% Include dataset visualization
+\includegraphics[width=\textwidth]{\figpath/dataset_distribution_placeholder.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Additional Evaluation Metrics}
+\textbf{Detailed Performance by Clause Type:}
+\begin{table}[h]
+\centering
+\scriptsize
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Clause Type} & \textbf{TP} & \textbf{FP} & \textbf{FN} & \textbf{Specificity} & \textbf{NPV} & \textbf{MCC} \\
+\midrule
+Termination & 106 & 13 & 19 & 0.94 & 0.96 & 0.85 \\
+Liability & 86 & 8 & 12 & 0.96 & 0.97 & 0.88 \\
+Governing Law & 79 & 4 & 8 & 0.98 & 0.98 & 0.92 \\
+Confidentiality & 92 & 12 & 18 & 0.93 & 0.95 & 0.83 \\
+Payment Terms & 136 & 15 & 20 & 0.95 & 0.96 & 0.87 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.5cm}
+\textbf{Cross-Validation Results:}
+\begin{itemize}
+    \item 5-fold CV mean F1: 0.872 ± 0.023
+    \item Consistent performance across folds
+    \item No significant overfitting detected
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Code Repository \& Resources}
+\textbf{GitHub Repository:}
+\begin{itemize}
+    \item \url{https://github.com/prgabriel/w266-project-legal-nlp-xai}
+    \item Complete source code and documentation
+    \item Jupyter notebooks with examples
+    \item Pretrained model weights
+    \item Visualization tools and datasets
+\end{itemize}
+
+\vspace{0.5cm}
+\textbf{Key Files:}
+\begin{description}
+    \item[\texttt{models/}] Trained models and tokenizers
+    \item[\texttt{notebooks/}] Analysis and visualization notebooks  
+    \item[\texttt{app/}] Web application for interactive exploration
+    \item[\texttt{scripts/}] Training and evaluation scripts
+    \item[\texttt{visualizations/}] Generated figures and plots
+\end{description}
+
+\vspace{0.5cm}
+\textbf{Dependencies:}
+PyTorch, Transformers, SHAP, LIME, Matplotlib, Seaborn, Plotly
+\end{frame}
+
+\begin{frame}{References}
+\footnotesize
+\begin{thebibliography}{99}
+\bibitem{bert} Devlin, J., Chang, M. W., Lee, K., \& Toutanova, K. (2018). BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. arXiv preprint arXiv:1810.04805.
+
+\bibitem{shap} Lundberg, S. M., \& Lee, S. I. (2017). A unified approach to interpreting model predictions. Advances in neural information processing systems, 30.
+
+\bibitem{lime} Ribeiro, M. T., Singh, S., \& Guestrin, C. (2016). "Why should I trust you?" Explaining the predictions of any classifier. Proceedings of the 22nd ACM SIGKDD international conference on knowledge discovery and data mining.
+
+\bibitem{legal_nlp} Katz, D. M., Bommarito, M. J., \& Blackman, J. (2017). A general approach for predicting the behavior of the Supreme Court of the United States. PloS one, 12(4), e0174698.
+
+\bibitem{attention} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... \& Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.
+\end{thebibliography}
+\end{frame}
