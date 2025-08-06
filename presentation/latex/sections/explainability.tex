@@ -39,14 +39,16 @@
 \begin{frame}{LIME Local Explanations}
 \begin{center}
 % Include LIME explanation example
-\includegraphics[width=0.9\textwidth]{\figpath/explainability_analysis.pdf}
+\includegraphics[width=0.9\textwidth]{\figpath/feature_importance_comparison.pdf}
 \end{center}
 
-\textbf{Example Explanation:} Termination clause prediction
+\textbf{LIME Method Insights:}
 \begin{itemize}
-    \item \textcolor{red}{Negative words}: "agreement", "contract" (common in all clauses)
-    \item \textcolor{green}{Positive words}: "terminate", "30 days notice", "breach"
-    \item Local model accuracy: 0.92
+    \item \highlight{Local surrogate models} explain individual predictions
+    \item \highlight{Perturbation-based} approach shows feature impact
+    \item \textcolor{green}{Positive contributors}: "terminate", "30 days notice", "breach"
+    \item \textcolor{red}{Negative indicators}: "agreement", "contract" (common across clauses)
+    \item Local model fidelity: 0.92
 \end{itemize}
 \end{frame}
 
