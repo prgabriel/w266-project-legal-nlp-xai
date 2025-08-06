@@ -32,8 +32,8 @@ Training Epochs & 4 \\
 
 \begin{frame}{Dataset Distribution Analysis}
 \begin{columns}
-\begin{column}{0.5	extwidth}
-	extbf{Key Statistics:}
+\begin{column}{0.5\textwidth}
+\textbf{Key Statistics:}
 \begin{itemize}
     \item Total samples: 1,350
     \item Payment Terms: 20\%
@@ -43,7 +43,7 @@ Training Epochs & 4 \\
     \item Governing Law: 15\%
 \end{itemize}
 \end{column}
-\begin{column}{0.5	extwidth}
+\begin{column}{0.5	\textwidth}
 \begin{center}
 % Include dataset visualization
 \includegraphics[width=\textwidth]{\figpath/dataset_distribution.pdf}
@@ -57,7 +57,7 @@ Training Epochs & 4 \\
 \includegraphics[width=0.85\textwidth]{\figpath/confusion_matrix.pdf}
 \end{center}
 
-	extbf{Matrix Insights:}
+\textbf{Matrix Insights:}
 \begin{itemize}
     \item \highlight{Strong diagonal} indicates high classification accuracy
     \item \highlight{Minimal confusion} between distinct clause types
@@ -68,10 +68,10 @@ Training Epochs & 4 \\
 
 \begin{frame}{Error Pattern Analysis}
 \begin{center}
-\includegraphics[width=0.9	extwidth]{\figpath/misclassification_patterns.pdf}
+\includegraphics[width=0.9\textwidth]{\figpath/misclassification_patterns.pdf}
 \end{center}
 
-	extbf{Common Misclassifications:}
+\textbf{Common Misclassifications:}
 \begin{itemize}
     \item \highlight{Governing Law $\leftrightarrow$ Agreement Date} confusion reflects similar legal language
     \item \highlight{Liability $\leftrightarrow$ Insurance} overlap due to risk-related terminology
@@ -85,7 +85,7 @@ Training Epochs & 4 \\
 \includegraphics[width=0.8\textwidth]{\figpath/confidence_vs_accuracy.pdf}
 \end{center}
 
-	extbf{Calibration Insights:}
+\textbf{Calibration Insights:}
 \begin{itemize}
     \item Model shows \highlight{good calibration} across confidence ranges
     \item Higher confidence correlates with \highlight{higher accuracy}
