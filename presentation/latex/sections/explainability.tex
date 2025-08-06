@@ -2,39 +2,38 @@
 
 \section{Explainability Analysis}
 
+\begin{frame}{Feature Importance Method Comparison}
+\begin{center}
+\includegraphics[width=0.95\textwidth]{\figpath/feature_importance_comparison.pdf}
+\end{center}
+
+\textbf{Method Analysis:}
+\begin{itemize}
+    \item \highlight{SHAP} and \highlight{Attention} show strong agreement on key terms
+    \item \highlight{LIME} provides complementary local explanations
+    \item All methods identify \highlight{"terminate"} as top feature
+    \item Consistent ranking validates \highlight{model interpretability}
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Explainability Methods Comparison}
 \begin{center}
 \includegraphics[width=0.95\textwidth]{\figpath/explainability_comparison.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}{SHAP Analysis Results}
-\begin{columns}
-\begin{column}{0.6\textwidth}
+\begin{frame}{SHAP Feature Importance Analysis}
 \begin{center}
-% Include SHAP summary plot
-\includegraphics[width=\textwidth]{\figpath/explainability_analysis.pdf}
+\includegraphics[width=0.9\textwidth]{\figpath/shap_analysis.pdf}
 \end{center}
-\end{column}
-\begin{column}{0.4\textwidth}
+
 \textbf{Key Insights:}
 \begin{itemize}
-    \item \highlight{Legal keywords} have highest importance
-    \item \highlight{Contextual terms} provide disambiguation
-    \item \highlight{Clause structure} influences predictions
-    \item \highlight{Negations} significantly impact scores
+    \item \highlight{Legal keywords} have highest positive impact
+    \item \highlight{"terminate"} and \highlight{"breach"} show strongest signals
+    \item \highlight{Contract structure words} provide context
+    \item \highlight{Negations} create negative feature contributions
 \end{itemize}
-
-\vspace{0.5cm}
-\textbf{Top Features:}
-\begin{enumerate}
-    \item "terminate", "termination"
-    \item "liable", "liability" 
-    \item "confidential", "proprietary"
-    \item "payment", "due"
-\end{enumerate}
-\end{column}
-\end{columns}
 \end{frame}
 
 \begin{frame}{LIME Local Explanations}
@@ -51,46 +50,31 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Attention Weight Analysis}
-\begin{columns}
-\begin{column}{0.6\textwidth}
+\begin{frame}{Multi-Head Attention Analysis}
 \begin{center}
-% Include attention heatmap
-\includegraphics[width=\textwidth]{\figpath/explainability_analysis.pdf}
+\includegraphics[width=\textwidth]{\figpath/attention_heatmap.pdf}
 \end{center}
-\end{column}
-\begin{column}{0.4\textwidth}
+
 \textbf{Attention Patterns:}
 \begin{itemize}
     \item \highlight{Multi-head attention} focuses on different aspects
-    \item \highlight{Legal terms} receive high attention
+    \item \highlight{Legal terms} receive high attention across heads
     \item \highlight{Clause boundaries} show attention peaks
-    \item \highlight{Syntactic structure} influences attention flow
+    \item \highlight{Head diversity} reveals specialized attention patterns
 \end{itemize}
-
-\vspace{0.5cm}
-\textbf{Layer Analysis:}
-\begin{itemize}
-    \item Early layers: syntactic patterns
-    \item Middle layers: semantic concepts
-    \item Late layers: task-specific features
-\end{itemize}
-\end{column}
-\end{columns}
 \end{frame}
 
-\begin{frame}{Attention Heatmap Visualization}
+\begin{frame}{Inter-Method Agreement Analysis}
 \begin{center}
-% Include attention heatmap - using the correct figure path
-\includegraphics[width=0.8\textwidth]{\figpath/explainability_analysis.pdf}
+\includegraphics[width=0.8\textwidth]{\figpath/method_agreement_analysis.pdf}
 \end{center}
 
-\textbf{Heatmap Analysis:}
+\textbf{Agreement Insights:}
 \begin{itemize}
-    \item \highlight{Token-level attention} shows model focus areas
-    \item \highlight{Head diversity} reveals different attention patterns
-    \item \highlight{Layer progression} from syntax to semantics
-    \item \highlight{Legal term highlighting} validates model understanding
+    \item \highlight{Strong correlation} between SHAP and LIME (>0.97)
+    \item \highlight{Good agreement} across all method pairs (>0.70)
+    \item High correlation validates \highlight{feature importance consistency}
+    \item Combined approach provides \highlight{robust explanations}
 \end{itemize}
 \end{frame}
 

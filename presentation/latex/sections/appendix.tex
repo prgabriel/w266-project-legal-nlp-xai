@@ -30,34 +30,68 @@ Training Epochs & 4 \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Dataset Statistics}
+\begin{frame}{Dataset Distribution Analysis}
 \begin{columns}
-\begin{column}{0.5\textwidth}
-\textbf{Data Distribution:}
+\begin{column}{0.5	extwidth}
+	extbf{Key Statistics:}
 \begin{itemize}
-    \item Total documents: 2,547
-    \item Total clauses: 8,921
-    \item Average document length: 1,247 words
-    \item Vocabulary size: 15,432
-\end{itemize}
-
-\vspace{0.5cm}
-\textbf{Clause Type Distribution:}
-\begin{itemize}
-    \item Payment Terms: 28\%
-    \item Confidentiality: 22\%
-    \item Termination: 19\%
+    \item Total samples: 1,350
+    \item Payment Terms: 20\%
+    \item Termination: 18\%
+    \item Confidentiality: 17\%
     \item Liability: 16\%
     \item Governing Law: 15\%
 \end{itemize}
 \end{column}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.5	extwidth}
 \begin{center}
 % Include dataset visualization
-\includegraphics[width=\textwidth]{\figpath/confusion_matrix_analysis.pdf}
+\includegraphics[width=\textwidth]{\figpath/dataset_distribution.pdf}
 \end{center}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Confusion Matrix Analysis}
+\begin{center}
+\includegraphics[width=0.85\textwidth]{\figpath/confusion_matrix.pdf}
+\end{center}
+
+	extbf{Matrix Insights:}
+\begin{itemize}
+    \item \highlight{Strong diagonal} indicates high classification accuracy
+    \item \highlight{Minimal confusion} between distinct clause types
+    \item \highlight{Governing Law} shows perfect classification
+    \item Few misclassifications occur between \highlight{semantically similar} clauses
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Error Pattern Analysis}
+\begin{center}
+\includegraphics[width=0.9	extwidth]{\figpath/misclassification_patterns.pdf}
+\end{center}
+
+	extbf{Common Misclassifications:}
+\begin{itemize}
+    \item \highlight{Governing Law $\leftrightarrow$ Agreement Date} confusion reflects similar legal language
+    \item \highlight{Liability $\leftrightarrow$ Insurance} overlap due to risk-related terminology
+    \item \highlight{IP Ownership $\leftrightarrow$ Termination} shows boundary challenges
+    \item Error patterns guide targeted \highlight{model improvements}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Model Calibration Analysis}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{\figpath/confidence_vs_accuracy.pdf}
+\end{center}
+
+	extbf{Calibration Insights:}
+\begin{itemize}
+    \item Model shows \highlight{good calibration} across confidence ranges
+    \item Higher confidence correlates with \highlight{higher accuracy}
+    \item \highlight{Well-calibrated predictions} support deployment confidence
+    \item Confidence thresholding enables \highlight{reliable filtering}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Additional Evaluation Metrics}
