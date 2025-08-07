@@ -380,7 +380,6 @@ def load_model_results(results_path: str) -> Dict:
 def process_shap_data(shap_file_path: str) -> Tuple[np.ndarray, List[str]]:
     """Process SHAP analysis results."""
     # Placeholder - implement based on actual SHAP output format
-    pass
 
     """Process SHAP analysis results.
 
