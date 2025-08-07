@@ -382,7 +382,21 @@ def process_shap_data(shap_file_path: str) -> Tuple[np.ndarray, List[str]]:
     # Placeholder - implement based on actual SHAP output format
     pass
 
+    """Process SHAP analysis results.
 
+    Assumes the SHAP data is stored as a CSV file where columns are feature names
+    and rows are SHAP values for each sample.
+
+    Args:
+        shap_file_path: Path to the SHAP values CSV file.
+
+    Returns:
+        Tuple of (shap_values: np.ndarray, feature_names: List[str])
+    """
+    df = pd.read_csv(shap_file_path)
+    feature_names = list(df.columns)
+    shap_values = df.values
+    return shap_values, feature_names
 def format_number(num: float, precision: int = 3) -> str:
     """Format numbers for display in plots."""
     if abs(num) >= 1000:
