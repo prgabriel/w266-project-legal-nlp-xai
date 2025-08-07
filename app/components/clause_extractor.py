@@ -268,7 +268,7 @@ class LegalClauseExtractor:
                 # Ensure we have the correct number of clause types from training
                 if 'clean_clause_names' in training_results:
                     trained_clause_names = training_results['clean_clause_names']
-                    if len(trained_clause_names) == 41:
+                    if len(trained_clause_names) == len(self.clause_types):
                         self.clause_types = trained_clause_names
                         logger.info(f"Loaded {len(trained_clause_names)} clause types from training results")
             
