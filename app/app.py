@@ -414,14 +414,14 @@ def initialize_models():
             return {}
 
 def get_model_performance_metrics(models):
-    """Get actual performance metrics from models and training results - TRULY LIVE VERSION"""
+    """Get actual performance metrics from models and training results - VERIFIED LIVE VERSION"""
     metrics = {
         'clause_extraction': {
             'status': 'unknown',
             'f1_score': 0.0,
             'precision': 0.0,
             'recall': 0.0,
-            'num_clause_types': 0,
+            'num_clause_types': 0,  # CUAD has 41 clause types
             'model_name': 'Unknown'
         },
         'summarization': {
@@ -433,112 +433,159 @@ def get_model_performance_metrics(models):
         }
     }
     
-    # Get clause extraction metrics - LOAD ACTUAL TRAINING RESULTS
+    # Get clause extraction metrics - VERIFY ACTUAL FILES EXIST
     if models.get('clause_extractor'):
         try:
-            # First get model info
+            # Get model info first
             if hasattr(models['clause_extractor'], 'get_model_info'):
                 model_info = models['clause_extractor'].get_model_info()
                 metrics['clause_extraction']['status'] = 'loaded' if model_info.get('model_loaded', False) else 'error'
                 metrics['clause_extraction']['num_clause_types'] = model_info.get('num_clause_types', 41)
             
-            # Load ACTUAL training results directly - NO FALLBACKS
+            # Check MULTIPLE possible locations for BERT training results
             project_root = Path(__file__).parent.parent
-            bert_training_path = project_root / 'models' / 'bert' / 'training_results.json'
+            possible_bert_paths = [
+                project_root / 'models' / 'bert' / 'training_results.json',
+                project_root / 'models' / 'legal_bert' / 'training_results.json',
+                project_root / 'results' / 'bert_training_results.json',
+                project_root / 'outputs' / 'bert' / 'training_results.json',
+                project_root / 'checkpoints' / 'bert' / 'training_results.json'
+            ]
             
-            if bert_training_path.exists():
-                try:
-                    with open(bert_training_path, 'r') as f:
-                        training_data = json.load(f)
-                    
-                    # Get the ACTUAL model name from training results
-                    model_config = training_data.get('model_config', {})
-                    actual_model_name = model_config.get('model_name', training_data.get('model_name', 'nlpaueb/legal-bert-base-uncased'))
-                    metrics['clause_extraction']['model_name'] = actual_model_name
-                    
-                    # Get the ACTUAL test metrics (not fallbacks!)
-                    test_metrics = training_data.get('test_metrics', {})
-                    if test_metrics:
-                        # Use the REAL values from your training
-                        metrics['clause_extraction']['f1_score'] = test_metrics.get('f1_micro', 0.0)
-                        metrics['clause_extraction']['precision'] = test_metrics.get('precision_micro', 0.0)
-                        metrics['clause_extraction']['recall'] = test_metrics.get('recall_micro', 0.0)
+            training_data_found = False
+            for bert_path in possible_bert_paths:
+                if bert_path.exists():
+                    try:
+                        logger.info(f"📂 Found BERT training results at: {bert_path}")
+                        with open(bert_path, 'r') as f:
+                            training_data = json.load(f)
                         
-                        logger.info(f"INFO: Loaded REAL BERT metrics - Model: {actual_model_name}")
-                        logger.info(f"   F1: {metrics['clause_extraction']['f1_score']:.4f}")
-                        logger.info(f"   Precision: {metrics['clause_extraction']['precision']:.4f}")  
-                        logger.info(f"   Recall: {metrics['clause_extraction']['recall']:.4f}")
-                    else:
-                        # Try final validation metrics if no test_metrics
-                        val_history = training_data.get('training_history', {}).get('val_metrics', [])
-                        if val_history:
-                            final_val = val_history[-1]  # Last validation results
-                            metrics['clause_extraction']['f1_score'] = final_val.get('f1_micro', 0.0)
-                            metrics['clause_extraction']['precision'] = final_val.get('precision_micro', 0.0)
-                            metrics['clause_extraction']['recall'] = final_val.get('recall_micro', 0.0)
-                            logger.info(f"✅ Loaded validation metrics (no test metrics found)")
-                        else:
-                            logger.warning("❌ No test_metrics or validation metrics found in training results")
-                    
-                except Exception as e:
-                    logger.error(f"Error parsing BERT training results: {e}")
-                    metrics['clause_extraction']['model_name'] = 'nlpaueb/legal-bert-base-uncased'
-                    metrics['clause_extraction']['status'] = 'error'
-            else:
-                logger.warning(f"❌ BERT training results not found at {bert_training_path}")
-                metrics['clause_extraction']['model_name'] = 'bert-base-uncased'  # Fallback indicator
+                        # Get actual model name
+                        model_config = training_data.get('model_config', {})
+                        actual_model_name = model_config.get('model_name', 
+                                                           training_data.get('model_name', 
+                                                                            'nlpaueb/legal-bert-base-uncased'))
+                        metrics['clause_extraction']['model_name'] = actual_model_name
+                        
+                        # Try multiple metric locations in the file
+                        metric_sources = [
+                            training_data.get('test_metrics', {}),
+                            training_data.get('final_metrics', {}),
+                            training_data.get('best_metrics', {}),
+                            training_data.get('evaluation_metrics', {})
+                        ]
+                        
+                        # Also check training history for final validation
+                        training_history = training_data.get('training_history', {})
+                        if 'val_metrics' in training_history and training_history['val_metrics']:
+                            metric_sources.append(training_history['val_metrics'][-1])
+                        
+                        # Find the best metric source with actual values
+                        for source in metric_sources:
+                            if source and any(key in source for key in ['f1_micro', 'f1_score', 'f1']):
+                                # Use the first valid source found
+                                metrics['clause_extraction']['f1_score'] = source.get('f1_micro', 
+                                                                                     source.get('f1_score', 
+                                                                                               source.get('f1', 0.0)))
+                                metrics['clause_extraction']['precision'] = source.get('precision_micro',
+                                                                                      source.get('precision', 0.0))
+                                metrics['clause_extraction']['recall'] = source.get('recall_micro',
+                                                                                   source.get('recall', 0.0))
+                                
+                                logger.info(f"REAL BERT metrics loaded - F1: {metrics['clause_extraction']['f1_score']:.4f}")
+                                training_data_found = True
+                                break
+                        
+                        if training_data_found:
+                            break
+                            
+                    except Exception as e:
+                        logger.error(f"Error parsing {bert_path}: {e}")
+                        continue
+            
+            if not training_data_found:
+                logger.warning("No valid BERT training results found in any expected location")
+                metrics['clause_extraction']['model_name'] = 'nlpaueb/legal-bert-base-uncased'
                 
         except Exception as e:
             logger.warning(f"Could not load clause extraction metrics: {e}")
             metrics['clause_extraction']['status'] = 'error'
     
-    # Get summarization metrics - LOAD ACTUAL T5 RESULTS  
+    # Get summarization metrics - CHECK MULTIPLE T5 LOCATIONS
     if models.get('summarizer'):
         try:
-            # First get model info
+            # Get model info first
             if hasattr(models['summarizer'], 'get_model_info'):
                 model_info = models['summarizer'].get_model_info()
                 metrics['summarization']['status'] = 'loaded' if model_info.get('model_loaded', False) else 'error'
                 base_model_name = model_info.get('model_name', 't5-base')
                 metrics['summarization']['model_name'] = base_model_name
             
-            # Load ACTUAL T5 training results directly - NO FALLBACKS
+            # Check MULTIPLE possible locations for T5 training results
             project_root = Path(__file__).parent.parent
-            t5_training_path = project_root / 'models' / 't5' / 'training_results.json'
+            possible_t5_paths = [
+                project_root / 'models' / 't5' / 'training_results.json',
+                project_root / 'models' / 'legal_t5' / 'training_results.json',
+                project_root / 'results' / 't5_training_results.json',
+                project_root / 'outputs' / 't5' / 'training_results.json',
+                project_root / 'checkpoints' / 't5' / 'training_results.json'
+            ]
             
-            if t5_training_path.exists():
-                try:
-                    with open(t5_training_path, 'r') as f:
-                        t5_data = json.load(f)
-                    
-                    # Get ACTUAL ROUGE scores from training results
-                    rouge_scores = t5_data.get('training_history', {}).get('rouge_scores', {})
-                    if rouge_scores:
-                        metrics['summarization']['rouge_1'] = rouge_scores.get('rouge1', 0.0)
-                        metrics['summarization']['rouge_2'] = rouge_scores.get('rouge2', 0.0) 
-                        metrics['summarization']['rouge_l'] = rouge_scores.get('rougeL', 0.0)
+            t5_data_found = False
+            for t5_path in possible_t5_paths:
+                if t5_path.exists():
+                    try:
+                        logger.info(f"📂 Found T5 training results at: {t5_path}")
+                        with open(t5_path, 'r') as f:
+                            t5_data = json.load(f)
                         
-                        logger.info(f"✅ Loaded REAL T5 metrics:")
-                        logger.info(f"   ROUGE-1: {metrics['summarization']['rouge_1']:.4f}")
-                        logger.info(f"   ROUGE-2: {metrics['summarization']['rouge_2']:.4f}")
-                        logger.info(f"   ROUGE-L: {metrics['summarization']['rouge_l']:.4f}")
-                    else:
-                        logger.warning("❌ No ROUGE scores found in T5 training results")
+                        # Try multiple ROUGE score locations
+                        rouge_sources = [
+                            t5_data.get('rouge_scores', {}),
+                            t5_data.get('test_metrics', {}),
+                            t5_data.get('final_metrics', {}),
+                            t5_data.get('evaluation_results', {})
+                        ]
                         
-                except Exception as e:
-                    logger.error(f"Error parsing T5 training results: {e}")
-            else:
-                logger.warning(f"❌ T5 training results not found at {t5_training_path}")
+                        # Also check training history
+                        training_history = t5_data.get('training_history', {})
+                        if 'rouge_scores' in training_history:
+                            rouge_sources.append(training_history['rouge_scores'])
+                        
+                        # Find valid ROUGE scores
+                        for source in rouge_sources:
+                            if source and any(key in source for key in ['rouge1', 'rougeL', 'rouge_1', 'rouge_l']):
+                                metrics['summarization']['rouge_1'] = source.get('rouge1', source.get('rouge_1', 0.0))
+                                metrics['summarization']['rouge_2'] = source.get('rouge2', source.get('rouge_2', 0.0))
+                                metrics['summarization']['rouge_l'] = source.get('rougeL', source.get('rouge_l', 0.0))
+                                
+                                logger.info(f"✅ REAL T5 metrics loaded - ROUGE-L: {metrics['summarization']['rouge_l']:.4f}")
+                                t5_data_found = True
+                                break
+                        
+                        if t5_data_found:
+                            break
+                            
+                    except Exception as e:
+                        logger.error(f"Error parsing {t5_path}: {e}")
+                        continue
+            
+            if not t5_data_found:
+                logger.warning("❌ No valid T5 training results found in any expected location")
                 
         except Exception as e:
             logger.warning(f"Could not load summarization metrics: {e}")
             metrics['summarization']['status'] = 'error'
             metrics['summarization']['model_name'] = 't5-base'
     
-    # Show what we loaded
-    logger.info("📊 Final loaded metrics:")
-    logger.info(f"   BERT F1: {metrics['clause_extraction']['f1_score']:.4f} ({'✅ Live' if metrics['clause_extraction']['f1_score'] > 0 else '❌ Missing'})")
-    logger.info(f"   T5 ROUGE-L: {metrics['summarization']['rouge_l']:.4f} ({'✅ Live' if metrics['summarization']['rouge_l'] > 0 else '❌ Missing'})")
+    # Final verification and logging
+    bert_f1 = metrics['clause_extraction']['f1_score']
+    t5_rouge = metrics['summarization']['rouge_l']
+    
+    logger.info("📊 FINAL METRICS VERIFICATION:")
+    logger.info(f"   BERT F1: {bert_f1:.4f} ({'✅ REAL DATA' if bert_f1 > 0 else '❌ NO REAL DATA - USING DEFAULTS'})")
+    logger.info(f"   T5 ROUGE-L: {t5_rouge:.4f} ({'✅ REAL DATA' if t5_rouge > 0 else '❌ NO REAL DATA - USING DEFAULTS'})")
+    logger.info(f"   Clause Types: {metrics['clause_extraction']['num_clause_types']} (CUAD standard)")
     
     return metrics
 
