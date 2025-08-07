@@ -99,21 +99,20 @@ class LegalClauseExtractor:
     Enhanced Legal Clause Extractor with improved performance and features
     """
     
-    # Complete CUAD clause types with clean mappings
+    # Complete CUAD clause types from actual training data (41 types)
     DEFAULT_CLAUSE_TYPES = [
-        'affiliate_license_licensee', 'affiliate_license_licensor', 'agreement_date',
-        'anti_assignment', 'audit_rights', 'cap_on_liability', 'change_of_control',
-        'competitive_restriction_except', 'covenant_not_to_sue', 'document_name',
-        'effective_date', 'exclusivity', 'expiration_date', 'governing_law',
-        'insurance', 'ip_ownership_assignment', 'irrevocable_or_perpetual_licen',
-        'joint_ip_ownership', 'license_grant', 'liquidated_damages',
-        'minimum_commitment', 'most_favored_nation', 'no_solicit_of_customers',
-        'no_solicit_of_employees', 'non_compete', 'non_disparagement',
-        'non_transferable_license', 'notice_period_to_terminate_ren', 'parties',
-        'post_termination_services', 'price_restrictions', 'renewal_term',
-        'revenueprofit_sharing', 'rofrroforofn', 'source_code_escrow',
-        'termination_for_convenience', 'third_party_beneficiary', 'uncapped_liability',
-        'unlimited_all_you_can_eat_licen', 'volume_restriction', 'warranty_duration'
+        "Third Party Beneficiary", "Renewal Term", "Cap On Liability", "Warranty Duration",
+        "Audit Rights", "No-Solicit Of Employees", "Exclusivity", "Effective Date",
+        "No-Solicit Of Customers", "License Grant", "Uncapped Liability", "Non-Disparagement",
+        "Price Restrictions", "Competitive Restriction Exception", "Source Code Escrow",
+        "Irrevocable Or Perpetual License", "Covenant Not To Sue", "Minimum Commitment",
+        "Liquidated Damages", "Change Of Control", "Revenue/Profit Sharing",
+        "Affiliate License-Licensor", "Ip Ownership Assignment", "Parties",
+        "Governing Law", "Agreement Date", "Joint Ip Ownership", "Post-Termination Services",
+        "Termination For Convenience", "Expiration Date", "Notice Period To Terminate Renewal",
+        "Rofr/Rofo/Rofn", "Volume Restriction", "Non-Compete", "Affiliate License-Licensee",
+        "Non-Transferable License", "Insurance", "Unlimited/All-You-Can-Eat-License",
+        "Most Favored Nation", "Document Name", "Anti-Assignment"
     ]
     
     def __init__(self, model_path: str = None, cache_dir: str = None, config: ExtractionConfig = None):
@@ -139,6 +138,13 @@ class LegalClauseExtractor:
         self.project_root = Path(__file__).parent.parent.parent
         self.model_path = Path(model_path) if model_path else self.project_root / 'models' / 'bert'
         self.cache_dir = Path(cache_dir) if cache_dir else self.project_root / 'app' / '.cache'
+        
+        # Log initialization info
+        logger.info(f"🔧 Initializing Legal Clause Extractor")
+        logger.info(f"   Project root: {self.project_root}")
+        logger.info(f"   Model path: {self.model_path}")
+        logger.info(f"   Device: {self.device}")
+        logger.info(f"   Model path exists: {self.model_path.exists()}")
         
         # Ensure directories exist
         self.cache_dir.mkdir(parents=True, exist_ok=True)
@@ -170,10 +176,35 @@ class LegalClauseExtractor:
     
     def _load_metadata(self):
         """Load clause metadata with fallback to defaults"""
+        # First try to load from clean_clause_names.json (which has the correct mapping)
+        clean_names_path = self.project_root / 'models' / 'bert' / 'clean_clause_names.json'
         metadata_path = self.project_root / 'data' / 'processed' / 'metadata.json'
         
         try:
-            if metadata_path.exists():
+            if clean_names_path.exists():
+                logger.info(f"📄 Loading clause names from {clean_names_path}")
+                with open(clean_names_path, 'r', encoding='utf-8') as f:
+                    clean_data = json.load(f)
+                
+                if 'clean_clause_names' in clean_data:
+                    self.clause_types = clean_data['clean_clause_names']
+                    logger.info(f"✅ Loaded {len(self.clause_types)} clause types from clean_clause_names.json")
+                
+                # Create clean mapping
+                if 'original_to_clean_mapping' in clean_data:
+                    self.clean_clause_names = clean_data['original_to_clean_mapping']
+                    # Also create direct mapping for clean names
+                    for clean_name in self.clause_types:
+                        self.clean_clause_names[clean_name] = clean_name
+                else:
+                    # Create clean mapping from clause types
+                    self.clean_clause_names = {clause_type: clause_type for clause_type in self.clause_types}
+                
+                logger.info(f"✅ Created mapping for {len(self.clean_clause_names)} clause names")
+                return
+                
+            elif metadata_path.exists():
+                logger.info(f"📄 Loading metadata from {metadata_path}")
                 with open(metadata_path, 'r', encoding='utf-8') as f:
                     metadata = json.load(f)
                 
@@ -185,13 +216,13 @@ class LegalClauseExtractor:
                     if clause_type not in self.clean_clause_names:
                         self.clean_clause_names[clause_type] = clean_clause_name(clause_type)
                 
-                logger.info(f"Loaded metadata for {len(self.clause_types)} clause types")
+                logger.info(f"✅ Loaded metadata for {len(self.clause_types)} clause types")
             else:
-                logger.warning(f"Metadata file not found at {metadata_path}")
+                logger.warning(f"❌ No metadata files found at {clean_names_path} or {metadata_path}")
                 self._create_default_metadata()
                 
         except Exception as e:
-            logger.error(f"Error loading metadata: {e}")
+            logger.error(f"❌ Error loading metadata: {e}")
             self._create_default_metadata()
     
     def _create_default_metadata(self):
@@ -223,7 +254,7 @@ class LegalClauseExtractor:
             config_path = self.model_path / 'config.json'
             training_results_path = self.model_path / 'training_results.json'
             
-            model_name = 'bert-base-uncased'  # default
+            model_name = 'nlpaueb/legal-bert-base-uncased'  # Use the actual trained model
             num_labels = len(self.clause_types)
             
             if training_results_path.exists():
@@ -233,6 +264,13 @@ class LegalClauseExtractor:
                 model_config = training_results.get('model_config', {})
                 model_name = model_config.get('model_name', model_name)
                 num_labels = model_config.get('num_labels', num_labels)
+                
+                # Ensure we have the correct number of clause types from training
+                if 'clean_clause_names' in training_results:
+                    trained_clause_names = training_results['clean_clause_names']
+                    if len(trained_clause_names) == 41:
+                        self.clause_types = trained_clause_names
+                        logger.info(f"Loaded {len(trained_clause_names)} clause types from training results")
             
             # Initialize model
             self.model = MultiLabelBERT(model_name, num_labels)
@@ -264,7 +302,7 @@ class LegalClauseExtractor:
     def _load_default_model(self):
         """Load default BERT model with error handling"""
         try:
-            model_name = 'bert-base-uncased'
+            model_name = 'nlpaueb/legal-bert-base-uncased'  # Use the same model as training
             num_labels = len(self.clause_types)
             
             self.model = MultiLabelBERT(model_name, num_labels)
@@ -274,7 +312,7 @@ class LegalClauseExtractor:
             self.model.eval()
             self._model_loaded = True
             
-            logger.info(f"Loaded default BERT model with {num_labels} labels")
+            logger.info(f"Loaded default Legal-BERT model with {num_labels} labels")
             
         except Exception as e:
             logger.error(f"Critical error loading default model: {e}")
