@@ -191,7 +191,7 @@ ___
 
 ### Multi-Label BERT Clause Extractor
 
-**Architecture**: `bert-base-uncased` fine-tuned for 41-class multi-label classification
+**Architecture**: `nlpaueb/legal-bert-base-uncased` fine-tuned for 41-class multi-label classification
 <!-- ```python
 Model Performance (Test Set):
 • F1 Micro: 0.847 (overall multi-label performance)
@@ -442,7 +442,7 @@ ___
 ### Citation
 If you use this toolkit in your research, please cite:
 ```bibtex
-@software{gabriel2024_legal_nlp_xai,
+@software{gabriel2025_legal_nlp_xai,
   author = {Gabriel, Perry},
   title = {Legal NLP + Explainability Toolkit: Interpretable Clause Extraction and Summarization},
   year = {2025},
